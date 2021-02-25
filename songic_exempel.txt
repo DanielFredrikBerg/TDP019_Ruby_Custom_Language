@@ -15,10 +15,12 @@ scale: C
 
 motifs
 {
-A = play {c b 2g}
+A = play {c# d 2ab}
+count = 0
 B = repeat 3
     {
-    A transposed +2 inScale
+    count = count + 1
+    A transposed +count inScale
     play {c}
     }
 C = play {4d-1 c}
@@ -30,10 +32,14 @@ Verse = {
         repeat 2 {B}
         C
         A.reversed
+        }
+
+Chorus = {...}
 }
 
 structure
 {
         Verse, Verse, Chorus, Verse
+        play{c b 2g c b 2g 2c 2b 4g f b c d e g}
 }
 |end song|
