@@ -1,0 +1,39 @@
+
+def motif reversed
+    {...}
+
+|song|
+tempo: 120
+scale: C
+//instrument: piano
+
+%
+        multi
+        line
+        comment
+%
+
+motifs
+{
+A = play {c b 2g}
+B = repeat 3
+    {
+    A transposed +2 inScale
+    play {c}
+    }
+C = play {4d-1 c}
+}
+
+segments
+{
+Verse = {
+        repeat 2 {B}
+        C
+        A.reversed
+}
+
+structure
+{
+        Verse, Verse, Chorus, Verse
+}
+|end song|
