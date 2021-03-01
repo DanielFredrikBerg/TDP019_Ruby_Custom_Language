@@ -5,7 +5,9 @@ def motif reversed
 |song|
 tempo: 120
 scale: C
-//instrument: piano
+instrument: piano
+
+// One line comment.
 
 %
         multi
