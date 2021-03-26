@@ -13,6 +13,9 @@ class Note
       print @length.denominator.to_s
     end
     print @tone.to_s
+    if @octave > 0
+      print '+'
+    end
     if @octave != 0
       print @octave.to_s
     end
@@ -23,6 +26,10 @@ end
 
 note = Note.new(2,'b',-1)
 note2 = Note.new(1,'b', 0)
+note3 = Note.new(2,'b',+1)
 
 note.write
 note2.write
+note3.write
+
+puts ""
