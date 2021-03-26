@@ -1,17 +1,20 @@
 class Note
 
-  def initialize(tone, length: 1, octave: 0)
-    @tone = tone
+  def initialize(length, tone, octave)
+
     @length = Rational(1,length)
+    @tone = tone
     @octave = 0 + octave
+    
   end
 
   def print
-    puts @length.denominator.to_s + @tone.to_s + @octave.to_s
+      puts @length.denominator.to_s + @tone.to_s + @octave.to_s + " "
+    end
   end
   
 end
 
-note = Note.new('b', octave: -1)
+note = Note.new(2,'b',-1)
 
-note.print
+note.transpose.print
