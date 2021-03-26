@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# coding: iso-8859-1
 
 # This file is called rdparse.rb because it implements a Recursive
 # Descent Parser. Read more about the theory on e.g.
@@ -235,48 +236,59 @@ end
 #
 ##############################################################################
 
+require './note'
+
 class DiceRoller
-        
-  def DiceRoller.roll(times, sides)
-    (1..times).inject(0) {|sum, _| sum + rand(sides) + 1 }
+  
+  def DiceRoller.roll(note)
+    note.write
   end
   
   def initialize
     @diceParser = Parser.new("dice roller") do
-      token(/\s+/)
-      token(/\d+/) {|m| m.to_i }
-      token(/./) {|m| m }
       
-      start :expr do 
-        match(:expr, '+', :term) {|a, _, b| a + b }
-        match(:expr, '-', :term) {|a, _, b| a - b }
-        match(:term)
+      # Token utgör Lexern
+      token(/\s+/)
+      token(/[+|-]/) {|m| m.to_s }
+      token(/\d+/) {|m| m.to_i }
+      #token(/[a-g][b]? | [z]/) {|m| m.to_s }
+      token(/[write]+/) { |m| m.to_s }
+      token(/./) { |m| m.to_s }
+
+      # token(/([1-3]?[0-9])([A-Ga-g])([+|-]?[0-9])/) {|m| m}
+      
+      
+      
+      # Parsern ansvarar för att skapa objekten => AST
+      start :function do 
+        match( 'write', :note ) { |_,n| n.write }
+        match( :note )
       end
       
-      rule :term do 
-        match(:term, '*', :dice) {|a, _, b| a * b }
-        match(:term, '/', :dice) {|a, _, b| a / b }
-        match(:dice)
+
+      rule :note do 
+        match( :length, :tone, :octave ) { |l, t, o| Note.new(l,t,o) }
       end
 
-      rule :dice do
-        match(:atom, 'd', :sides) {|a, _, b| DiceRoller.roll(a, b) }
-        match('d', :sides) {|_, b| DiceRoller.roll(1, b) }
-        match(:atom)
+
+      rule :length do
+        match( Integer )
+        match( :tone )
       end
-      
-      rule :sides do
-        match('%') { 100 }
-        match(:atom)
+           
+      rule :tone do
+        match( /[a-g]/ ) { |t| t }
+        match( :octave )
       end
-      
-      rule :atom do
-        # Match the result of evaluating an integer expression, which
-        # should be an Integer
-        match(Integer)
-        match('(', :expr, ')') {|_, a, _| a }
+
+      rule :octave do 
+        match( '+', Integer ) { |_,o| o }
+        match( '-', Integer ) { |_,o| 0-o }
       end
+
     end
+
+    
   end
   
   def done(str)
@@ -306,8 +318,8 @@ end
 # Examples of use
 
 # irb(main):1696:0> DiceRoller.new.roll
-# [diceroller] 1+3
-# => 4
+# [diceroller] 3A2
+# => DiceRoller::Note
 # [diceroller] 1+d4
 # => 2
 # [diceroller] 1+d4
