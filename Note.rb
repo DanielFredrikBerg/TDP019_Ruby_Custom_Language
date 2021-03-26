@@ -10,7 +10,6 @@ class Note
 
   def print
       puts @length.denominator.to_s + @tone.to_s + @octave.to_s + " "
-    end
   end
   
 end
