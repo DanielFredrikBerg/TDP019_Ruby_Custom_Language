@@ -8,12 +8,21 @@ class Note
     
   end
 
-  def print
-      puts @length.denominator.to_s + @tone.to_s + @octave.to_s + " "
+  def write
+    if @length.denominator != 1
+      print @length.denominator.to_s
+    end
+    print @tone.to_s
+    if @octave != 0
+      print @octave.to_s
+    end
+    print " "
   end
   
 end
 
 note = Note.new(2,'b',-1)
+note2 = Note.new(1,'b', 0)
 
-note.transpose.print
+note.write
+note2.write
