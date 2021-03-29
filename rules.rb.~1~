@@ -6,7 +6,7 @@ class Rules
 
   def initialize(file)
     @file = file
-    @rule_parser = Parser.new("rules") do
+    @ruleParser = Parser.new("rules") do
       
       ## Tokens utgör Lexern
       token(/\s+/)
@@ -58,15 +58,15 @@ class Rules
   
   def compile_and_run
     run = File.read(@file)
-    @rule_parser.logger.level = Logger::WARN
-    puts "=> #{ @rule_parser.parse run } "
+    @ruleParser.logger.level = Logger::WARN
+    puts "=> #{ @ruleParser.parse run } "
   end
 
   def log(state = true)
     if state
-      @rule_parser.logger.level = Logger::DEBUG
+      @ruleParser.logger.level = Logger::DEBUG
     else
-      @rule_parser.logger.level = Logger::WARN
+      @ruleParser.logger.level = Logger::WARN
     end
   end
 end
