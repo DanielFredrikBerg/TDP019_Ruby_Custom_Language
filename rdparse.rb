@@ -217,7 +217,7 @@ class Parser
     @start = @rules[name]
   end
   
-  def rule(name,&block)
+  def rule(name, &block)
     @current_rule = Rule.new(name, self)
     @rules[name] = @current_rule
     instance_eval &block
@@ -230,100 +230,4 @@ class Parser
 
 end
 
-##############################################################################
-#
-# This part defines the dice language
-#
-##############################################################################
-
-require './note'
-
-class DiceRoller
-  
-  def DiceRoller.roll(note)
-    note.write
-  end
-  
-  def initialize
-    @diceParser = Parser.new("dice roller") do
-      
-      # Token utgör Lexern
-      token(/\s+/)
-      token(/[+|-]/) {|m| m.to_s }
-      token(/\d+/) {|m| m.to_i }
-      #token(/[a-g][b]? | [z]/) {|m| m.to_s }
-      token(/[write]+/) { |m| m.to_s }
-      token(/./) { |m| m.to_s }
-
-      # token(/([1-3]?[0-9])([A-Ga-g])([+|-]?[0-9])/) {|m| m}
-      
-      
-      
-      # Parsern ansvarar för att skapa objekten => AST
-      start :function do 
-        match( 'write', :note ) { |_,n| n.write }
-        match( :note )
-      end
-      
-
-      rule :note do 
-        match( :length, :tone, :octave ) { |l, t, o| Note.new(l,t,o) }
-      end
-
-
-      rule :length do
-        match( Integer )
-        match( :tone )
-      end
-           
-      rule :tone do
-        match( /[a-g]/ ) { |t| t }
-        match( :octave )
-      end
-
-      rule :octave do 
-        match( '+', Integer ) { |_,o| o }
-        match( '-', Integer ) { |_,o| 0-o }
-      end
-
-    end
-
-    
-  end
-  
-  def done(str)
-    ["quit","exit","bye",""].include?(str.chomp)
-  end
-  
-  def roll
-    print "[diceroller] "
-    str = gets
-    if done(str) then
-      puts "Bye."
-    else
-      puts "=> #{@diceParser.parse str}"
-      roll
-    end
-  end
-
-  def log(state = true)
-    if state
-      @diceParser.logger.level = Logger::DEBUG
-    else
-      @diceParser.logger.level = Logger::WARN
-    end
-  end
-end
-
-# Examples of use
-
-# irb(main):1696:0> DiceRoller.new.roll
-# [diceroller] 3A2
-# => DiceRoller::Note
-# [diceroller] 1+d4
-# => 2
-# [diceroller] 1+d4
-# => 3
-# [diceroller] (2+8*d20)*3d6
-# => 306
 
