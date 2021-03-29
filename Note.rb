@@ -3,17 +3,22 @@ class Note
 
   attr_accessor :halfstep
   
-  def initialize(length, tone, semitone = '',octave)
+  def initialize(length, tone, semitone = '', octave)
+
+    @scale = ['c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#', 'a', 'a#', 'b' ]
     
     @length = Rational(1,length)
-    @tone = tone
-    @semitone = semitone
-    @octave = 0 + octave
     
-    @halfstep = octave_to_halfstep(@octave) + tone_to_halfstep(@tone) + semitone_to_halfstep(@semitone)
+    @halfstep = octave_to_halfstep(octave) + tone_to_halfstep(tone) + semitone_to_halfstep(semitone)
+   
+    @tone, @semitone = @scale[@halfstep - 12 * self.octave]
     
   end
 
+  def octave
+    @halfstep / 12
+  end
+  
   def octave_to_halfstep(octave)
     12 * octave
   end
@@ -49,11 +54,11 @@ class Note
     if @semitone
       print @semitone.to_s
     end
-    if @octave > 0
+    if self.octave > 0
       print '+'
     end
-    if @octave != 0
-      print @octave.to_s
+    if self.octave != 0
+      print self.octave.to_s
     end
     print " "
   end
@@ -73,7 +78,7 @@ class Note
         break
       end
     end
-    Note.new(@length.denominator, tone, @octave)
+    Note.new(@length.denominator, tone, self.octave)
   end
   
 end
