@@ -1,6 +1,6 @@
 # coding: iso-8859-1
 require './rdparse'
-#require './songic_classes'
+require './Note'
 
 class Rules
 

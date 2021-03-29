@@ -24,12 +24,13 @@ class Note
   
 end
 
-note = Note.new(2,'b',-1)
-note2 = Note.new(1,'b', 0)
-note3 = Note.new(2,'b',+1)
+## Examples of usage:
+# note = Note.new(2,'b',-1)
+# note2 = Note.new(1,'b', 0)
+# note3 = Note.new(2,'b',+1)
 
-note.write
-note2.write
-note3.write
+# note.write
+# note2.write
+# note3.write
 
-puts ""
+# puts ""
