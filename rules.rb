@@ -52,10 +52,6 @@ class Rules
     
   end
   
-  def done(str)
-    ["quit","exit","bye",""].include?(str.chomp)
-  end
-  
   def compile_and_run
     run = File.read(@file)
     @rule_parser.logger.level = Logger::WARN
