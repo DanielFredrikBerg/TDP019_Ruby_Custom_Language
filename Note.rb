@@ -3,15 +3,13 @@ class Note
 
   attr_accessor :halfstep
   
-  def initialize(length, tone, semitone = '', octave)
+  def initialize(length, tone, octave)
 
     @scale = ['c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#', 'a', 'a#', 'b' ]
     
     @length = Rational(1,length)
     
-    @halfstep = octave_to_halfstep(octave) + tone_to_halfstep(tone) + semitone_to_halfstep(semitone)
-   
-    @tone, @semitone = @scale[@halfstep - 12 * self.octave]
+    @halfstep = octave_to_halfstep(octave) + tone_to_halfstep(tone)
     
   end
 
@@ -29,11 +27,16 @@ class Note
   
   def tone_to_halfstep(tone)
     t2h = {'c' => 0,
+           'c#' => 1,
            'd' => 2,
+           'd#' => 3,
            'e' => 4,
            'f' => 5,
+           'f#' => 6,
            'g' => 7,
+           'g#' => 8,
            'a' => 9,
+           'a#' => 10,
            'b' => 11}
     t2h[tone]    
   end
@@ -66,16 +69,12 @@ class Note
  
   def transposed(halfsteps = 1)
     #Will return a note transposed the given number of steps.
-    if self.tone(@halfstep + halfsteps)[1]
-      Note.new(@length.denominator, self.tone(@halfstep + halfsteps)[0], self.tone(@halfstep + halfsteps)[1], self.octave(@halfstep + halfsteps) ) 
-    else
-      Note.new(@length.denominator, self.tone(@halfstep + halfsteps)[0], self.octave(@halfstep + halfsteps) )
-    end
+      Note.new(@length.denominator, self.tone(@halfstep + halfsteps), self.octave(@halfstep + halfsteps) )
   end
   
 end
 
-# note = Note.new(2,'b','#',-1)
+# note = Note.new(2,'c#',-1)
 # note2 = Note.new(1,'b', 0)
 # note3 = Note.new(2,'b',+1)
 # note4 = Note.new(1,'g',-2)

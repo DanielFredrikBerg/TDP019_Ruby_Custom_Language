@@ -26,9 +26,19 @@ class Rules
         match( :note )
       end
       
+      # rule :allocation do
+      #   match( String, '=', 
+      # end
+      
+      # rule :scale do
+      #   match( : )
+      #   match( :note )
+      # end
 
       rule :note do 
-        match( :length, :tone, :octave ) { |l, t, o| Note.new(l,t,o) }
+        match( :length, :tone, :octave ) { 
+          |length, tone, octave| Note.new(length, tone, octave) 
+        }
       end
 
 
