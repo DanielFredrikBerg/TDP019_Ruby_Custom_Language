@@ -4,10 +4,9 @@ require './rules'
 
 class TestNote < Test::Unit::TestCase
 
-  @@songic = Rules.new
+  @@songic_lang = Rules.new
 
-  def test_note
-    assert_equal( "2a3", @@songic.run_code("write 2a+3") ) 
+  def test_
     
     
 

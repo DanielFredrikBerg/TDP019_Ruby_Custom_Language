@@ -1,0 +1,12 @@
+require 'test/unit'
+require './Note'
+require './rules'
+
+class TestNote < Test::Unit::TestCase
+
+  @@
+
+  def test_
+
+
+end

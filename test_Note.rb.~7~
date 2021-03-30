@@ -7,6 +7,8 @@ class TestNote < Test::Unit::TestCase
   @@songic = Rules.new
 
   def test_note
+    io = StringIO.new "2a3"
+    out
     assert_equal( "2a3", @@songic.run_code("write 2a+3") ) 
     
     

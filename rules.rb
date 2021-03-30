@@ -62,6 +62,11 @@ class Rules
     puts "=> #{ @rule_parser.parse run } "
   end
 
+  def run_code(code)
+    @rule_parser.logger.level = Logger::WARN
+    puts "=> #{ @rule_parser.parse code } "
+  end
+
   def log(state = true)
     if state
       @rule_parser.logger.level = Logger::DEBUG
