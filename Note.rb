@@ -15,8 +15,12 @@ class Note
     
   end
 
-  def octave
-    @halfstep / 12
+  def octave(halfstep = @halfstep)
+    halfstep / 12
+  end
+
+  def tone(halfstep = @halfstep)
+    @scale[halfstep % 12]
   end
   
   def octave_to_halfstep(octave)
@@ -50,10 +54,7 @@ class Note
     if @length.denominator != 1
       print @length.denominator.to_s
     end
-    print @tone.to_s
-    if @semitone
-      print @semitone.to_s
-    end
+    print self.tone.to_s
     if self.octave > 0
       print '+'
     end
@@ -63,22 +64,13 @@ class Note
     print " "
   end
  
-  def transposed(step = 1, halfsteps = 0)
+  def transposed(halfsteps = 1)
     #Will return a note transposed the given number of steps.
-    i = step
-    tone = @tone
-    loop do     
-      if tone == 'g'
-        tone = 'a'
-      else
-        tone = tone.next
-      end
-      i -= 1
-      if i == 0
-        break
-      end
+    if self.tone(@halfstep + halfsteps)[1]
+      Note.new(@length.denominator, self.tone(@halfstep + halfsteps)[0], self.tone(@halfstep + halfsteps)[1], self.octave(@halfstep + halfsteps) ) 
+    else
+      Note.new(@length.denominator, self.tone(@halfstep + halfsteps)[0], self.octave(@halfstep + halfsteps) )
     end
-    Note.new(@length.denominator, tone, self.octave)
   end
   
 end
@@ -93,6 +85,7 @@ note2.write
 note3.write
 note3.transposed.write
 note4.write
+note4.transposed.write
 note4.transposed(2).write
 
 puts ""
