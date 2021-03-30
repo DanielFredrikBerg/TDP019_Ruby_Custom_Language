@@ -1,36 +1,98 @@
 class Note
+  #TODO: map semitones for different scales somehow.
 
-  def initialize(length, tone, octave)
+  attr_accessor :halfstep
+  
+  def initialize(length, tone, semitone = '', octave)
 
+    @scale = ['c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#', 'a', 'a#', 'b' ]
+    
     @length = Rational(1,length)
-    @tone = tone
-    @octave = 0 + octave
+    
+    @halfstep = octave_to_halfstep(octave) + tone_to_halfstep(tone) + semitone_to_halfstep(semitone)
+   
+    @tone, @semitone = @scale[@halfstep - 12 * self.octave]
     
   end
 
+  def octave(halfstep = @halfstep)
+    halfstep / 12
+  end
+
+  def tone(halfstep = @halfstep)
+    @scale[halfstep % 12]
+  end
+  
+  def octave_to_halfstep(octave)
+    12 * octave
+  end
+  
+  def tone_to_halfstep(tone)
+    t2h = {'c' => 0,
+           'd' => 2,
+           'e' => 4,
+           'f' => 5,
+           'g' => 7,
+           'a' => 9,
+           'b' => 11}
+    t2h[tone]    
+  end
+
+  def semitone_to_halfstep(semitone='')
+    case semitone
+    when '#'
+      +1
+    when 'b'
+      -1
+    when ''
+      0
+    end
+  end
+  
   def write
+    #Will print the the Note in a human readable form
     if @length.denominator != 1
       print @length.denominator.to_s
     end
-    print @tone.to_s
-    if @octave > 0
+    print self.tone.to_s
+    if self.octave > 0
       print '+'
     end
-    if @octave != 0
-      print @octave.to_s
+    if self.octave != 0
+      print self.octave.to_s
     end
     print " "
+  end
+ 
+  def transposed(halfsteps = 1)
+    #Will return a note transposed the given number of steps.
+    if self.tone(@halfstep + halfsteps)[1]
+      Note.new(@length.denominator, self.tone(@halfstep + halfsteps)[0], self.tone(@halfstep + halfsteps)[1], self.octave(@halfstep + halfsteps) ) 
+    else
+      Note.new(@length.denominator, self.tone(@halfstep + halfsteps)[0], self.octave(@halfstep + halfsteps) )
+    end
   end
   
 end
 
-## Examples of usage:
-# note = Note.new(2,'b',-1)
+# note = Note.new(2,'b','#',-1)
 # note2 = Note.new(1,'b', 0)
 # note3 = Note.new(2,'b',+1)
+# note4 = Note.new(1,'g',-2)
 
 # note.write
 # note2.write
 # note3.write
+# note3.transposed.write
+# note4.write
+# note4.transposed.write
+# note4.transposed(2).write
+
+# puts ""
+
+# puts note.halfstep
+# puts note2.halfstep
+# puts note3.halfstep
+# puts note4.halfstep
 
 # puts ""
