@@ -3,9 +3,9 @@ require './rdparse'
 require './Note'
 
 class Rules
+  attr_accessor :file
 
-  def initialize(file)
-    @file = file
+  def initialize
     @rule_parser = Parser.new("rules") do
       
       ## Tokens utgör Lexern
@@ -66,14 +66,26 @@ class Rules
     ["quit","exit","bye",""].include?(str.chomp)
   end
   
-  def compile_and_run
-    run = File.read(@file)
+  def interactive_mode
+    print "[i-mode] "
     @rule_parser.logger.level = Logger::WARN
+    str = gets
+    if done(str) then
+      puts "Bye."
+    else
+      puts "#{@rule_parser.parse str}"
+      interactive_mode
+    end
+  end
+
+  def compile_and_run(file)
+    run = File.read(file)
+    @rule_parser.logger.level = Logger::DEBUG
     puts "=> #{ @rule_parser.parse run } "
   end
 
   def run_code(code)
-    @rule_parser.logger.level = Logger::WARN
+    @rule_parser.logger.level = Logger::DEBUG
     puts "=> #{ @rule_parser.parse code } "
   end
 

@@ -91,24 +91,24 @@ class Note
   
 end
 
-note = Note.new(2,'b#',-1)
-note2 = Note.new(1,'b', 0)
-note3 = Note.new(2,'b',+1)
-note4 = Note.new(1,'g',-2)
+# note = Note.new(2,'b#',-1)
+# note2 = Note.new(1,'b', 0)
+# note3 = Note.new(2,'b',+1)
+# note4 = Note.new(1,'g',-2)
 
-note.write
-note2.write
-note3.write
-note3.transposed.write
-note4.write
-note4.transposed.write
-note4.transposed(2).write
+# note.write
+# note2.write
+# note3.write
+# note3.transposed.write
+# note4.write
+# note4.transposed.write
+# note4.transposed(2).write
 
-puts ""
+# puts ""
 
-puts note.halfstep
-puts note2.halfstep
-puts note3.halfstep
-puts note4.halfstep
+# puts note.halfstep
+# puts note2.halfstep
+# puts note3.halfstep
+# puts note4.halfstep
 
-puts ""
+# puts ""
