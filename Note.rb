@@ -1,7 +1,5 @@
 class Note
   #TODO: map semitones for different scales somehow.
-
-  attr_accessor :halfstep
   
   def initialize(length, tone, octave)
 
@@ -71,7 +69,7 @@ class Note
   
   def write
     #Will print the the Note in a human readable form
-    if @length.denominator != 1
+    if @length.denominator != 4
       print @length.denominator.to_s
     end
     print self.tone.to_s
@@ -91,24 +89,17 @@ class Note
   
 end
 
-note = Note.new(2,'b#',-1)
-note2 = Note.new(1,'b', 0)
-note3 = Note.new(2,'b',+1)
-note4 = Note.new(1,'g',-2)
+# note = Note.new(2,'b#',-1)
+# note2 = Note.new(1,'b', 0)
+# note3 = Note.new(2,'b',+1)
+# note4 = Note.new(1,'g',-2)
 
-note.write
-note2.write
-note3.write
-note3.transposed.write
-note4.write
-note4.transposed.write
-note4.transposed(2).write
+# note.write
+# note2.write
+# note3.write
+# note3.transposed.write
+# note4.write
+# note4.transposed.write
+# note4.transposed(2).write
 
-puts ""
-
-puts note.halfstep
-puts note2.halfstep
-puts note3.halfstep
-puts note4.halfstep
-
-puts ""
+# puts ""

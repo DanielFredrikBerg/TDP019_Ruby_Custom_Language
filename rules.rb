@@ -85,12 +85,12 @@ class Rules
   def compile_and_run(file)
     run = File.read(file)
     @rule_parser.logger.level = Logger::DEBUG
-    puts "=> #{ @rule_parser.parse run } "
+    puts "#{ @rule_parser.parse run } "
   end
 
   def run_code(code)
     @rule_parser.logger.level = Logger::DEBUG
-    puts "=> #{ @rule_parser.parse code } "
+    puts "#{ @rule_parser.parse code }"
   end
 
   def log(state = true)
@@ -101,4 +101,3 @@ class Rules
     end
   end
 end
-
