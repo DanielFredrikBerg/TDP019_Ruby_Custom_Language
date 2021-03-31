@@ -103,10 +103,3 @@ note4.transposed.write
 note4.transposed(2).write
 
 puts ""
-
-puts note.halfstep
-puts note2.halfstep
-puts note3.halfstep
-puts note4.halfstep
-
-puts ""
