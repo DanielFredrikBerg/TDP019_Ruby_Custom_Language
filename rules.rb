@@ -10,21 +10,19 @@ class Rules
       
       ## Tokens utgör Lexern
       token(/\s+/)
-      token(/[+|-]/) {|m| m.to_s }
+      token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
-      #token(/[a-g][b]? | [z]/) {|m| m.to_s }
-      token(/[write]+/) { |m| m.to_s }
+      token(/[a-g][#|b]?/) {|m| m.to_s }
+      token( /[a-zA-Z]+/ ) { |m| m.to_s }
       token(/./) { |m| m.to_s }
-
-      # token(/([1-3]?[0-9])([A-Ga-g])([+|-]?[0-9])/) {|m| m}
-      
       
       
       # Parsern ansvarar för att skapa objekten => AST
-      start :function do 
-        match( 'write', :note ) { |_,n| n.write }
-        match( :note )
-      end
+
+      
+      # start :song do 
+      #   match( "write", :note ) { |_,n| n.write }
+      # end
       
       # rule :allocation do
       #   match( String, '=', 
@@ -35,26 +33,29 @@ class Rules
       #   match( :note )
       # end
 
-      rule :note do 
-        match( :length, :tone, :octave ) { 
-          |length, tone, octave| Note.new(length, tone, octave) 
-        }
+      start :function do
+        match( "write", :note ) { |_,n| n.write }
+        match( :note )
       end
 
+      rule :note do 
+        match( :tone ) { |tone| Note.new(4, tone, 0) }
+        match( :length, :tone, :octave ) do
+          |length, tone, octave| Note.new(length, tone, octave) 
+        end
+      end
 
       rule :length do
         match( Integer )
-        match( :tone )
       end
-      
-      rule :tone do
-        match( /[a-g]/ ) { |t| t }
-        match( :octave )
+     
+      rule :octave do 
+        match( /[+][0-9]/ ) { |i| i.to_i }
+        match( /[-][0-9]/ ) { |i| i.to_i }
       end
 
-      rule :octave do 
-        match( '+', Integer ) { |_,o| o }
-        match( '-', Integer ) { |_,o| 0-o }
+      rule :tone do
+        match( /[a-g][#|b]?/ ) { |t| t }
       end
 
     end
@@ -68,7 +69,7 @@ class Rules
   
   def interactive_mode
     print "[i-mode] "
-    @rule_parser.logger.level = Logger::WARN
+    @rule_parser.logger.level = Logger::DEBUG
     str = gets
     if done(str) then
       puts "Bye."
@@ -78,16 +79,27 @@ class Rules
     end
   end
 
+  def test(str)
+    @rule_parser.logger.level = Logger::WARN
+    if done(str) then
+      puts "Bye"
+    else
+      root_node = @rule_parser.parse str
+      puts root_node.class
+      #puts "=> #{root_node.eval}"
+      root_node
+    end
+  end
+
   def compile_and_run(file)
     run = File.read(file)
     @rule_parser.logger.level = Logger::DEBUG
-    puts "=> #{ @rule_parser.parse run } "
+    puts "#{ @rule_parser.parse run } "
   end
 
   def run_code(code)
-    @rule_parser.logger.level = Logger::DEBUG
-    puts "=> #{ @rule_parser.parse code } "
-  end
+    @rule_parser.logger.level = Logger::WARN
+    puts "#{ @rule_parser.parse code }"
 
   def log(state = true)
     if state
@@ -97,4 +109,3 @@ class Rules
     end
   end
 end
-
