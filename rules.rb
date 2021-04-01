@@ -56,6 +56,7 @@ class Rules
 
       rule :silence do
         match( :length, /[z]/ ) { |length,_| Silence.new( length ) }
+        match( /[z]/ ) { Silence.new(4) }
       end
 
       rule :length do
