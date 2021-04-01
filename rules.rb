@@ -108,4 +108,5 @@ class Rules
       @rule_parser.logger.level = Logger::WARN
     end
   end
+  end
 end
