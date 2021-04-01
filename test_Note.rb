@@ -54,4 +54,22 @@ class TestNote < Test::Unit::TestCase
     assert_equal( "d#", answer )
   end
 
+  def test_write_default_silence
+    io = StringIO.new "write 4z"
+    out = StringIO.new
+    $stdout = out
+    Rules.new.run_code io.string
+    answer = out.string.strip
+    assert_equal( "z", answer )
+  end
+
+  def test_write_silence
+    io = StringIO.new "write 7z"
+    out = StringIO.new
+    $stdout = out
+    Rules.new.run_code io.string
+    answer = out.string.strip
+    assert_equal( "7z", answer )
+  end 
+  
 end

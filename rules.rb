@@ -1,6 +1,7 @@
 # coding: iso-8859-1
 require './rdparse'
 require './Note'
+require './Silence'
 
 class Rules
   attr_accessor :file
@@ -35,20 +36,24 @@ class Rules
 
       start :function do
         match( "write", :note ) { |_,n| n.write }
+        match( "write", :silence ) { |_,n| n.write }
+        match( :silence )
         match( :note )
       end
 
       rule :note do 
-        match( :tone ) { |tone| Note.new(4, tone, 0) }
+        match( :tone ) { |tone| Note.new( 4, tone, 0 ) }
         match( :length, :tone, :octave ) do
-          |length, tone, octave| Note.new(length, tone, octave) 
+          |length, tone, octave| Note.new( length, tone, octave ) 
         end
       end
 
-      
+      rule :silence do
+        match( :length, /[z]/ ) { |length,_| Silence.new( length ) }
+      end
 
       rule :length do
-        match( Integer )
+        match( Integer ) { |i| i } 
       end
       
       
