@@ -1,7 +1,5 @@
 class Note
   #TODO: map semitones for different scales somehow.
-
-  attr_accessor :halfstep
   
   def initialize(length, tone, octave)
 
@@ -71,7 +69,8 @@ class Note
   
   def write
     #Will print the the Note in a human readable form
-    if @length.denominator != 1
+
+    if @length.denominator != 4
       print @length.denominator.to_s
     end
     print self.tone.to_s
@@ -90,6 +89,7 @@ class Note
   end
   
 end
+
 
 # note = Note.new(2,'b#',-1)
 # note2 = Note.new(1,'b', 0)
