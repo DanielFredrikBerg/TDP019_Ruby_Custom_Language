@@ -82,6 +82,18 @@ class Rules
     end
   end
 
+  def test(str)
+    @rule_parser.logger.level = Logger::WARN
+    if done(str) then
+      puts "Bye"
+    else
+      root_node = @rule_parser.parse str
+      puts root_node.class
+      #puts "=> #{root_node.eval}"
+      root_node
+    end
+  end
+
   def compile_and_run(file)
     run = File.read(file)
     @rule_parser.logger.level = Logger::DEBUG
@@ -89,7 +101,7 @@ class Rules
   end
 
   def run_code(code)
-    @rule_parser.logger.level = Logger::DEBUG
+    @rule_parser.logger.level = Logger::WARN
     puts "#{ @rule_parser.parse code }"
   end
 
