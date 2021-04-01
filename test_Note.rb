@@ -6,7 +6,9 @@ class TestNote < Test::Unit::TestCase
 
   
 
-  # Does not work the way I think it works.
+ ######################################
+ #  TESTING THE WRITE FUNCTION.
+ ######################################
 
   def test_write_note_pos_octave
     io = StringIO.new "write 2g+3"
@@ -72,4 +74,14 @@ class TestNote < Test::Unit::TestCase
     assert_equal( "7z", answer )
   end 
   
+  def test_write_motif
+    io = StringIO.new "write "
+    out = StringIO.new
+    $stdout = out
+    Rules.new.run_code io.string
+    answer = out.string.strip
+    assert_equal( "", answer )
+  end 
+
+
 end

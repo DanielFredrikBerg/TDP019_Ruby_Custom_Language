@@ -37,8 +37,14 @@ class Rules
       start :function do
         match( "write", :note ) { |_,n| n.write }
         match( "write", :silence ) { |_,n| n.write }
+        match( "write", :motif ) { |_,m| m.write }
+        match( :motif )
         match( :silence )
         match( :note )
+      end
+
+      rule :motif do
+        match(*:note)
       end
 
       rule :note do 
