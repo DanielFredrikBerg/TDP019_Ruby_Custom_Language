@@ -11,34 +11,38 @@ class Rules
     @rule_parser = Parser.new("rules") do
       
       ## Tokens utgör Lexern
-      token(/\s+/) {|m| m.to_s }
-      token(/[+|-]\d/) {|m| m.to_s }
-      token(/\d+/) {|m| m.to_i }
-      token(/[a-g][#|b]?/) {|m| m.to_s }
-      token( /[a-zA-Z]+/ ) { |m| m.to_s }
-      token(/./) { |m| m.to_s }
+      token(/^\s+/) # {|m| m.to_s }
+      token(/^[+|-]\d/) {|m| m.to_s }
+      token(/^\d+/) {|m| m.to_i }
+      token(/^[a-g][#|b]?/) {|m| m.to_s }
+      token( /^[a-zA-Z]+/ ) { |m| m.to_s }
+      token(/^./) { |m| m.to_s }
       
       
       # Parsern ansvarar för att skapa objekten => AST
 
       
-      # start :song do 
-      #   match( "write", :note ) { |_,n| n.write }
-      # end
+      start :program do
+        match( :function )
+        match( :variable_assignment )
+      end
       
-      # rule :allocation do
-      #   match( String, '=', 
-      # end
-      
-      # rule :scale do
-      #   match( : )
-      #   match( :note )
-      # end
+      rule :variable_assignment do
+        match( :variable_name, "=", :type ) do |id,_,type|
+          
+        end
+      end
 
-      start :function do
-        match( "write", :note ) { |_,n| n.write }
-        match( "write", :silence ) { |_,n| n.write }
-        match( "write", :motif ) { |_,m| m.write }
+      rule :variable_name do
+        match( /^[a-zA-Z]/ ) { |var_name| var_name.to_s }
+      end
+
+      rule :function do
+        match( "write", :type ) { |_,m| m.write }     
+        match( :type )
+      end
+
+      rule :type do
         match( :motif )
         match( :silence )
         match( :note )
@@ -46,12 +50,12 @@ class Rules
 
       #TODO fix motif matches. Variable_assignment
       rule :motif do
-        match(:notes) { |notes| Motif.new(notes) }
+        match( :notes ) { |notes| Motif.new(notes) }
       end
 
       rule :notes do
         match( :note )
-        match( :notes, " ", :note ) 
+        match( :notes, :note ) 
       end
 
       rule :note do 
@@ -69,8 +73,7 @@ class Rules
       rule :length do
         match( Integer ) { |i| i } 
       end
-      
-      
+           
       rule :octave do 
         match( /[+][0-9]/ ) { |i| i.to_i }
         match( /[-][0-9]/ ) { |i| i.to_i }

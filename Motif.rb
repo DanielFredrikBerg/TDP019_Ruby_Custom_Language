@@ -5,7 +5,6 @@ class Motif
   def initialize(*args)
     @notes = []
     if args
-      puts "THESE ARE ARGS: #{args}"
       args.each {|note| @notes << note }
     end
   end
