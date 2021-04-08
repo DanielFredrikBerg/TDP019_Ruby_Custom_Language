@@ -2,6 +2,7 @@
 require './rdparse'
 require './Note'
 require './Silence'
+require './Motif'
 
 class Rules
   attr_accessor :file
@@ -10,7 +11,7 @@ class Rules
     @rule_parser = Parser.new("rules") do
       
       ## Tokens utgör Lexern
-      token(/\s+/)
+      token(/\s+/) #{|m| m.to_s }
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) {|m| m.to_s }
@@ -35,16 +36,25 @@ class Rules
       # end
 
       start :function do
-        match( "write", :note ) { |_,n| n.write }
-        match( "write", :silence ) { |_,n| n.write }
         match( "write", :motif ) { |_,m| m.write }
-        match( :motif )
-        match( :silence )
-        match( :note )
+        match( "write", :note ) { |_,n| n.write }
+        # match( "write", :silence ) { |_,n| n.write }        
+        #match( :motif )
+        # match( :silence )
+        # match( :note )
       end
 
+      #TODO fix motif matches. Variable_assignment
       rule :motif do
-        match(*:note)
+        match(:notes) #{ |notes| Motif.new(notes) }
+      end
+
+      rule :notes do
+        match( :notes, :note ) do |notes, note|
+          notes.add(note)
+          notes
+        end
+        match( :note, :note ) { |note1, note2| Motif.new(note1, note2) }
       end
 
       rule :note do 
@@ -52,6 +62,7 @@ class Rules
         match( :length, :tone, :octave ) do
           |length, tone, octave| Note.new( length, tone, octave ) 
         end
+        match( :silence )
       end
 
       rule :silence do

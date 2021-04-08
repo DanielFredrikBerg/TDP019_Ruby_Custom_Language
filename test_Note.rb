@@ -71,6 +71,15 @@ class TestNote < Test::Unit::TestCase
     answer = out.string.strip
     assert_equal( "7z", answer )
   end 
+
+  def test_write_single_silence
+    io = StringIO.new "write z"
+    out = StringIO.new
+    $stdout = out
+    Rules.new.run_code io.string
+    answer = out.string.strip
+    assert_equal( "1z", answer )
+  end 
   
   # def test_write_motif
   #   io = StringIO.new "write "
