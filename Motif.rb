@@ -3,10 +3,10 @@ require './Note.rb'
 class Motif
 
   def initialize(*args)
+    @notes = []
     if args
+      puts "THESE ARE ARGS: #{args}"
       args.each {|note| @notes << note }
-    else
-      @notes = []
     end
   end
 

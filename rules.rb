@@ -2,6 +2,7 @@
 require './rdparse'
 require './Note'
 require './Silence'
+require './Motif'
 
 class Rules
   attr_accessor :file
@@ -10,7 +11,7 @@ class Rules
     @rule_parser = Parser.new("rules") do
       
       ## Tokens utgör Lexern
-      token(/\s+/)
+      token(/\s+/) {|m| m.to_s }
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) {|m| m.to_s }
@@ -45,7 +46,7 @@ class Rules
 
       #TODO fix motif matches. Variable_assignment
       rule :motif do
-        match(:notes) 
+        match(:notes) { |notes| Motif.new(notes) }
       end
 
       rule :notes do
