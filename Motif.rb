@@ -1,4 +1,5 @@
 require './Note.rb'
+require './Silence.rb'
 
 class Motif
 
@@ -12,7 +13,7 @@ class Motif
 
   def add(*notes)
     notes.each do |note|
-      if note.class != Note
+      if note.class != Note and note.class != Silence
         raise TypeError.new "Trying to add a non-Note to Motif"
       else
         @notes << note
