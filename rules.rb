@@ -43,8 +43,14 @@ class Rules
         match( :note )
       end
 
+      #TODO fix motif matches. Variable_assignment
       rule :motif do
-        match(*:note)
+        match(:notes) 
+      end
+
+      rule :notes do
+        match( :note )
+        match( :notes, " ", :note ) 
       end
 
       rule :note do 
@@ -56,6 +62,7 @@ class Rules
 
       rule :silence do
         match( :length, /[z]/ ) { |length,_| Silence.new( length ) }
+        match( /z/ ) {|_| Silence.new(1) }
       end
 
       rule :length do
