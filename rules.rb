@@ -1,8 +1,6 @@
 # coding: iso-8859-1
 require './rdparse'
-require './Note'
-require './Silence'
-require './Motif'
+require './Classes'
 
 class Rules
   attr_accessor :file
