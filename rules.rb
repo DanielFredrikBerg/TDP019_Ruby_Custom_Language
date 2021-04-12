@@ -7,55 +7,52 @@ require './Motif'
 class Rules
   attr_accessor :file
 
+
   def initialize
+    
     @rule_parser = Parser.new("rules") do
-      
+      @@vars = Hash.new
       ## Tokens utgör Lexern
-      token(/^\s+/) # {|m| m.to_s }
-      token(/^[+|-]\d/) {|m| m.to_s }
-      token(/^\d+/) {|m| m.to_i }
-      token(/^[a-g][#|b]?/) {|m| m.to_s }
+      token(/\s+/) #{|m| m.to_s }
+      token(/[+|-]\d/) {|m| m.to_s }
+      token(/\d+/) {|m| m.to_i }
+      token(/[a-g][#|b]?/) { |m| m.to_s }
       token( /^[a-zA-Z]+/ ) { |m| m.to_s }
-      token(/^./) { |m| m.to_s }
+      token(/./) { |m| m.to_s }
       
       
       # Parsern ansvarar för att skapa objekten => AST
 
-      
-      start :program do
-        match( :function )
-        match( :variable_assignment )
+      start :function do
+        match( "write", :type ) { |_,m| m.write }
+        match( "show", :variable ) { |_,var| var.write }
+        match( :variable_assignment ) 
       end
       
+      rule :variable do
+        match( /^[a-zA-Z]+/ ) { |var| @@vars[ var ] }
+      end
+
       rule :variable_assignment do
-        match( :variable_name, "=", :type ) do |id,_,type|
-          
-        end
-      end
-
-      rule :variable_name do
-        match( /^[a-zA-Z]/ ) { |var_name| var_name.to_s }
-      end
-
-      rule :function do
-        match( "write", :type ) { |_,m| m.write }     
-        match( :type )
+        match(/[A-Z]+/, '=', :type ) { |name,_,object| @@vars[ name ] = object }
       end
 
       rule :type do
-        match( :motif )
-        match( :silence )
-        match( :note )
+        match(:segment)
+        match(:motif)
+        match(:note)
       end
 
-      #TODO fix motif matches. Variable_assignment
       rule :motif do
-        match( :notes ) { |notes| Motif.new(notes) }
+        match(:notes) 
       end
 
       rule :notes do
-        match( :note )
-        match( :notes, :note ) 
+        match( :notes, :note ) do |notes, note|
+          notes.add(note)
+          notes
+        end
+        match( :note, :note ) { |note1, note2| Motif.new(note1, note2) }
       end
 
       rule :note do 
@@ -63,17 +60,18 @@ class Rules
         match( :length, :tone, :octave ) do
           |length, tone, octave| Note.new( length, tone, octave ) 
         end
+        match( :silence )
       end
 
       rule :silence do
         match( :length, /[z]/ ) { |length,_| Silence.new( length ) }
-        match( /z/ ) {|_| Silence.new(1) }
+        match( /[z]/ ) { Silence.new(4) }
       end
 
       rule :length do
         match( Integer ) { |i| i } 
       end
-           
+
       rule :octave do 
         match( /[+][0-9]/ ) { |i| i.to_i }
         match( /[-][0-9]/ ) { |i| i.to_i }
@@ -125,7 +123,6 @@ class Rules
   def run_code(code)
     @rule_parser.logger.level = Logger::WARN
     puts "#{ @rule_parser.parse code }"
-  end
 
   def log(state = true)
     if state
@@ -133,5 +130,6 @@ class Rules
     else
       @rule_parser.logger.level = Logger::WARN
     end
+  end
   end
 end

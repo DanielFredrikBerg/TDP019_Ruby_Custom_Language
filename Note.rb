@@ -55,6 +55,50 @@ class Note
     t2h[tone]    
   end
 
+  def octave(halfstep = @halfstep)
+    #Returns which octave a tone(halfstep) is in
+    halfstep / 12
+  end
+
+  def tone(halfstep = @halfstep)
+    #returns the name of a tone(halfstep)
+    @scale[halfstep % 12]
+  end
+  
+  def octave_to_halfstep(octave)
+    #returns the "halfstep"-value of c in a given octave
+    12 * octave
+  end
+  
+  def tone_to_halfstep(tone)
+    #given a tone expressed in symbols, will return a halfstep-value for that tone in the middle octave
+    t2h = {
+      'cb'=>-1,
+      'c'=>0,
+      'c#'=>1,
+      'db'=>1,
+      'd'=>2,
+      'd#'=>3,
+      'eb'=>3,
+      'e'=>4,
+      'e#'=>5,
+      'fb'=>4,
+      'f'=>5,
+      'f#'=>6,
+      'gb'=>6,
+      'g'=>7,
+      'g#'=>8,
+      'ab'=>8,
+      'a'=>9,
+      'a#'=>10,
+      'bb'=>10,
+      'b'=>11,
+      'b#'=>12
+    }
+
+    t2h[tone]    
+  end
+
   def semitone_to_halfstep(semitone='')
     # #=>+1, b=> -1. 
     case semitone
@@ -88,6 +132,7 @@ class Note
   end
   
 end
+
 
 # note = Note.new(2,'b#',-1)
 # note2 = Note.new(1,'b', 0)

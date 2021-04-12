@@ -2,9 +2,7 @@ require 'test/unit'
 require 'stringio'
 require './rules'
 
-class TestNote < Test::Unit::TestCase
-
-  
+class TestNote < Test::Unit::TestCase  
 
  ######################################
  #  TESTING THE WRITE FUNCTION.

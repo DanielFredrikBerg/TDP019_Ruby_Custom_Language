@@ -1,3 +1,4 @@
+
 class VariableList
 
   def initialize
@@ -21,3 +22,4 @@ class VariableNode
   end
   
 end
+
