@@ -2,6 +2,8 @@
 require './rdparse'
 require './Classes'
 
+@@variables = {}
+
 class Rules
   attr_accessor :file
 
@@ -33,15 +35,25 @@ class Rules
       #   match( :note )
       # end
 
-      start :function do
-        match( "write", :motif ) { |_,m| m.write }
-        match( "write", :note ) { |_,n| n.write }
+      start :functions do
+        #match( "write", :motif ) { |_,m| m.write }
+        #match( "write", :note ) { |_,n| n.write }
+        match( :motif_block ) { @@variables.each {|m| m[1].write}}
+      
         # match( "write", :silence ) { |_,n| n.write }        
         #match( :motif )
         # match( :silence )
         # match( :note )
       end
-
+      
+      rule :motif_block do
+        match('motifs', '{', :variable_assignment, '}')
+      end
+      
+      rule :variable_assignment do
+        match(:variable_assignment, :variable_assignment)
+        match(/\w+/, '=', :motif) {|name, _, motif| @@variables[name] = motif}
+      end
       #TODO fix motif matches. Variable_assignment
       rule :motif do
         match(:notes) #{ |notes| Motif.new(notes) }
