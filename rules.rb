@@ -35,11 +35,11 @@ class Rules
       end
       
       rule :motif_block do
-        match('motifs', '{', :variable_assignment, '}')
+        match('motifs', '{', :motif_variable_assignment, '}')
       end
       
-      rule :variable_assignment do
-        match(:variable_assignment, :variable_assignment) #TODO: Find sexier way to do this
+      rule :motif_variable_assignment do
+        match(:motif_variable_assignment, :motif_variable_assignment) #TODO: Find sexier way to do this
         match(/\w+/, '=', :motif) {|name, _, motif| @@vars[name] = motif}
       end
       #TODO fix motif matches. Variable_assignment
