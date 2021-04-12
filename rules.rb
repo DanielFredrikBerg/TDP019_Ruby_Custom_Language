@@ -7,46 +7,44 @@ require './Motif'
 class Rules
   attr_accessor :file
 
+
   def initialize
+    
     @rule_parser = Parser.new("rules") do
-      
+      @@vars = Hash.new
       ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
-      token(/[a-g][#|b]?/) {|m| m.to_s }
-      token( /[a-zA-Z]+/ ) { |m| m.to_s }
+      token(/[a-g][#|b]?/) { |m| m.to_s }
+      token( /^[a-zA-Z]+/ ) { |m| m.to_s }
       token(/./) { |m| m.to_s }
       
       
       # Parsern ansvarar för att skapa objekten => AST
 
-      
-      # start :song do 
-      #   match( "write", :note ) { |_,n| n.write }
-      # end
-      
-      # rule :allocation do
-      #   match( String, '=', 
-      # end
-      
-      # rule :scale do
-      #   match( : )
-      #   match( :note )
-      # end
-
       start :function do
-        match( "write", :motif ) { |_,m| m.write }
-        match( "write", :note ) { |_,n| n.write }
-        # match( "write", :silence ) { |_,n| n.write }        
-        #match( :motif )
-        # match( :silence )
-        # match( :note )
+        match( "write", :type ) { |_,m| m.write }
+        match( "show", :variable ) { |_,var| var.write }
+        match( :variable_assignment ) 
+      end
+      
+      rule :variable do
+        match( /^[a-zA-Z]+/ ) { |var| @@vars[ var ] }
       end
 
-      #TODO fix motif matches. Variable_assignment
+      rule :variable_assignment do
+        match(/[A-Z]+/, '=', :type ) { |name,_,object| @@vars[ name ] = object }
+      end
+
+      rule :type do
+        match(:segment)
+        match(:motif)
+        match(:note)
+      end
+
       rule :motif do
-        match(:notes) #{ |notes| Motif.new(notes) }
+        match(:notes) 
       end
 
       rule :notes do
