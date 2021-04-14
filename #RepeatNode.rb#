@@ -1,0 +1,13 @@
+require './Classes.rb'
+
+
+class RepeatNode
+  
+  def initialize(integer)
+    @int = integer
+  end
+
+  
+
+
+end

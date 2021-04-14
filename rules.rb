@@ -9,9 +9,9 @@ class Rules
 
 
   def initialize
-    
+    @@vars = Hash.new
     @rule_parser = Parser.new("rules") do
-      @@vars = Hash.new
+
       ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
       token(/[+|-]\d/) {|m| m.to_s }
@@ -23,18 +23,32 @@ class Rules
       
       # Parsern ansvarar för att skapa objekten => AST
 
-      start :function do
+      start :program do
+        #match( "|song|", :statements, "|end song" )
+        match( :statements )
+      end
+
+      start :statements do
         match( "write", :type ) { |_,m| m.write }
-        match( "show", :variable ) { |_,var| var.write }
+        match( :repetition )
+
+        match( :variable ) { |var| var.write }
         match( :variable_assignment ) 
       end
       
-      rule :variable do
-        match( /^[a-zA-Z]+/ ) { |var| @@vars[ var ] }
+      rule :repetition do
+        match( "repeat", :integer, "{", :statements, "}" ) do |_,int,_,statements,_|
+          RepeatNode.new(int, statements) 
+        end
+
       end
 
       rule :variable_assignment do
         match(/[A-Z]+/, '=', :type ) { |name,_,object| @@vars[ name ] = object }
+      end
+
+      rule :variable do
+        match( /[A-Z]+/ ) { |var| @@vars[ var ] }
       end
 
       rule :type do
