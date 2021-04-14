@@ -1,33 +1,40 @@
-# coding: iso-8859-1
+# coding: utf-8
 require './rdparse'
 require './Classes'
 
-@@variables = {}
+
 
 class Rules
   attr_accessor :file
 
 
   def initialize
+
+    @@vars = Hash.new
     
     @rule_parser = Parser.new("rules") do
-      @@vars = Hash.new
-      ## Tokens utg�r Lexern
+
+      ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) { |m| m.to_s }
       token( /^[a-zA-Z]+/ ) { |m| m.to_s }
       token(/./) { |m| m.to_s }
+
+
+#hade du något smidigt sätt att stänga av debugutskriften btw...
+# ?
+# Enhacker — Today at 5:01 PM
+# 
+# Ändra DEBUG till WARN
       
-      
-      # Parsern ansvarar f�r att skapa objekten => AST
+      # Parsern ansvarar för att skapa objekten => AST
 
       start :functions do
         #match( "write", :motif ) { |_,m| m.write }
         #match( "write", :note ) { |_,n| n.write }
-        match( :motif_block ) { @@vars.each {|m| m[1].write}}
-      
+        match( :motif_block ) { @@vars['A'].write }      
         # match( "write", :silence ) { |_,n| n.write }        
         #match( :motif )
         # match( :silence )
@@ -95,7 +102,7 @@ class Rules
   
   def interactive_mode
     print "[i-mode] "
-    @rule_parser.logger.level = Logger::DEBUG
+    @rule_parser.logger.level = Logger::WARN #DEBUG
     str = gets
     if done(str) then
       puts "Bye."
@@ -119,7 +126,7 @@ class Rules
 
   def compile_and_run(file)
     run = File.read(file)
-    @rule_parser.logger.level = Logger::DEBUG
+    @rule_parser.logger.level = Logger::WARN #DEBUG
     puts "#{ @rule_parser.parse run } "
   end
 
@@ -129,10 +136,12 @@ class Rules
 
   def log(state = true)
     if state
-      @rule_parser.logger.level = Logger::DEBUG
+      @rule_parser.logger.level = Logger::WARN #DEBUG
     else
       @rule_parser.logger.level = Logger::WARN
     end
   end
+ 
   end
+  
 end

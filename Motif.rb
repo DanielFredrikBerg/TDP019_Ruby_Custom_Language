@@ -1,4 +1,4 @@
-require './Note.rb'
+
 require './Silence.rb'
 
 class Motif
@@ -6,7 +6,6 @@ class Motif
   def initialize(*args)
     @notes = []
     if args
-      puts "****THESE ARE ARGS: #{args}****"
       args.each {|note| @notes << note }
     end
   end
@@ -22,9 +21,7 @@ class Motif
   end
   
   def write
-    puts "notes in motif: "
     @notes.each { |note| note.write }
-    puts "\n"
   end
 
 end

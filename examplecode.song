@@ -1,6 +1,3 @@
 motifs{
-A = a b c
-B = c d e
-C = b f c+1
+A = a b
 }
-
