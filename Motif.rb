@@ -1,7 +1,9 @@
-require './Note.rb'
+
 require './Silence.rb'
 
 class Motif
+
+  attr_accessor :notes
 
   def initialize(*args)
     @notes = []
@@ -21,9 +23,9 @@ class Motif
   end
   
   def write
-    puts "notes in motif: "
-    @notes.each { |note| note.write }
-    puts "\n"
+    @notes.each do |note|
+      note.write
+    end; nil #This line supresses the each-method from returning 'self', causing it to be written in the terminal. 
   end
 
 end

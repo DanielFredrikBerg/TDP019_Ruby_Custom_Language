@@ -1,47 +1,55 @@
-# coding: iso-8859-1
+# coding: utf-8
 require './rdparse'
-require './Note'
-require './Silence'
-require './Motif'
+require './Classes'
+
+
 
 class Rules
   attr_accessor :file
 
 
   def initialize
+
+    @@vars = Hash.new
     
     @rule_parser = Parser.new("rules") do
-      @@vars = Hash.new
-      ## Tokens utg�r Lexern
+
+      ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) { |m| m.to_s }
       token( /^[a-zA-Z]+/ ) { |m| m.to_s }
       token(/./) { |m| m.to_s }
-      
-      
-      # Parsern ansvarar f�r att skapa objekten => AST
 
-      start :function do
-        match( "write", :type ) { |_,m| m.write }
-        match( "show", :variable ) { |_,var| var.write }
-        match( :variable_assignment ) 
+
+#hade du något smidigt sätt att stänga av debugutskriften btw...
+# ?
+# Enhacker — Today at 5:01 PM
+# 
+# Ändra DEBUG till WARN
+      
+      # Parsern ansvarar för att skapa objekten => AST
+
+      start :functions do
+        #match( "write", :motif ) { |_,m| m.write }
+        #match( "write", :note ) { |_,n| n.write }
+        match( :motif_block ) { @@vars['A'].write }      
+        # match( "write", :silence ) { |_,n| n.write }        
+        #match( :motif )
+        # match( :silence )
+        # match( :note )
       end
       
-      rule :variable do
-        match( /^[a-zA-Z]+/ ) { |var| @@vars[ var ] }
+      rule :motif_block do
+        match('motifs', '{', :motif_variable_assignment, '}')
       end
-
-      rule :variable_assignment do
-        match(/[A-Z]+/, '=', :type ) { |name,_,object| @@vars[ name ] = object }
+      
+      rule :motif_variable_assignment do
+        match(:motif_variable_assignment, :motif_variable_assignment) #TODO: Find sexier way to do this
+        match(/\w+/, '=', :motif) {|name, _, motif| @@vars[name] = motif}
       end
-
-      rule :type do
-        match(:segment)
-        match(:motif)
-        match(:note)
-      end
+      #TODO fix motif matches. Variable_assignment
 
       rule :motif do
         match(:notes) 
@@ -55,11 +63,13 @@ class Rules
         match( :note, :note ) { |note1, note2| Motif.new(note1, note2) }
       end
 
-      rule :note do 
-        match( :tone ) { |tone| Note.new( 4, tone, 0 ) }
+      rule :note do
         match( :length, :tone, :octave ) do
           |length, tone, octave| Note.new( length, tone, octave ) 
         end
+        match( :length, :tone) {|length, tone| Note.new(length, tone, 0)}
+        match( :tone, :octave) {|tone, octave| Note.new(4, tone, octave)}
+        match( :tone ) { |tone| Note.new( 4, tone, 0 ) }
         match( :silence )
       end
 
@@ -92,7 +102,7 @@ class Rules
   
   def interactive_mode
     print "[i-mode] "
-    @rule_parser.logger.level = Logger::DEBUG
+    @rule_parser.logger.level = Logger::WARN #DEBUG
     str = gets
     if done(str) then
       puts "Bye."
@@ -116,7 +126,7 @@ class Rules
 
   def compile_and_run(file)
     run = File.read(file)
-    @rule_parser.logger.level = Logger::DEBUG
+    @rule_parser.logger.level = Logger::WARN #DEBUG
     puts "#{ @rule_parser.parse run } "
   end
 
@@ -126,10 +136,12 @@ class Rules
 
   def log(state = true)
     if state
-      @rule_parser.logger.level = Logger::DEBUG
+      @rule_parser.logger.level = Logger::WARN #DEBUG
     else
       @rule_parser.logger.level = Logger::WARN
     end
   end
+ 
   end
+  
 end
