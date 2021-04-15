@@ -31,14 +31,23 @@ class Rules
       
       # Parsern ansvarar för att skapa objekten => AST
 
-      start :functions do
-        #match( "write", :motif ) { |_,m| m.write }
-        #match( "write", :note ) { |_,n| n.write }
-        match( :motif_block ) { @@vars['A'].write }      
-        # match( "write", :silence ) { |_,n| n.write }        
-        #match( :motif )
-        # match( :silence )
-        # match( :note )
+      start :song do
+        match(:motif_block, :segment_block) do
+          @@vars.each do |key, value|
+            print "#{key} => "
+            value.write
+            puts ""
+          end; nil
+        end
+      end
+
+      rule :segment_block do
+        match('segments', '{', :segment_variable_assignment, '}')
+      end
+
+      rule :segment_variable_assignment do
+        match(:segment_variable_assignment, :segment_variable_assignment)
+        match(/\w+/, '=', /\w+/) {|name, _, motif| @@vars[name] = @@vars[motif]}
       end
       
       rule :motif_block do

@@ -1,3 +1,8 @@
 motifs{
 A = a b
+B = c d 2a+3
+}
+segments{
+VERSE = A
+Chorus = B
 }
