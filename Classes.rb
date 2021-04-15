@@ -1,4 +1,7 @@
-require './Note.rb'
-require './Silence.rb'
-require './Motif.rb'
-require './Segment.rb'
+require './Note'
+require './Motif'
+require './rdparse'
+require './Segment'
+require './Silence'
+require './Structure'
+

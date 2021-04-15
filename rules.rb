@@ -1,5 +1,4 @@
 # coding: utf-8
-require './rdparse'
 require './Classes'
 
 
@@ -97,7 +96,7 @@ class Rules
       rule :length do
         match( Integer ) { |i| i } 
       end
-     
+
       rule :octave do 
         match( /[+][0-9]/ ) { |i| i.to_i }
         match( /[-][0-9]/ ) { |i| i.to_i }
