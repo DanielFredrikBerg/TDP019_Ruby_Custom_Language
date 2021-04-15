@@ -1,5 +1,5 @@
 motifs{
-A = a b
+A = a b b# d e z
 B = c d 2a+3
 }
 segments{

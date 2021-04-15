@@ -51,9 +51,6 @@ class Rules
         match(:var, '=', :var) {|name, _, motif| @@vars[name] = Segment.new(@@vars[motif])}
       end
       
-      rule :var do
-        match(/\w+/)
-      end
       
       rule :motif_block do
         match('motifs', '{', :motif_variable_assignment, '}')
@@ -61,9 +58,13 @@ class Rules
       
       rule :motif_variable_assignment do
         match(:motif_variable_assignment, :motif_variable_assignment) #TODO: Find sexier way to do this
-        match(/\w+/, '=', :motif) {|name, _, motif| @@vars[name] = motif}
+        match(:var, '=', :motif) {|name, _, motif| @@vars[name] = motif}
       end
       #TODO fix motif matches. Variable_assignment
+
+      rule :var do
+        match(/\w+/)
+      end
 
       rule :motif do
         match(:notes) 
