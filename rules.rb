@@ -1,5 +1,4 @@
 # coding: utf-8
-require './rdparse'
 require './Classes'
 
 
