@@ -1,9 +1,17 @@
-motifs{
+motifs
+{
 A = a b c
 B = c d f
 }
-segments{
+
+segments
+{
 VERSE = A
 Chorus = B, B
 BRIDGE = A, B
+}
+
+structure
+{
+VERSE
 }

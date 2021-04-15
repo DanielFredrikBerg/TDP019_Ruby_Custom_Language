@@ -31,16 +31,20 @@ class Rules
       # Parsern ansvarar för att skapa objekten => AST
 
       start :song do
-        match(:motif_block, :segment_block) do
-          @@vars.each do |key, value|
-            print "#{key} => "
-            value.write
-            print "class: #{value.class}"
-            puts ""
-          end; nil
+        match(:motif_block, :segment_block, :structure_block) do #for som reason, removing this empty block will case the parser to spit out the word motifs
+          # @@vars.each do |key, value|
+          #   print "#{key} => "
+          #   value.write
+          #   print "class: #{value.class}"
+          #   puts ""
+          #end; nil
         end
       end
 
+      rule :structure_block do
+        match('structure', '{', :var, '}') {|_,_,segment,_| @@vars[segment].write}
+      end
+      
       rule :segment_block do
         match('segments', '{', :segment_variable_assignment, '}')
       end
@@ -61,9 +65,9 @@ class Rules
         match(:var, '=', :motif) {|name, _, motif| @@vars[name] = motif}
       end
       #TODO fix motif matches. Variable_assignment
-
+      
       rule :var do
-        match(/\w+/)
+        match(/\w+/) 
       end
 
       rule :motif do
