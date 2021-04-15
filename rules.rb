@@ -36,6 +36,7 @@ class Rules
           @@vars.each do |key, value|
             print "#{key} => "
             value.write
+            print "class: #{value.class}"
             puts ""
           end; nil
         end
@@ -47,7 +48,11 @@ class Rules
 
       rule :segment_variable_assignment do
         match(:segment_variable_assignment, :segment_variable_assignment)
-        match(/\w+/, '=', /\w+/) {|name, _, motif| @@vars[name] = @@vars[motif]}
+        match(:var, '=', :var) {|name, _, motif| @@vars[name] = Segment.new(@@vars[motif])}
+      end
+      
+      rule :var do
+        match(/\w+/)
       end
       
       rule :motif_block do
