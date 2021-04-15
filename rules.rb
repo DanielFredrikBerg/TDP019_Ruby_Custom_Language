@@ -36,7 +36,7 @@ class Rules
           #   print "#{key} => "
           #   value.write
           #   print "class: #{value.class}"
-          #   puts ""
+          #   puts " 
           #end; nil
         end
       end
