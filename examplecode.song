@@ -1,9 +1,9 @@
 motifs{
-A = a b b# d e z
-B = c d 2a+3
+A = a b c
+B = c d f
 }
 segments{
 VERSE = A
-Chorus = B
-BRIDGE = A
+Chorus = B, B
+BRIDGE = A, B
 }

@@ -48,6 +48,7 @@ class Rules
 
       rule :segment_variable_assignment do
         match(:segment_variable_assignment, :segment_variable_assignment)
+        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| segment.add(@@vars[motif])}
         match(:var, '=', :var) {|name, _, motif| @@vars[name] = Segment.new(@@vars[motif])}
       end
       
