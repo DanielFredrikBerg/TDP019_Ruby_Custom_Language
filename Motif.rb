@@ -3,6 +3,8 @@ require './Silence.rb'
 
 class Motif
 
+  attr_accessor :notes
+
   def initialize(*args)
     @notes = []
     if args
@@ -21,7 +23,9 @@ class Motif
   end
   
   def write
-    @notes.each { |note| note.write }
+    @notes.each do |note|
+      note.write
+    end; nil #This line supresses the each-method from returning 'self', causing it to be written in the terminal. 
   end
 
 end
