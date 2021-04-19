@@ -38,20 +38,27 @@ class Rules
           #   puts " 
           #end; nil
         end
-############################################ NYTT SKIT - Variabelhantering
-      #   match( :statement )
-      # end
 
-      # match :statement do
-      #   match( :statement, :statement )
+############################################ NYTT SKIT - Variabelhantering
+        match( :operations )
+      end
+      
+      rule :operations do
+        
+        match( :operations, :operation )
+        match( :operation )
+      end
+
+      rule :operation do
         match( :repeat )
-        match( :variable_assignment ) 
         match( :variable_print )
         # TODO:
         # match( :if ) 
         # match( :while )
         # match( :for )
+        match( :variable_assignment ) 
       end
+    
 
       rule :variable_assignment do
         match( :var, '=', :type ) { |var,_,value| @@vars[ var ] = value }

@@ -5,4 +5,11 @@ class RepeatNode
     @statements = statements
   end
 
+  # TODO
+  def seval
+    @reps.each do 
+      
+    end
+  end
+  
 end
