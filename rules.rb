@@ -1,27 +1,26 @@
 # coding: iso-8859-1
-require './rdparse'
-require './Note'
-require './Silence'
-require './Motif'
+require './Classes'
+
+
 
 class Rules
   attr_accessor :file
 
 
   def initialize
+
+
     @@vars = Hash.new
+    
     @rule_parser = Parser.new("rules") do
 
-      ## Tokens utgör Lexern
+      ## Tokens utgÃ¶r Lexern
       token(/\s+/) #{|m| m.to_s }
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) { |m| m.to_s }
       token( /^[a-zA-Z]+/ ) { |m| m.to_s }
       token(/./) { |m| m.to_s }
-      
-      
-      # Parsern ansvarar för att skapa objekten => AST
 
       start :program do
         #match( "|song|", :statements, "|end song" )
@@ -31,7 +30,7 @@ class Rules
       start :statements do
         match( "write", :type ) { |_,m| m.write }
         match( :repetition )
-
+        match( :motif_block ) { @@vars['A'].write }      
         match( :variable ) { |var| var.write }
         match( :variable_assignment ) 
       end
@@ -42,9 +41,9 @@ class Rules
         end
 
       end
-
-      rule :variable_assignment do
-        match(/[A-Z]+/, '=', :type ) { |name,_,object| @@vars[ name ] = object }
+      
+      rule :motif_block do
+        match('motifs', '{', :motif_variable_assignment, '}')
       end
 
       rule :variable do
@@ -55,6 +54,15 @@ class Rules
         match(:segment)
         match(:motif)
         match(:note)
+      end 
+      
+      rule :motif_variable_assignment do
+        match(:motif_variable_assignment, :motif_variable_assignment) #TODO: Find sexier way to do this
+        match(/\w+/, '=', :motif) {|name, _, motif| @@vars[name] = motif}
+      end
+     
+      rule :variable_assignment do
+        match( /\w+/, '=', :note) {|name,_,note| @@vars[name] = note}
       end
 
       rule :motif do
@@ -69,11 +77,13 @@ class Rules
         match( :note, :note ) { |note1, note2| Motif.new(note1, note2) }
       end
 
-      rule :note do 
-        match( :tone ) { |tone| Note.new( 4, tone, 0 ) }
+      rule :note do
         match( :length, :tone, :octave ) do
           |length, tone, octave| Note.new( length, tone, octave ) 
         end
+        match( :length, :tone) {|length, tone| Note.new(length, tone, 0)}
+        match( :tone, :octave) {|tone, octave| Note.new(4, tone, octave)}
+        match( :tone ) { |tone| Note.new( 4, tone, 0 ) }
         match( :silence )
       end
 
@@ -106,7 +116,7 @@ class Rules
   
   def interactive_mode
     print "[i-mode] "
-    @rule_parser.logger.level = Logger::DEBUG
+    @rule_parser.logger.level = Logger::WARN #DEBUG
     str = gets
     if done(str) then
       puts "Bye."
@@ -130,7 +140,7 @@ class Rules
 
   def compile_and_run(file)
     run = File.read(file)
-    @rule_parser.logger.level = Logger::DEBUG
+    @rule_parser.logger.level = Logger::WARN #DEBUG
     puts "#{ @rule_parser.parse run } "
   end
 
@@ -140,10 +150,12 @@ class Rules
 
   def log(state = true)
     if state
-      @rule_parser.logger.level = Logger::DEBUG
+      @rule_parser.logger.level = Logger::WARN #DEBUG
     else
       @rule_parser.logger.level = Logger::WARN
     end
   end
+ 
   end
+  
 end
