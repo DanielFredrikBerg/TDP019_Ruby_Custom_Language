@@ -7,11 +7,11 @@ B = c d f g#
 segments
 {
 VERSE = A
-Chorus = B, B
+CHORUS = B, B
 BRIDGE = A, B
 }
 
 structure
 {
-Chorus, VERSE, VERSE, Chorus
+CHORUS, VERSE, VERSE, CHORUS
 }

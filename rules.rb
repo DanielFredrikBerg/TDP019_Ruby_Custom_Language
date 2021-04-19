@@ -6,7 +6,6 @@ require './Classes'
 class Rules
   attr_accessor :file
 
-
   def initialize
 
     @@vars = Hash.new
@@ -18,7 +17,7 @@ class Rules
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) { |m| m.to_s }
-      token( /^[a-zA-Z]+/ ) { |m| m.to_s }
+      token( /^[a-zA-ZåäöÅÄÖ]+/ ) { |m| m.to_s }
       token(/./) { |m| m.to_s }
 
 
@@ -39,7 +38,41 @@ class Rules
           #   puts " 
           #end; nil
         end
+############################################ NYTT SKIT - Variabelhantering
+      #   match( :statement )
+      # end
+
+      # match :statement do
+      #   match( :statement, :statement )
+        match( :repeat )
+        match( :variable_assignment ) 
+        match( :variable_print )
+        # TODO:
+        # match( :if ) 
+        # match( :while )
+        # match( :for )
       end
+
+      rule :variable_assignment do
+        match( :var, '=', :type ) { |var,_,value| @@vars[ var ] = value }
+      end
+
+      rule :variable_print do
+        match( "p", /[A-ZÅÄÖ]/ ) { |_,name| @@vars[ name ].seval }
+      end
+
+      rule :type do
+        match( Integer ) { |i| IntegerNode.new(i) }
+        match( "'", String, "'" ) { |_,s,_| StringNode.new(s) }
+      end
+
+      rule :repeat do 
+        match( 'repeat', /\d+/, '{', :statements, '}' ) do |_,int,_,statements,_|
+          RepeatNode.new(int, statements)
+        end
+      end
+
+############################################ SLUT PÅ NYTT SKIT
 
       rule :structure_block do
         match('structure', '{', :segments, '}') #{|_,_,segment,_| @@vars[segment].write }
@@ -68,13 +101,10 @@ class Rules
       rule :motif_variable_assignment do
         match(:motif_variable_assignment, :motif_variable_assignment) 
         match(:var, '=', :motif) {|name, _, motif| @@vars[name] = motif}
-      end
-      #TODO fix motif matches. Variable_assignment
-
-      
+      end      
       
       rule :var do
-        match(/\w+/) 
+        match(/[\wåäöÅÄÖ]+/) 
       end
 
       rule :motif do
@@ -105,16 +135,16 @@ class Rules
       end
 
       rule :length do
-        match( Integer ) { |i| i } 
+        match( Integer ) { |i| IntegerNode.new(i) } 
       end
 
       rule :octave do 
-        match( /[+][0-9]/ ) { |i| i.to_i }
-        match( /[-][0-9]/ ) { |i| i.to_i }
+        match( /[+][0-9]/ ) { |i| IntegerNode.new(i.to_i) }
+        match( /[-][0-9]/ ) { |i| IntegerNode.new(i.to_i) }
       end
 
       rule :tone do
-        match( /[a-g][#|b]?/ ) { |t| t }
+        match( /[a-g][#|b]?/ ) { |t| StringNode.new(t) }
       end
 
     end

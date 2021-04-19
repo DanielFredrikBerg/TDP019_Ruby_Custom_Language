@@ -4,10 +4,10 @@ class Note
   def initialize(length, tone, octave)
 
     @scale = ['c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#', 'a', 'a#', 'b' ]
+
+    @length = Rational(1, length)
     
-    @length = Rational(1,length)
-    
-    @halfstep = octave_to_halfstep(octave) + tone_to_halfstep(tone)
+    @halfstep = octave_to_halfstep(octave) + tone_to_halfstep(tone.seval)
     
   end
 
