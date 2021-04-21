@@ -1,11 +1,10 @@
-# coding: iso-8859-1
+# coding: utf-8
 require './Classes'
 
 
 
 class Rules
   attr_accessor :file
-
 
   def initialize
 
@@ -19,7 +18,8 @@ class Rules
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) { |m| m.to_s }
-      token( /^[a-zA-Z]+/ ) { |m| m.to_s }
+      token( /[a-g][#|b]?[+|-]\d/ ) 
+      token( /^[a-zA-ZåäöÅÄÖ]+/ ) { |m| m.to_s }
       token(/./) { |m| m.to_s }
 
       start :program do
@@ -40,7 +40,77 @@ class Rules
           RepeatNode.new(int, statements) 
         end
 
+
+      start :song do
+        match(:motif_block, :segment_block, :structure_block) do #for som reason, removing this empty block will cause the parser to spit out the word motifs
+          # @@vars.each do |key, value|
+          #   print "#{key} => "
+          #   value.write
+          #   print "class: #{value.class}"
+          #   puts " 
+          #end; nil
+        end
+
+
+        match( :operations )
       end
+      
+      rule :operations do
+        
+        match( :operations, :operation )
+        match( :operation )
+      end
+
+      rule :operation do
+        match( :repeat )
+        match( :variable_print )
+        # TODO:
+        # match( :if ) 
+        # match( :while )
+        # match( :for )
+        match( :variable_assignment ) 
+      end
+    
+
+      rule :variable_assignment do
+        match( :var, '=', :type ) { |var,_,value| @@vars[ var ] = value }
+      end
+
+      rule :variable_print do
+        match( "p", /[A-ZÅÄÖ]/ ) { |_,name| @@vars[ name ].seval }
+      end
+
+      rule :type do
+        match( Integer ) { |i| IntegerNode.new(i) }
+        match( "'", String, "'" ) { |_,s,_| StringNode.new(s) }
+      end
+
+      rule :repeat do 
+        match( 'repeat', /\d+/, '{', :statements, '}' ) do |_,int,_,statements,_|
+          RepeatNode.new(int, statements)
+        end
+      end
+
+
+      rule :structure_block do
+        match('structure', '{', :segments, '}') #{|_,_,segment,_| @@vars[segment].write }
+      end
+
+      rule :segments do
+        match(:segments, ',', :var) {|segments, _, segment| @@vars[segment].write}
+        match(:var) {|segment| @@vars[segment].write}
+      end
+      
+      rule :segment_block do
+        match('segments', '{', :segment_variable_assignment, '}')
+      end
+
+      rule :segment_variable_assignment do
+        match(:segment_variable_assignment, :segment_variable_assignment)
+        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| segment.add(@@vars[motif])}
+        match(:var, '=', :var) {|name, _, motif| @@vars[name] = Segment.new(@@vars[motif])}
+      end
+      
       
       rule :motif_block do
         match('motifs', '{', :motif_variable_assignment, '}')
@@ -57,12 +127,12 @@ class Rules
       end 
       
       rule :motif_variable_assignment do
-        match(:motif_variable_assignment, :motif_variable_assignment) #TODO: Find sexier way to do this
-        match(/\w+/, '=', :motif) {|name, _, motif| @@vars[name] = motif}
-      end
-     
-      rule :variable_assignment do
-        match( /\w+/, '=', :note) {|name,_,note| @@vars[name] = note}
+        match(:motif_variable_assignment, :motif_variable_assignment) 
+        match(:var, '=', :motif) {|name, _, motif| @@vars[name] = motif}
+      end      
+      
+      rule :var do
+        match(/[\wåäöÅÄÖ]+/) 
       end
 
       rule :motif do
@@ -93,16 +163,16 @@ class Rules
       end
 
       rule :length do
-        match( Integer ) { |i| i } 
+        match( Integer ) { |i| IntegerNode.new(i) } 
       end
 
       rule :octave do 
-        match( /[+][0-9]/ ) { |i| i.to_i }
-        match( /[-][0-9]/ ) { |i| i.to_i }
+        match( /[+][0-9]/ ) { |i| IntegerNode.new(i.to_i) }
+        match( /[-][0-9]/ ) { |i| IntegerNode.new(i.to_i) }
       end
 
       rule :tone do
-        match( /[a-g][#|b]?/ ) { |t| t }
+        match( /[a-g][#|b]?/ ) { |t| StringNode.new(t) }
       end
 
     end

@@ -1,3 +1,18 @@
-motifs{
-A = a b
+motifs
+{
+A = a b c
+B = c d f g#
 }
+
+segments
+{
+VERSE = A
+CHORUS = B, B
+BRIDGE = A, B
+}
+
+structure
+{
+CHORUS, VERSE, VERSE, CHORUS
+}
+

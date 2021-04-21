@@ -4,11 +4,13 @@ class Note
   def initialize(length, tone, octave)
 
     @scale = ['c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#', 'a', 'a#', 'b' ]
+
+    @length = Rational(1, length)
     
-    @length = Rational(1,length)
+
+    @halfstep = octave_to_halfstep(octave) + tone_to_halfstep(tone.seval)
     
-    @halfstep = octave_to_halfstep(octave) + tone_to_halfstep(tone)
-    puts "This is ONE note"
+
   end
 
   def octave(halfstep = @halfstep)
@@ -128,7 +130,7 @@ class Note
  
   def transposed(halfsteps = 1)
     #Will return a note transposed the given number of halfsteps.
-      Note.new(@length.denominator, self.tone(@halfstep + halfsteps), self.octave(@halfstep + halfsteps) )
+      Note.new( @length.denominator, self.tone(@halfstep + halfsteps), self.octave(@halfstep + halfsteps) )
   end
   
 end
