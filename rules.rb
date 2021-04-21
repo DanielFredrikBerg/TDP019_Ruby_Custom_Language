@@ -1,8 +1,6 @@
 # coding: utf-8
 require './Classes'
 
-
-
 class Rules
   attr_accessor :file
 
@@ -32,12 +30,6 @@ class Rules
 
       start :song do
         match(:motif_block, :segment_block, :structure_block) do #for som reason, removing this empty block will cause the parser to spit out the word motifs
-          # @@vars.each do |key, value|
-          #   print "#{key} => "
-          #   value.write
-          #   print "class: #{value.class}"
-          #   puts " 
-          #end; nil
         end
       end
 
@@ -90,6 +82,7 @@ class Rules
       end
 
       rule :note do
+        match( :note, '.', :method, '(', :expression, ')' ) {|note, _, method, _, expression, _| note.transposed(expression) } #TODO: find a way to call any method
         match( :length, :tone, :octave ) do
           |length, tone, octave| Note.new( length, tone, octave ) 
         end
@@ -98,7 +91,15 @@ class Rules
         match( :tone ) { |tone| Note.new( 4, tone, 0 ) }
         match( :silence )
       end
+      
+      rule :method do
+        match('transposed') {|m| m}
+      end
 
+      rule :expression do
+        match(Integer) {|i| i}
+      end
+      
       rule :silence do
         match( :length, /[z]/ ) { |length,_| Silence.new( length ) }
         match( /[z]/ ) { Silence.new(4) }

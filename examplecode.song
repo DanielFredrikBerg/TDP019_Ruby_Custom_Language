@@ -1,7 +1,7 @@
 motifs
 {
-A = a b c
-B = c d f g#
+A = 2a.transposed(4) b c+1
+B = c d f 8g#-2
 }
 
 segments
@@ -13,5 +13,5 @@ BRIDGE = A, B
 
 structure
 {
-Chorus, VERSE, VERSE, Chorus
+VERSE, Chorus, VERSE, VERSE, Chorus
 }
