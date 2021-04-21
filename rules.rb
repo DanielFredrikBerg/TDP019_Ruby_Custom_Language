@@ -17,6 +17,7 @@ class Rules
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) { |m| m.to_s }
+      token( /[a-g][#|b]?[+|-]\d/ ) 
       token( /^[a-zA-ZåäöÅÄÖ]+/ ) { |m| m.to_s }
       token(/./) { |m| m.to_s }
 
@@ -39,7 +40,7 @@ class Rules
           #end; nil
         end
 
-############################################ NYTT SKIT - Variabelhantering
+
         match( :operations )
       end
       
@@ -79,7 +80,6 @@ class Rules
         end
       end
 
-############################################ SLUT PÅ NYTT SKIT
 
       rule :structure_block do
         match('structure', '{', :segments, '}') #{|_,_,segment,_| @@vars[segment].write }
