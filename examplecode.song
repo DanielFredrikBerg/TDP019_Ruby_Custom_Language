@@ -1,6 +1,6 @@
 motifs
 {
-A = 2a.transposed(4) b c+1
+A = 2a.transposed(5 times 3) b c+1
 B = c d f 8g#-2
 }
 
