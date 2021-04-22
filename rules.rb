@@ -13,9 +13,9 @@ class Rules
       
       ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
-      #token(/[+|-]\d/) {|m| m.to_s }
+      token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
-      token(/[a-g][#|b]?[+|-]?\d?/) { |m| m.to_s }
+      token(/[a-g][#|b]?/) { |m| m.to_s }
       token( /[a-zA-ZåäöÅÄÖ]+/ ) { |m| m.to_s }
       token(/./) { |m| m.to_s }
       
@@ -149,13 +149,12 @@ class Rules
       end
 
      
-
       rule :note do
         match( :length, :tone, :octave ) do
-          |length, tone, octave| Note.new( length, tone, octave ) 
+          |length, tone, octave| Note.new( length.seval, tone, octave.seval ) 
         end
-        match( :length, :tone) {|length, tone| Note.new(length, tone, 0)}
-        match( :tone, :octave) {|tone, octave| Note.new(4, tone, octave)}
+        match( :length, :tone) {|length, tone| Note.new(length.seval, tone, 0)}
+        match( :tone, :octave) {|tone, octave| Note.new(4, tone, octave.seval)}
         match( :tone ) { |tone| Note.new( 4, tone, 0 ) }
         match( :silence )
       end
