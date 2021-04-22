@@ -7,26 +7,23 @@ class Rules
   attr_accessor :file
 
   def initialize
-
-
     @@vars = Hash.new
     
     @rule_parser = Parser.new("rules") do
-
+      
       ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
-      token(/[+|-]\d/) {|m| m.to_s }
+      #token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
-      token(/[a-g][#|b]?/) { |m| m.to_s }
-      token( /[a-g][#|b]?[+|-]\d/ ) 
-      token( /^[a-zA-ZåäöÅÄÖ]+/ ) { |m| m.to_s }
+      token(/[a-g][#|b]?[+|-]?\d?/) { |m| m.to_s }
+      token( /[a-zA-ZåäöÅÄÖ]+/ ) { |m| m.to_s }
       token(/./) { |m| m.to_s }
-
+      
       start :program do
         #match( "|song|", :statements, "|end song" )
         match( :statements )
       end
-
+      
       start :statements do
         match( "write", :type ) { |_,m| m.write }
         match( :repetition )
@@ -39,7 +36,7 @@ class Rules
         match( "repeat", :integer, "{", :statements, "}" ) do |_,int,_,statements,_|
           RepeatNode.new(int, statements) 
         end
-
+      end
 
       start :song do
         match(:motif_block, :segment_block, :structure_block) do #for som reason, removing this empty block will cause the parser to spit out the word motifs
@@ -56,7 +53,6 @@ class Rules
       end
       
       rule :operations do
-        
         match( :operations, :operation )
         match( :operation )
       end
@@ -70,10 +66,11 @@ class Rules
         # match( :for )
         match( :variable_assignment ) 
       end
-    
+      
 
       rule :variable_assignment do
         match( :var, '=', :type ) { |var,_,value| @@vars[ var ] = value }
+        match( :var, '=', :arithmetic_expr ) { |name, _, math| @@vars[name] = math }
       end
 
       rule :variable_print do
@@ -131,6 +128,10 @@ class Rules
         match(:var, '=', :motif) {|name, _, motif| @@vars[name] = motif}
       end      
       
+      rule :arithmetic_expr do
+        match( Integer, '+', Integer ) {|int1,_,int2| int1 + int2 }
+      end
+
       rule :var do
         match(/[\wåäöÅÄÖ]+/) 
       end
@@ -146,6 +147,8 @@ class Rules
         end
         match( :note, :note ) { |note1, note2| Motif.new(note1, note2) }
       end
+
+     
 
       rule :note do
         match( :length, :tone, :octave ) do
@@ -217,6 +220,7 @@ class Rules
   def run_code(code)
     @rule_parser.logger.level = Logger::WARN
     puts "#{ @rule_parser.parse code }"
+  end
 
   def log(state = true)
     if state
@@ -224,8 +228,6 @@ class Rules
     else
       @rule_parser.logger.level = Logger::WARN
     end
-  end
- 
   end
   
 end

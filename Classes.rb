@@ -1,5 +1,6 @@
 require './IntegerNode'
 require './Note'
+require './NoteIdToken'
 require './Motif'
 require './rdparse'
 require './RepeatNode' #TODO
