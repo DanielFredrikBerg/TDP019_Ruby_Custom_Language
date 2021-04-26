@@ -8,6 +8,7 @@ require './rdparse'
 require './RootNode'
 require './Segment'
 require './Silence'
+require './StringNode'
 require './Structure'
 require './Subtraction.rb'
 
