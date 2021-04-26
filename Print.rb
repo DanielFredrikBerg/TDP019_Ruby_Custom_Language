@@ -4,6 +4,6 @@ class Print
   end
 
   def p
-    @obj.seval
+    @obj
   end
 end

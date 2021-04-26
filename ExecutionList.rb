@@ -7,7 +7,7 @@ class ExecutionList < Array
   def seval
     self.each do |execution|
       execution.seval
-    end
+    end; nil
   end
 
 end

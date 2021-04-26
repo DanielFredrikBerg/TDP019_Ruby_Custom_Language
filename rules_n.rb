@@ -7,7 +7,7 @@ class Rules
   def initialize
     @@objcs = VariableList.new
 
-    @@executions = Array.new
+    @@executions = ExecutionList.new
 
     @rule_parser = Parser.new("rules") do
       
@@ -25,14 +25,16 @@ class Rules
         # match(:motif_block, :segment_block, :structure_block) do 
         # for som reason, removing this empty block will cause the parser to spit out the word motifs
         # end
-        match(:execution) { |e| @@executions.seval }
-      end
-
-      rule :execution do
-        match( :execution, :executions ) { |_,es| @@execution << es }
+         # { |e| @@executions.seval }
+        match(:executions) { |e| @@executions }
       end
 
       rule :executions do
+        match( :executions, :execution ) { |_,es| @@executions << es }
+        match( :execution, :execution )
+      end
+
+      rule :execution do
       # match( :repeat )
         match( :print )
         # TODO:
@@ -44,16 +46,16 @@ class Rules
       end
 
       rule :print do
-        match( 'p', :var ) { |_, name| Print.new( @@objcs.find(name) ).p }
         match( 'p', :expression ) { |_, object| Print.new(object).p }
         match( 'p', :type ) { |_, object| Print.new(object).p }
+        match( 'p', :var ) { |_, name| Print.new( @@objcs.find(name) ).p }
       end
 
       rule :variable_assignment do
         match( :variable_assignment, :variable_assignment )
-        match( :var, '=', :var ) { |name, _, existing_var| @@objcs.mk_ref(name, existing_var) }
-        match( :var, '=', :expression ) { |name, _, math| @@objcs.add(name, math) }
-        match( :var, '=', :type ) { |name,_,value| @@objcs.add(name, value) }    
+        match( :var, '=', :var , ";") { |name, _, existing_var| @@objcs.mk_ref(name, existing_var) }
+        match( :var, '=', :expression, ";" ) { |name, _, math| @@objcs.add(name, math) }
+        match( :var, '=', :type, ";" ) { |name,_,value| @@objcs.add(name, value) }    
       end
       
       rule :var do
@@ -99,7 +101,8 @@ class Rules
       if done(str) then
         puts "Bye."
       else
-        puts "#{@rule_parser.parse str}"
+        root_node = @rule_parser.parse str
+        puts "#{root_node.seval} "
         interactive_mode
       end
     end
@@ -109,10 +112,11 @@ class Rules
       if done(str) then
         puts "Bye"
       else
+        puts str
         root_node = @rule_parser.parse str
-        puts root_node.class
+        puts root_node.seval 
         #puts "=> #{root_node.eval}"
-        root_node
+        
       end
     end
 
