@@ -63,10 +63,9 @@ class Rules
       rule :motif_variable_assignment do
         match(:motif_variable_assignment, :motif_variable_assignment) 
         match(:var, '=', :motif) {|name, _, motif| @@vars[name] = motif}
+        match(:var, '=', :loop) {|name, _, loop| @@vars[name] = loop}
       end
       #TODO fix motif matches. Variable_assignment
-
-      
       
       rule :var do
         match(/\w+/) 
@@ -99,6 +98,26 @@ class Rules
         match('transposed') {|m| m}
       end
 
+## TODO ######################################################################################## ALSO put it in :song somehow
+      rule :loop do
+        match('repeat', :expression, :block ) { |_, expr, block| Repeat.new(expr, block) }
+      end
+
+      rule :block do
+        match( '{', :statements, '}' )
+      end
+
+      rule :statements do
+        match( :statements, :statement ) {}
+        match( :statement )
+      end
+
+      rule :statement do
+        # TODO ALL POSSIBLE STATEMENTS
+      end
+
+## TODO ########################################################################################
+
       rule :expression do
         match(:expression, 'plus', :term) {|a,_,b| Addition.new(a,b) }
         match(:expression, 'minus', :term) {|a,_,b| Subtraction.new(a,b) }
@@ -116,6 +135,7 @@ class Rules
       rule :factor do
         match(Integer) { |i| IntegerNode.new(i) }
         match('(',:expression,')') {|_,expression,_| expression }
+        match( :var ) {|var| @@vars[ var ] } 
       end
       
       rule :silence do
