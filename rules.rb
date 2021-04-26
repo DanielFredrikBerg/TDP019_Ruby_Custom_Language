@@ -1,87 +1,75 @@
 # coding: utf-8
 require './Classes'
-require './Addition.rb'
-require './Subtraction.rb'
-require './Division.rb'
-require './Multiplication.rb'
 
 class Rules
   attr_accessor :file
 
   def initialize
     @@vars = Hash.new
-    
+    @@executions = Array.new
+
     @rule_parser = Parser.new("rules") do
       
       ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
-      #token(/[+|-]\d/) {|m| m.to_s }
+      token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
-      token(/[a-g][#|b]?[+|-]?\d?/) { |m| m.to_s }
+      token(/[a-g][#|b]?/) { |m| m.to_s }
       token( /[a-zA-ZåäöÅÄÖ]+/ ) { |m| m.to_s }
       token(/./) { |m| m.to_s }
-      
-      start :program do
-        #match( "|song|", :statements, "|end song" )
-        match( :statements )
-      end
-      
-      start :statements do
-        match( "write", :type ) { |_,m| m.write }
-        match( :repetition )
-        match( :motif_block ) { @@vars['A'].write }      
-        match( :variable ) { |var| var.write }
-        match( :variable_assignment ) 
-      end
-      
-      rule :repetition do
-        match( "repeat", :integer, "{", :statements, "}" ) do |_,int,_,statements,_|
-          RepeatNode.new(int, statements) 
-        end
-      end
 
       start :song do
         match(:motif_block, :segment_block, :structure_block) do #for som reason, removing this empty block will cause the parser to spit out the word motifs
         end
-
-
-        match( :operations )
+        match(:executions)
       end
       
-      rule :operations do
-        match( :operations, :operation )
-        match( :operation )
-      end
+      
 
-      rule :operation do
+      rule :executions do
+        match( :executions, :executions )
         match( :repeat )
-        match( :variable_print )
+        match( :print )
         # TODO:
         # match( :if ) 
         # match( :while )
         # match( :for )
-        match( :variable_assignment ) 
+        match( :variable_assignment )
+        match( :expression )
       end
-      
 
       rule :variable_assignment do
+        match( :variable_assignment, :variable_assignment )
         match( :var, '=', :type ) { |var,_,value| @@vars[ var ] = value }
-        match( :var, '=', :arithmetic_expr ) { |name, _, math| @@vars[name] = math }
+        match( :var, '=', :expression ) { |name, _, math| @@vars[name] = math }
       end
 
-      rule :variable_print do
-        match( "p", /[A-ZÅÄÖ]/ ) { |_,name| @@vars[ name ].seval }
+      rule :print do
+        match( "p", /[A-ZÅÄÖ]/ ) { |_,name| @@vars[ name ] }
       end
 
       rule :type do
         match( Integer ) { |i| IntegerNode.new(i) }
-        match( "'", String, "'" ) { |_,s,_| StringNode.new(s) }
+        match( "'", String, "'" ) { |_,s,_| StringNode.new(s) } 
       end
 
-      rule :repeat do 
-        match( 'repeat', /\d+/, '{', :statements, '}' ) do |_,int,_,statements,_|
-          RepeatNode.new(int, statements)
-        end
+      rule :expression do
+        match(:expression, 'plus', :term) {|a,_,b| Addition.new(a,b) }
+        match(:expression, 'minus', :term) {|a,_,b| Subtraction.new(a,b) }
+        match(:term, 'plus', :term) {|a,_,b| Addition.new(a,b) }
+        match(:term, 'minus', :term) {|a,_,b| Subtraction.new(a,b) }
+        match(:term)
+      end
+
+      rule :term do
+        match(:factor, 'times', :factor) {|a,_,b| Multiplication.new(a,b).seval }
+        match(:factor, 'divided by', :factor) {|a,_,b| Division.new(a,b) }
+        match(:factor)
+      end
+
+      rule :factor do
+        match(Integer) { |i| IntegerNode.new(i) } 
+        match('(',:expression,')') {|_,expression,_| expression }
       end
 
 
@@ -95,7 +83,13 @@ class Rules
       end
       
       rule :segment_block do
-        match('segments', '{', :segment_variable_assignment, '}')
+        match('segments', '{', :segment_execution, '}')
+      end
+
+      rule :segment_execution do
+        match( :segment_execution, :segment_execution )
+        match( :executions )
+        match( :segment_variable_assignment )
       end
 
       rule :segment_variable_assignment do
@@ -104,32 +98,24 @@ class Rules
         match(:var, '=', :var) {|name, _, motif| @@vars[name] = Segment.new(@@vars[motif])}
       end
       
-      
       rule :motif_block do
-        match('motifs', '{', :motif_variable_assignment, '}')
+        match('motifs', '{', :motif_execution, '}')
+        #match('motifs', '{', :motif_variable_assignment, '}')
       end
 
-      rule :variable do
-        match( /[A-Z]+/ ) { |var| @@vars[ var ] }
+      rule :motif_execution do
+        match( :motif_execution, :motif_execution )
+        match( :executions )
+        match( :motif_variable_assignment )
       end
 
-      rule :type do
-        match(:segment)
-        match(:motif)
-        match(:note)
-      end 
-      
       rule :motif_variable_assignment do
         match(:motif_variable_assignment, :motif_variable_assignment) 
         match(:var, '=', :motif) {|name, _, motif| @@vars[name] = motif}
-      end      
-      
-      rule :arithmetic_expr do
-        match( Integer, '+', Integer ) {|int1,_,int2| int1 + int2 }
-      end
+      end   
 
       rule :var do
-        match(/[\wåäöÅÄÖ]+/) 
+        match(/[\wåäöÅÄÖ]+/) { |name| name.to_s }
       end
 
       rule :motif do
@@ -144,16 +130,14 @@ class Rules
         match( :note, :note ) { |note1, note2| Motif.new(note1, note2) }
       end
 
-     
-
       rule :note do
-        match( :note, '.', :method, '(', :expression, ')' ) {|note, _, method, _, expression, _| note.transposed(expression) } #TODO: find a way to call any method
+        match( :note, '.', :method, '(', :expression, ')' ) {|note, _, method, _, expression, _| eval "note.#{method}(expression)" } 
         match( :length, :tone, :octave ) do
           |length, tone, octave| Note.new( length, tone, octave ) 
         end
-        match( :length, :tone) {|length, tone| Note.new(length, tone, 0)}
-        match( :tone, :octave) {|tone, octave| Note.new(4, tone, octave)}
-        match( :tone ) { |tone| Note.new( 4, tone, 0 ) }
+        match( :length, :tone) {|length, tone| Note.new(length, tone, IntegerNode.new(0))}
+        match( :tone, :octave) {|tone, octave| Note.new(IntegerNode.new(4), tone, octave)}
+        match( :tone ) { |tone| Note.new( IntegerNode.new(4), tone, IntegerNode.new(0) ) }
         match( :silence )
       end
       
@@ -161,32 +145,13 @@ class Rules
         match('transposed') {|m| m}
       end
 
-      rule :expression do
-        match(:expression, 'plus', :term) {|a,_,b| Addition.new(a,b).seval }
-        match(:expression, 'minus', :term) {|a,_,b| Subtraction.new(a,b).seval }
-        match(:term, 'plus', :term) {|a,_,b| Addition.new(a,b).seval }
-        match(:term, 'minus', :term) {|a,_,b| Subtraction.new(a,b).seval }
-        match(:term)
-      end
-
-      rule :term do
-        match(:factor, 'times', :factor) {|a,_,b| Multiplication.new(a,b).seval }
-        match(:factor, 'divided by', :factor) {|a,_,b| Division.new(a,b).seval }
-        match(:factor)
-      end
-
-      rule :factor do
-        match(Integer)
-        match('(',:expression,')') {|_,expression,_| expression }
-      end
-      
       rule :silence do
         match( :length, /[z]/ ) { |length,_| Silence.new( length ) }
         match( /[z]/ ) { Silence.new(4) }
       end
 
       rule :length do
-        match( Integer ) { |i| IntegerNode.new(i) } 
+        match( Integer ) { |i| IntegerNode.new(i); } 
       end
 
       rule :octave do 

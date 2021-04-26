@@ -1,25 +1,18 @@
-
-class VariableList
-
-  def initialize
-    @@variables = {}
-    @@functions = {}
-  end
-
-  # Helper function
-  def find(name, hash)
-    hash[var]
-  end
-
-end
-
+# VariableNode is a reference placeholder for all different objects.
+# When evaluated the object referenced is returned.
 
 class VariableNode
+  attr_accessor :name, :object
 
-  def initialize(variable_name, type)
-    @var_name = variable_name
-    @type = type
+  def initialize(name)
+    @name = name
+    @obj = nil
+  end
+
+  def seval
+    @obj
   end
   
+
 end
 

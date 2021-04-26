@@ -1,7 +1,7 @@
 class Addition
 
   def initialize(lhs, rhs)
-    @value = lhs + rhs
+    @value = lhs.seval + rhs.seval
   end
 
   def seval()

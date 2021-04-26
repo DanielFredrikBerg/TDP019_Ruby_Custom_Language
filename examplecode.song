@@ -1,7 +1,9 @@
 motifs
 {
-A = 2a.transposed(5 times 3) b c+1
-B = c d f 8g#-2
+D = 3
+p(D)
+B = d f 8g#-2
+A = 3a.transposed(5 times 3) b
 }
 
 segments

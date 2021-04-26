@@ -1,13 +1,14 @@
+require './IntegerNode'
 class Note
   #TODO: map semitones for different scales somehow.
   
   def initialize(length, tone, octave)
-
+    
     @scale = ['c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#', 'a', 'a#', 'b' ]
 
-    @length = Rational(1, length)
+    @length = Rational(1, length.seval)
     
-
+    
     @halfstep = octave_to_halfstep(octave) + tone_to_halfstep(tone.seval)
     
 
@@ -69,7 +70,7 @@ class Note
   
   def octave_to_halfstep(octave)
     #returns the "halfstep"-value of c in a given octave
-    12 * octave
+    12 * octave.seval
   end
   
   def tone_to_halfstep(tone)
@@ -130,7 +131,7 @@ class Note
  
   def transposed(halfsteps = 1)
     #Will return a note transposed the given number of halfsteps.
-      Note.new( @length.denominator, self.tone(@halfstep + halfsteps), self.octave(@halfstep + halfsteps) )
+      Note.new( IntegerNode.new(@length.denominator), IntegerNode.new( self.tone(@halfstep + halfsteps) ), IntegerNode.new( self.octave(@halfstep + halfsteps) ) )
   end
   
 end
