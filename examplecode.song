@@ -1,17 +1,17 @@
 motifs
 {
-A = 2a.transposed(5 times 3) b c+1
+A = 2a.transposed(5 times 3 plus 2) b c+1
 B = c d f 8g#-2
 }
 
 segments
 {
 VERSE = A
-Chorus = B, B
+CHORUS = B, B
 BRIDGE = A, B
 }
 
 structure
 {
-VERSE, Chorus, VERSE, VERSE, Chorus
+VERSE, CHORUS, VERSE, VERSE, CHORUS
 }

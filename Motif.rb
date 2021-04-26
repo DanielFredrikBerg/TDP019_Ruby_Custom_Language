@@ -21,6 +21,12 @@ class Motif
       end
     end
   end
+
+  def seval
+    @notes.each do |note|
+      note.seval
+    end; nil
+  end
   
   def write
     @notes.each do |note|

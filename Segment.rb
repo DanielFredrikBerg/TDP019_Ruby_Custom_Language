@@ -18,6 +18,10 @@ class Segment
       end
     end
   end
+
+  def seval
+    @motifs.each { |motif| motif.seval }
+  end
   
   def write
     @motifs.each { |motif| motif.write }

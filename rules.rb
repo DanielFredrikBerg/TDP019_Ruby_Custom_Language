@@ -12,7 +12,8 @@ class Rules
   def initialize
 
     @@vars = Hash.new
-    
+    @@root_node = RootNode.new
+
     @rule_parser = Parser.new("rules") do
 
       ## Tokens utgör Lexern
@@ -33,17 +34,18 @@ class Rules
       # Parsern ansvarar för att skapa objekten => AST
 
       start :song do
-        match(:motif_block, :segment_block, :structure_block) do #for som reason, removing this empty block will cause the parser to spit out the word motifs
+        match(:motif_block, :segment_block, :structure_block) do #for some reason, removing this empty block will cause the parser to spit out the word motifs
+          @@root_node
         end
       end
 
       rule :structure_block do
-        match('structure', '{', :segments, '}') #{|_,_,segment,_| @@vars[segment].write }
+        match('structure', '{', :segments, '}')  #{|_,_,segment,_| @@vars[segment].write }
       end
 
       rule :segments do
-        match(:segments, ',', :var) {|segments, _, segment| @@vars[segment].write}
-        match(:var) {|segment| @@vars[segment].write}
+        match(:segments, ',', :var) {|segments, _, segment| @@root_node << @@vars[segment] }
+        match(:var) {|segment| @@root_node << @@vars[segment]}
       end
       
       rule :segment_block do
@@ -58,7 +60,7 @@ class Rules
       
       
       rule :motif_block do
-        match('motifs', '{', :motif_variable_assignment, '}')
+        match('motifs', '{', :motif_variable_assignment, '}') 
       end
       
       rule :motif_variable_assignment do
@@ -164,9 +166,10 @@ class Rules
       puts "Bye"
     else
       root_node = @rule_parser.parse str
-      puts root_node.class
+      #puts root_node.seval
       #puts "=> #{root_node.eval}"
-      root_node
+      root_node.seval
+      puts ''
     end
   end
 

@@ -18,6 +18,10 @@ class Structure
       end
     end
   end
+
+  def seval
+    @segments.each { |segment| segment.seval }
+  end; nil
   
   def write
     @segments.each { |segment| segment.write }

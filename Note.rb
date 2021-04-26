@@ -111,7 +111,7 @@ class Note
     end
   end
   
-  def write
+  def seval
     #Will print the the Note in a human readable form
     if @length.denominator != 4
       print @length.denominator.to_s
@@ -125,7 +125,7 @@ class Note
     end
     print " "
   end
- 
+
   def transposed(halfsteps = 1)
     #Will return a note transposed the given number of halfsteps.
       Note.new(@length.denominator, self.tone(@halfstep + halfsteps), self.octave(@halfstep + halfsteps) )
