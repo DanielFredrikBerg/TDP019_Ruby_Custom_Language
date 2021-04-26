@@ -1,3 +1,7 @@
+require './Addition.rb'
+require './Division.rb'
+require './IntegerNode'
+require './Multiplication.rb'
 require './Note'
 require './Motif'
 require './rdparse'
@@ -5,4 +9,5 @@ require './RootNode'
 require './Segment'
 require './Silence'
 require './Structure'
+require './Subtraction.rb'
 

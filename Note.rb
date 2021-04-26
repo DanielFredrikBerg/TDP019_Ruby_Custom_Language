@@ -128,7 +128,7 @@ class Note
 
   def transposed(halfsteps = 1)
     #Will return a note transposed the given number of halfsteps.
-      Note.new(@length.denominator, self.tone(@halfstep + halfsteps), self.octave(@halfstep + halfsteps) )
+      Note.new(@length.denominator, self.tone(@halfstep + halfsteps.seval), self.octave(@halfstep + halfsteps.seval) )
   end
   
 end

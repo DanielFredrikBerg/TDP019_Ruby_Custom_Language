@@ -1,9 +1,6 @@
 # coding: utf-8
 require './Classes'
-require './Addition.rb'
-require './Subtraction.rb'
-require './Division.rb'
-require './Multiplication.rb'
+
 
 class Rules
   attr_accessor :file
@@ -103,21 +100,21 @@ class Rules
       end
 
       rule :expression do
-        match(:expression, 'plus', :term) {|a,_,b| Addition.new(a,b).seval }
-        match(:expression, 'minus', :term) {|a,_,b| Subtraction.new(a,b).seval }
-        match(:term, 'plus', :term) {|a,_,b| Addition.new(a,b).seval }
-        match(:term, 'minus', :term) {|a,_,b| Subtraction.new(a,b).seval }
+        match(:expression, 'plus', :term) {|a,_,b| Addition.new(a,b) }
+        match(:expression, 'minus', :term) {|a,_,b| Subtraction.new(a,b) }
+        match(:term, 'plus', :term) {|a,_,b| Addition.new(a,b) }
+        match(:term, 'minus', :term) {|a,_,b| Subtraction.new(a,b) }
         match(:term)
       end
 
       rule :term do
-        match(:factor, 'times', :factor) {|a,_,b| Multiplication.new(a,b).seval }
-        match(:factor, 'divided by', :factor) {|a,_,b| Division.new(a,b).seval }
+        match(:factor, 'times', :factor) {|a,_,b| Multiplication.new(a,b) }
+        match(:factor, 'divided by', :factor) {|a,_,b| Division.new(a,b) }
         match(:factor)
       end
 
       rule :factor do
-        match(Integer)
+        match(Integer) { |i| IntegerNode.new(i) }
         match('(',:expression,')') {|_,expression,_| expression }
       end
       

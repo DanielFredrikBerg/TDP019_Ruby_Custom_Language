@@ -1,7 +1,7 @@
 class Subtraction
 
   def initialize(a,b)
-    @value = a-b
+    @value = a.seval - b.seval
   end
 
   def seval()
