@@ -8,8 +8,11 @@ class Rules
 
   def initialize
 
+    puts "INTILIZING..."
+
     @@vars = Hash.new
     @@root_node = RootNode.new
+    @@statements = []
 
     @rule_parser = Parser.new("rules") do
 
@@ -61,38 +64,35 @@ class Rules
       end
       
       rule :motif_variable_assignment do
-        match(:motif_variable_assignment, :motif_variable_assignment) 
+        match(:motif_variable_assignment, :motif_variable_assignment)        
         match(:var, '=', :motif) {|name, _, motif| @@vars[name] = motif}
         match(:var, '=', :loop) {|name, _, loop| @@vars[name] = loop}
+        
       end
       
 #TODO fix motif matches. Variable_assignment
       ## TODO ######################################################################################## ALSO put it in :song somehow
       rule :loop do
-        match('repeat', :expression, :block ) { |_, expr, block| Repeat.new(expr, @@statements) }
-      end
-
-      rule :block do
-        match( '{', :statements, '}' ) { @@statements = [] }
+        match('rpt', :expression, '[', :statements, ']' ) {|_,_,_,_,_|puts "FOUND A LOOP"}# { |_, expr, block| Repeat.new(expr, @@statements) }
       end
 
       rule :statements do
         match( :statements, :statement ) {|_,statement| @@statements << statement }
-        match( :statement ) {|statement| @@statements << statement }
+        match( :statement ) {|s| puts "FOUND A STATEMENT"; @@statements << s} #{ |statement| @@statements << statement }
       end
 
       rule :statement do
-        match(:motif)
+        match(:motif) {|n| n} 
       end
 
 ## TODO ########################################################################################
       
       rule :var do
-        match(/\w+/) 
+        match(/[A-Z]/) 
       end
 
       rule :motif do
-        match(:notes) 
+        match(:notes) {|n|puts "#{n}"; n}
       end
 
       rule :notes do
@@ -167,7 +167,7 @@ class Rules
   
   def interactive_mode
     print "[i-mode] "
-    @rule_parser.logger.level = Logger::WARN #DEBUG
+    @rule_parser.logger.level = Logger::DEBUG #DEBUG
     str = gets
     if done(str) then
       puts "Bye."
@@ -178,7 +178,7 @@ class Rules
   end
 
   def test(str)
-    @rule_parser.logger.level = Logger::WARN
+    @rule_parser.logger.level = Logger::DEBUG #DEBUG
     if done(str) then
       puts "Bye"
     else
@@ -192,7 +192,7 @@ class Rules
 
   def compile_and_run(file)
     run = File.read(file)
-    @rule_parser.logger.level = Logger::WARN #DEBUG
+    @rule_parser.logger.level = Logger::DEBUG #DEBUG
     puts "#{ @rule_parser.parse run } "
   end
 
@@ -202,7 +202,7 @@ class Rules
 
   def log(state = true)
     if state
-      @rule_parser.logger.level = Logger::WARN #DEBUG
+      @rule_parser.logger.level = Logger::DEBUG #DEBUG
     else
       @rule_parser.logger.level = Logger::WARN
     end
