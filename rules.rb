@@ -23,18 +23,13 @@ class Rules
       token(/[a-g][#|b]?/) { |m| m.to_s }
       token( /^[a-zA-Z]+/ ) { |m| m.to_s }
       token(/./) { |m| m.to_s }
-
-
-#hade du något smidigt sätt att stänga av debugutskriften btw...
-# ?
-# Enhacker — Today at 5:01 PM
-# 
-# Ändra DEBUG till WARN
       
       # Parsern ansvarar för att skapa objekten => AST
 
       start :song do
-        match(:motif_block, :segment_block, :structure_block) do #for some reason, removing this empty block will cause the parser to spit out the word motifs
+        match(:motif_block, :segment_block, :structure_block) do 
+          # For some reason, removing this empty block will cause 
+          # the parser to spit out the word motifs.
           @@root_node
         end
       end
@@ -73,12 +68,12 @@ class Rules
 #TODO fix motif matches. Variable_assignment
       ## TODO ######################################################################################## ALSO put it in :song somehow
       rule :loop do
-        match('rpt', :expression, '[', :statements, ']' ) {|_,_,_,_,_|puts "FOUND A LOOP"}# { |_, expr, block| Repeat.new(expr, @@statements) }
+        match('repeat', :expression, '[', :statements, ']' ) {|_,expr,_,statements,_| Repeat.new(expr, statements) }
       end
 
       rule :statements do
         match( :statements, :statement ) {|_,statement| @@statements << statement }
-        match( :statement ) {|s| puts "FOUND A STATEMENT"; @@statements << s} #{ |statement| @@statements << statement }
+        match( :statement ) {|s| puts "FOUND A STATEMENT"; [s]} #{ |statement| @@statements << statement }
       end
 
       rule :statement do
