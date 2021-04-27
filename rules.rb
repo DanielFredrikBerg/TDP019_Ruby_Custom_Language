@@ -65,7 +65,27 @@ class Rules
         match(:var, '=', :motif) {|name, _, motif| @@vars[name] = motif}
         match(:var, '=', :loop) {|name, _, loop| @@vars[name] = loop}
       end
-      #TODO fix motif matches. Variable_assignment
+      
+#TODO fix motif matches. Variable_assignment
+      ## TODO ######################################################################################## ALSO put it in :song somehow
+      rule :loop do
+        match('repeat', :expression, :block ) { |_, expr, block| Repeat.new(expr, @@statements) }
+      end
+
+      rule :block do
+        match( '{', :statements, '}' ) { @@statements = [] }
+      end
+
+      rule :statements do
+        match( :statements, :statement ) {|_,statement| @@statements << statement }
+        match( :statement ) {|statement| @@statements << statement }
+      end
+
+      rule :statement do
+        match(:motif)
+      end
+
+## TODO ########################################################################################
       
       rule :var do
         match(/\w+/) 
@@ -97,26 +117,6 @@ class Rules
       rule :method do
         match('transposed') {|m| m}
       end
-
-## TODO ######################################################################################## ALSO put it in :song somehow
-      rule :loop do
-        match('repeat', :expression, :block ) { |_, expr, block| Repeat.new(expr, block) }
-      end
-
-      rule :block do
-        match( '{', :statements, '}' )
-      end
-
-      rule :statements do
-        match( :statements, :statement ) {}
-        match( :statement )
-      end
-
-      rule :statement do
-        # TODO ALL POSSIBLE STATEMENTS
-      end
-
-## TODO ########################################################################################
 
       rule :expression do
         match(:expression, 'plus', :term) {|a,_,b| Addition.new(a,b) }

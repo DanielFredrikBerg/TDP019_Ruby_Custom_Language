@@ -2,6 +2,7 @@ motifs
 {
 A = 2a.transposed(5 times 3 plus 2) b c+1
 B = c d f 8g#-2
+C = repeat 2 plus 3 {2a+2}
 }
 
 segments
