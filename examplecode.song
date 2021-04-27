@@ -1,6 +1,6 @@
 motifs
 {
-C = rpt 4 [ c d 2c#+1 ]
+C = rpt 4 [ c d.transposed(2 times 2) 2c#+1 ]
 A = a b c
 }
 
@@ -12,5 +12,5 @@ CHORUS = C, C, C, C, C, C
 
 structure
 {
-VERSE, CHORUS
+VERSE,VERSE,VERSE,VERSE,VERSE,CHORUS
 }
