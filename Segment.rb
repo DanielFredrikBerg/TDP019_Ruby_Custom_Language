@@ -11,8 +11,8 @@ class Segment
 
   def add(*motifs)
     motifs.each do |motif|
-      if motif.class != Motif
-        raise TypeError.new "Trying to add a non-Motif to a Segment"
+      if motif.class != Motif and motif.class != Repeat
+        raise TypeError.new "Trying to add a non-Motif or loop to a Segment"
       else
         @motifs << motif
       end

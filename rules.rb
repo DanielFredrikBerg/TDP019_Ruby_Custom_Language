@@ -44,22 +44,30 @@ class Rules
       end
       
       rule :segment_block do
-        match('segments', '{', :segment_variable_assignment, '}')
+        match('segments', '{', :segment_variable_assignments, '}')
+      end
+
+      rule :segment_variable_assignments do
+        match(:segment_variable_assignments, :segment_variable_assignment)
+        match(:segment_variable_assignment)
       end
 
       rule :segment_variable_assignment do
-        match(:segment_variable_assignment, :segment_variable_assignment)
-        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| segment.add(@@vars[motif])}
+        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| segment.add(@@vars[motif]); segment}
         match(:var, '=', :var) {|name, _, motif| @@vars[name] = Segment.new(@@vars[motif])}
       end
       
       
       rule :motif_block do
-        match('motifs', '{', :motif_variable_assignment, '}') 
+        match('motifs', '{', :motif_variable_assignments, '}') 
+      end
+      
+      rule :motif_variable_assignments do
+        match(:motif_variable_assignments, :motif_variable_assignment)
+        match(:motif_variable_assignment)
       end
       
       rule :motif_variable_assignment do
-        match(:motif_variable_assignment, :motif_variable_assignment)
         match(:var, '=', :motif) {|name, _, motif| @@vars[name] = motif}
         match(:var, '=', :loop) {|name, _, loop| @@vars[name] = loop}        
       end
@@ -71,8 +79,8 @@ class Rules
       end
 
       rule :statements do
-        match( :statements, :statement ) {|_,statement| @@statements << statement }
-        match( :statement ) {|s| puts "FOUND A STATEMENT"; [s]} #{ |statement| @@statements << statement }
+        match( :statements, :statement ) {|statements, statement| statements << statement }
+        match( :statement ) {|s| puts "FOUND A STATEMENT";  [s] }
       end
 
       rule :statement do
