@@ -6,7 +6,7 @@ class Repeat
   end
   
   def seval
-    @iterations.each do
+    (1..@iterations).each do
       @loop_list.each do |statement|
         statement.seval
       end

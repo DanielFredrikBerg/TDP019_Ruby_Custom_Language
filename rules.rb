@@ -64,16 +64,15 @@ class Rules
       end
       
       rule :motif_variable_assignment do
-        match(:motif_variable_assignment, :motif_variable_assignment)        
+        match(:motif_variable_assignment, :motif_variable_assignment)
         match(:var, '=', :motif) {|name, _, motif| @@vars[name] = motif}
-        match(:var, '=', :loop) {|name, _, loop| @@vars[name] = loop}
-        
+        match(:var, '=', :loop) {|name, _, loop| @@vars[name] = loop}        
       end
       
 #TODO fix motif matches. Variable_assignment
       ## TODO ######################################################################################## ALSO put it in :song somehow
       rule :loop do
-        match('rpt', :expression, '[', :statements, ']' ) {|_,_,_,_,_|puts "FOUND A LOOP"}# { |_, expr, block| Repeat.new(expr, @@statements) }
+        match('rpt', :expression, '[', :statements, ']' ) {|_,expression,_,_,_|puts "FOUND A LOOP"; Repeat.new(expression, @@statements)}# { |_, expr, block| Repeat.new(expr, @@statements) }
       end
 
       rule :statements do
@@ -178,7 +177,7 @@ class Rules
   end
 
   def test(str)
-    @rule_parser.logger.level = Logger::DEBUG #DEBUG
+    @rule_parser.logger.level = Logger::WARN #DEBUG
     if done(str) then
       puts "Bye"
     else
@@ -192,7 +191,7 @@ class Rules
 
   def compile_and_run(file)
     run = File.read(file)
-    @rule_parser.logger.level = Logger::DEBUG #DEBUG
+    @rule_parser.logger.level = Logger::WARN #DEBUG
     puts "#{ @rule_parser.parse run } "
   end
 
@@ -202,7 +201,7 @@ class Rules
 
   def log(state = true)
     if state
-      @rule_parser.logger.level = Logger::DEBUG #DEBUG
+      @rule_parser.logger.level = Logger::WARN #DEBUG
     else
       @rule_parser.logger.level = Logger::WARN
     end
