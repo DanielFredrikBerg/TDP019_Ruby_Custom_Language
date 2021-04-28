@@ -1,0 +1,14 @@
+motifs
+{
+A = b# fb
+}
+
+segments
+{
+CHORUS = A
+}
+
+structure
+{
+CHORUS
+}

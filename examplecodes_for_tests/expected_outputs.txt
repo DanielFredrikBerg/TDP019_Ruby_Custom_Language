@@ -1,0 +1,24 @@
+name                                    output
+-------                                 -------
+#single_note_motif#
+basic_test                              a b
+note_modification_length                2a b
+note_modification_octave_higher         a+1 b
+note_modification_octave_lower          a-1 b
+note_modification_length_and_octave     2a+1 b
+note_modification_sharp                 a# b
+note_modification_flat                  g# b
+note_modification_all                   a# 2a# a#+1 2a#+1 a#-1 2a#-1 g# 2g# g#+1 2g#+1 g#-1 2g#-1
+dumb_notes                              c+1 e
+several_motifs_in_segment               a b c d e f g
+several_segments_in_structure           a b c d d e f g
+arithmetic_basic_integer                a b e d e
+arithmetic_simple_addition              a b d# d e
+arithmetic_simple_subtraction           a b b-1 d e
+arithmetic_simple_multiplication        a b g# d e
+#arithmetic_simple_division#
+arithmetic_combined_add_sub             a b f# d e
+arithmetic_combined_add_mult            a b g+1 d e
+arithemtic_combined_mult_add            a b g+1 d e
+arithmetic_combined_mult_sub            a b b d e
+arithemtic_combined_sub_mult            a b c#-1 d e

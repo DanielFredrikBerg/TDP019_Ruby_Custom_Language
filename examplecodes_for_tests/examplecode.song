@@ -1,0 +1,16 @@
+motifs
+{
+C = rpt 2 [ c a ]
+A = a b c
+}
+
+segments
+{
+VERSE = A, C
+CHORUS = C
+}
+
+structure
+{
+CHORUS
+}

@@ -1,0 +1,16 @@
+motifs
+{
+A = a b c.transposed(5 times 3 plus 4)
+B = d e 
+}
+
+segments
+{
+VERSE = A
+CHORUS = B
+}
+
+structure
+{
+VERSE, CHORUS
+}

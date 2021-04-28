@@ -1,0 +1,14 @@
+motifs
+{
+A = a# 2a# a#+1 2a#+1 a#-1 2a#-1 ab 2ab ab+1 2ab+1 ab-1 2ab-1
+}
+
+segments
+{
+CHORUS = A
+}
+
+structure
+{
+CHORUS
+}
