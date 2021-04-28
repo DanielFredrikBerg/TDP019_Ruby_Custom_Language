@@ -1,12 +1,12 @@
 class Repeat
 
-  def initialize(iterations, loop_list, scope) 
+  def initialize(iterations, loop_list) 
     @iterations = iterations.seval
     @loop_list = loop_list
   end
   
   def seval
-    @@Stackframe.add(stack)
+    # @@Stackframe.add(stack)
 
     (1..@iterations).each do
       @loop_list.each do |statement|
@@ -14,7 +14,7 @@ class Repeat
       end
     end
 
-    @@Stackfram.pop
+    # @@Stackfram.pop
   end
   
 end
