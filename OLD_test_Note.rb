@@ -2,6 +2,8 @@ require 'test/unit'
 require 'stringio'
 require './rules'
 
+# OLD TEST FILE
+
 class TestNote < Test::Unit::TestCase  
 
  ######################################

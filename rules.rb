@@ -1,5 +1,5 @@
 # coding: iso-8859-1
-require './Classes'
+require_relative './Classes'
 
 
 class Rules
@@ -8,7 +8,7 @@ class Rules
 
   def initialize
 
-    puts "INTILIZING..."
+    # puts "INTILIZING..."
 
     @@vars = Hash.new
     @@root_node = RootNode.new
@@ -81,7 +81,7 @@ class Rules
 
       rule :statements do
         match( :statements, :statement ) {|statements, statement| statements << statement }
-        match( :statement ) {|s| puts "FOUND A STATEMENT";  [s] }
+        match( :statement ) {|s|  [s] }
       end
 
       rule :statement do
@@ -95,7 +95,7 @@ class Rules
       end
 
       rule :motif do
-        match(:notes) {|n|puts "#{n}"; n}
+        match(:notes) {|n|  n}
       end
 
       rule :notes do
@@ -188,8 +188,8 @@ class Rules
       root_node = @rule_parser.parse str
       #puts root_node.seval
       #puts "=> #{root_node.eval}"
+
       root_node.seval
-      puts ''
     end
   end
 
@@ -202,6 +202,7 @@ class Rules
   def run_code(code)
     @rule_parser.logger.level = Logger::WARN
     puts "#{ @rule_parser.parse code }"
+    @rule_parser.parse code
 
   def log(state = true)
     if state
