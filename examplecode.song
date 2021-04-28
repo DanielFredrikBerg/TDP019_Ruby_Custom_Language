@@ -1,16 +1,16 @@
 motifs
 {
-C = rpt 4 [ c d.transposed(2 times 2) 2c#+1 ]
+C = rpt 2 [ c a ]
 A = a b c
 }
 
 segments
 {
 VERSE = A, C
-CHORUS = C, C, C, C, C, C
+CHORUS = C
 }
 
 structure
 {
-VERSE,VERSE,VERSE,VERSE,VERSE,CHORUS
+CHORUS
 }

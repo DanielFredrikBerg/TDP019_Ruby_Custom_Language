@@ -13,6 +13,7 @@ class Rules
     @@vars = Hash.new
     @@root_node = RootNode.new
     @@statements = []
+    @@global_scope = Array.new
 
     @rule_parser = Parser.new("rules") do
 
