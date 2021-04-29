@@ -26,5 +26,5 @@ arithmetic_combined_mult_sub              a b b d e
 arithmetic_combined_sub_mult              a b c#-1 d e
 single_note                               a
 loop_test                                 a a a
-#loop_iterations_by_variable               a a
-#loop_test_scope                           c c c c c
+#loop_iterations_by_variable               a a          TODO
+#loop_test_scope                           c c c c c    TODO
