@@ -1,12 +1,15 @@
+#require './rules'
+
 class Repeat
 
-  def initialize(iterations, loop_list) 
+  def initialize(iterations, loop_list, stack) 
     @iterations = iterations.seval
     @loop_list = loop_list
+    @stack = stack
   end
   
   def seval
-    # @@Stackframe.add(stack)
+    @stack.push_frame
 
     (1..@iterations).each do
       @loop_list.each do |statement|
@@ -14,7 +17,7 @@ class Repeat
       end
     end
 
-    # @@Stackfram.pop
+    @stack.pop_frame
   end
   
 end

@@ -1,0 +1,15 @@
+motifs
+{
+A = rpt 3 [ C = 5 ]
+B = rpt C [ c ]
+}
+
+segments
+{
+CHORUS = B
+}
+
+structure
+{
+CHORUS
+}

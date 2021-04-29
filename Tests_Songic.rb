@@ -312,4 +312,15 @@ def test_loop_test
 end
 
 
+def test_loop_test_scope
+  output = %x'ruby songic.rb ztests/loop_test_scope.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "c c c c c ", output.to_s + " " )
+end
+
+
 end

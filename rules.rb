@@ -77,7 +77,8 @@ class Rules
 #TODO fix motif matches. Variable_assignment
       ## TODO ######################################################################################## ALSO put it in :song somehow
       rule :loop do
-        match('rpt', :expression, '[', :statements, ']' ) {|_,expr,_,statements,_| Repeat.new(expr, statements) }
+        match('rpt', :expression, '[', :statements, ']' ) {|_,expr,_,statements,_| Repeat.new(expr, statements, @@stack) }
+        match('rpt', :var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new(var, statements, @@stack) }
       end
 
       rule :statements do
@@ -86,6 +87,7 @@ class Rules
       end
 
       rule :statement do
+        match(:var, '=', :expression) { |name, _, expression| @@stack.add(name, expression) }
         match(:motif) {|n| n} 
       end
 
@@ -140,7 +142,7 @@ class Rules
       rule :factor do
         match(Integer) { |i| IntegerNode.new(i) }
         match('(',:expression,')') {|_,expression,_| expression }
-        match( :var ) {|var| @@stack.look_up(var) } #@@vars[ var ] } 
+        match( :var ) {|var| @@stack.look_up(var) }
       end
       
       rule :silence do

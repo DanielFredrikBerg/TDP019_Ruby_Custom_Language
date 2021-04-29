@@ -7,7 +7,11 @@ class MakeTest
     @pairs = Array.new
     txt = File.open( expectation ).readlines.map(&:chomp)
     for line in txt
-      @pairs << [ line.split[0].to_s, line.split[1..].join(" ") ] 
+      if line.match(/^#/)
+        next
+      else
+        @pairs << [ line.split[0].to_s, line.split[1..].join(" ") ] 
+      end
     end
 
     # Test file structure
