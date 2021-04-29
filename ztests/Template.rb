@@ -1,8 +1,11 @@
 def test_OOnameOO
   output = %x'ruby songic.rb ztests/OOfileOO'
-  output = output.split.join(" ")
-  puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: #{output}"
-  assert_equal( OOexpectationOO, output + " " )
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( OOexpectationOO, output.to_s + " " )
 end
 
 
