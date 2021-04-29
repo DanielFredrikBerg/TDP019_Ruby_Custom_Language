@@ -10,7 +10,7 @@ class Rules
 
     # puts "INTILIZING..."
 
-    @@vars = Hash.new
+    @@stack = Stack.new
     @@root_node = RootNode.new
     @@statements = []
     @@global_scope = Array.new
@@ -20,7 +20,6 @@ class Rules
       ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
       token(/dividedby/) {|m| m.to_s }
-      #token(/repeat/) { |r| r.to_s }
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) { |m| m.to_s }
@@ -42,8 +41,8 @@ class Rules
       end
 
       rule :segments do
-        match(:segments, ',', :var) {|segments, _, segment| @@root_node << @@vars[segment] }
-        match(:var) {|segment| @@root_node << @@vars[segment]}
+        match(:segments, ',', :var) {|segments, _, segment| @@root_node << @@stack.look_up(segment) } 
+        match(:var) {|segment| @@root_node << @@stack.look_up(segment) }
       end
       
       rule :segment_block do
@@ -56,8 +55,8 @@ class Rules
       end
 
       rule :segment_variable_assignment do
-        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| segment.add(@@vars[motif]); segment}
-        match(:var, '=', :var) {|name, _, motif| @@vars[name] = Segment.new(@@vars[motif])}
+        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| segment.add(@@stack.look_up(motif)); segment}
+        match(:var, '=', :var) {|name, _, motif| @@stack.add(name, Segment.new(@@stack.look_up(motif) )) } 
       end
       
       
@@ -71,8 +70,8 @@ class Rules
       end
       
       rule :motif_variable_assignment do
-        match(:var, '=', :motif) {|name, _, motif| @@vars[name] = motif}
-        match(:var, '=', :loop) {|name, _, loop| @@vars[name] = loop}        
+        match(:var, '=', :motif) {|name, _, motif| @@stack.add(name, motif) }
+        match(:var, '=', :loop) {|name, _, loop|  @@stack.add(name, loop) } 
       end
       
 #TODO fix motif matches. Variable_assignment
@@ -141,7 +140,7 @@ class Rules
       rule :factor do
         match(Integer) { |i| IntegerNode.new(i) }
         match('(',:expression,')') {|_,expression,_| expression }
-        match( :var ) {|var| @@vars[ var ] } 
+        match( :var ) {|var| @@stack.look_up(var) } #@@vars[ var ] } 
       end
       
       rule :silence do
