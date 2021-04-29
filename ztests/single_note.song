@@ -1,0 +1,14 @@
+motifs
+{
+A = a
+}
+
+segments
+{
+CHORUS = A
+}
+
+structure
+{
+CHORUS
+}

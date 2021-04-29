@@ -1,0 +1,14 @@
+motifs
+{
+A = rpt 3 [ a ]
+}
+
+segments
+{
+CHORUS = A
+}
+
+structure
+{
+CHORUS
+}

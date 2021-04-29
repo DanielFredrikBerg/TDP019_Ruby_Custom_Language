@@ -169,6 +169,17 @@ def test_arithmetic_simple_multiplication
 end
 
 
+def test_arithmetic_simple_division
+  output = %x'ruby songic.rb ztests/arithmetic_simple_division.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "a b d d e ", output.to_s + " " )
+end
+
+
 def test_arithmetic_combined_add_sub
   output = %x'ruby songic.rb ztests/arithmetic_combined_add_sub.song'
   output = output.split()
@@ -188,6 +199,61 @@ def test_arithmetic_combined_add_mult
   #puts "After join: #{output}" #DEBUG
   
   assert_equal( "a b g+1 d e ", output.to_s + " " )
+end
+
+
+def test_arithmetic_combined_add_div
+  output = %x'ruby songic.rb ztests/arithmetic_combined_add_div.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "a b f# d e ", output.to_s + " " )
+end
+
+
+def test_arithmetic_combined_div_add
+  output = %x'ruby songic.rb ztests/arithmetic_combined_div_add.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "a b g d e ", output.to_s + " " )
+end
+
+
+def test_arithmetic_combined_div_sub
+  output = %x'ruby songic.rb ztests/arithmetic_combined_div_sub.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "a b c# d e ", output.to_s + " " )
+end
+
+
+def test_arithmetic_combined_sub_div
+  output = %x'ruby songic.rb ztests/arithmetic_combined_sub_div.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "a b b d e ", output.to_s + " " )
+end
+
+
+def test_arithmetic_combined_div_mult_parenthesis
+  output = %x'ruby songic.rb ztests/arithmetic_combined_div_mult_parenthesis.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "a b f# d e ", output.to_s + " " )
 end
 
 
@@ -221,6 +287,28 @@ def test_arithmetic_combined_sub_mult
   #puts "After join: #{output}" #DEBUG
   
   assert_equal( "a b c#-1 d e ", output.to_s + " " )
+end
+
+
+def test_single_note
+  output = %x'ruby songic.rb ztests/single_note.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "a ", output.to_s + " " )
+end
+
+
+def test_loop_test
+  output = %x'ruby songic.rb ztests/loop_test.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "a a a ", output.to_s + " " )
 end
 
 

@@ -19,6 +19,8 @@ class Rules
 
       ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
+      token(/dividedby/) {|m| m.to_s }
+      #token(/repeat/) { |r| r.to_s }
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) { |m| m.to_s }
@@ -96,6 +98,7 @@ class Rules
 
       rule :motif do
         match(:notes) {|n|  n}
+        match(:note) {|n| Motif.new(n) }
       end
 
       rule :notes do
@@ -131,7 +134,7 @@ class Rules
 
       rule :term do
         match(:factor, 'times', :factor) {|a,_,b| Multiplication.new(a,b) }
-        match(:factor, 'divided by', :factor) {|a,_,b| Division.new(a,b) }
+        match(:factor, 'dividedby', :factor) {|a,_,b| Division.new(a,b) }
         match(:factor)
       end
 
