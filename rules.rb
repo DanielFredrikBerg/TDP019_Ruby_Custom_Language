@@ -20,6 +20,8 @@ class Rules
       ## Tokens utg√∂r Lexern
       token(/\s+/) #{|m| m.to_s }
       token(/dividedby/) {|m| m.to_s }
+      token(/for/) {|m| m.to_s }
+      token(/if/) {|m| m.to_s }
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) { |m| m.to_s }
@@ -57,6 +59,7 @@ class Rules
       rule :segment_variable_assignment do
         match(:segment_variable_assignment, ',', :var) {|segment, _, motif| segment.add($stack.look_up(motif)); segment}
         match(:var, '=', :var) {|name, _, motif| $stack.add(name, Segment.new($stack.look_up(motif) )) } 
+        match(:var, '=', :loop) {|name, _, loop|  $stack.add(name, loop) } 
       end
       
       
@@ -69,13 +72,34 @@ class Rules
         match(:motif_variable_assignment)
       end
       
+      
       rule :motif_variable_assignment do
         match(:var, '=', :motif) {|name, _, motif| $stack.add(name, motif) }
+        # FLytta allm‰nna funktioner till statements!
         match(:var, '=', :loop) {|name, _, loop|  $stack.add(name, loop) } 
-        match(:var, '=', :expression) { |name, _, expression| $stack.add(name, expression) }
+        match(:var, '=', :expression) { |name, _, expression|  $stack.add(name, expression) }
+        match(:for_loop)
+        match(:loop)
+        match(:if_var)
       end
       
-## TODO ######################################################################################## ALSO put it in :song somehow
+## TODO ########################################################################################
+      # PROOF OF CONCEPT
+      rule :if_var do
+        match( 'if', :var ) do |_,name|
+          if $stack.check(name)
+            $stack.look_up(name)
+          else
+            IntegerNode.new(0)
+          end
+        end
+      end
+
+      rule :for_loop do
+        match('for', :expression, '[', :statements, ']') do |_,expression,_,statements,_|
+          ForNode.new(expression, statements) 
+        end
+      end
       #for loop
       # $stack.push_frame;  $stack.add(name, loop); $stack.pop_frame } 
       
@@ -84,6 +108,7 @@ class Rules
       rule :loop do 
         match('rpt', :expression, '[', :statements, ']' ) {|_,expr,_,statements,_| Repeat.new(expr, statements) }
         match('rpt', :var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new($stack.look_up(var), statements) }
+        match('rpt', :if_var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new(var, statements) }
       end
 
       rule :statements do

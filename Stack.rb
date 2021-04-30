@@ -2,7 +2,7 @@ class Stack < Array
 
   def initialize 
     self << Hash.new
-    
+    @bool = false
   end
 
   def push_frame 
@@ -19,8 +19,18 @@ class Stack < Array
         return hash[ name ]
       end
     end
-    return false
+    @bool
   end
+
+  def check(name)
+    for hash in self.reverse
+      if hash.has_key? name
+        @bool = true
+      end
+    end
+    @bool = false
+  end
+  
 
   def add(key, object)
     self[-1][key] = object

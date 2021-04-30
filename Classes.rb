@@ -1,5 +1,6 @@
 require './Addition.rb'
 require './Division.rb'
+require './ForNode.rb'
 require './IntegerNode'
 require './Multiplication.rb'
 require './Note'
