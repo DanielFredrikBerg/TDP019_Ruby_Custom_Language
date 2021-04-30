@@ -19,7 +19,16 @@ class Stack < Array
         return hash[ name ]
       end
     end
-    return false
+    false
+  end
+
+  def check(name)
+    for hash in self
+      if hash.has_key? name
+        return true
+      end
+    end
+    false
   end
 
   def add(key, object)

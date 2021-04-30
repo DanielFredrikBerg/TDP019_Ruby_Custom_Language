@@ -12,6 +12,7 @@ class Rules
 
     @@stack = Stack.new
     @@root_node = RootNode.new
+    @@functions = Hash.new
     @@statements = []
     @@global_scope = Array.new
 
@@ -19,6 +20,7 @@ class Rules
 
       ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
+      token(/def/) {|m| m.to_s }
       token(/dividedby/) {|m| m.to_s }
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
@@ -33,6 +35,47 @@ class Rules
           # For some reason, removing this empty block will cause 
           # the parser to spit out the word motifs.
           @@root_node
+        end
+        match(:function_definitions, :motif_block, :segment_block, :structure_block) do 
+          # For some reason, removing this empty block will cause 
+          # the parser to spit out the word motifs.
+          @@root_node
+        end
+      end
+
+      rule :function_definitions do 
+        match( :function_definitions, :function_definition )
+        match( :function_definition )
+      end
+
+      rule :funtion_definition do
+        match('def', :var, :parameter_list, '{', :function_body ,'}') do |_,name,parameters,_,function_body,_|
+          @@functions[ name ] = Function.new(parameters, function_body)
+        end
+      end
+
+      rule :parameter_list do # Should () be mandatory for function def?
+        match( :parameter_list, :parameter ) do |parameter_list, parameter| 
+          [parameter_list] << parameter
+        end
+        match( :parameter ) 
+      end
+
+      rule :parameter do
+        match(:type) { |parameter| [parameter] }
+      end
+
+      rule :type do
+        match( :expression )
+        match( :motif )
+        match( :note )
+        match( :var ) do |string| 
+          existing_variable = @@stack.look_up(string)
+          if existing_variable
+            existing_variable
+          else
+            StringNode.new(string)
+          end
         end
       end
 
@@ -71,11 +114,13 @@ class Rules
       
       rule :motif_variable_assignment do
         match(:var, '=', :motif) {|name, _, motif| @@stack.add(name, motif) }
+        match(:loop_assignment)
+      end
+
+      rule :loop_assignment do
         match(:var, '=', :loop) {|name, _, loop|  @@stack.add(name, loop) } 
       end
       
-#TODO fix motif matches. Variable_assignment
-      ## TODO ######################################################################################## ALSO put it in :song somehow
       rule :loop do
         match('rpt', :expression, '[', :statements, ']' ) {|_,expr,_,statements,_| Repeat.new(expr, statements, @@stack) }
         match('rpt', :var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new(var, statements, @@stack) }
@@ -85,14 +130,14 @@ class Rules
         match( :statements, :statement ) {|statements, statement| statements << statement }
         match( :statement ) {|s|  [s] }
       end
+      
 
       rule :statement do
+        match(:loop_assignment)
         match(:var, '=', :expression) { |name, _, expression| @@stack.add(name, expression) }
         match(:motif) {|n| n} 
       end
 
-## TODO ########################################################################################
-      
       rule :var do
         match(/[A-Z]/) 
       end
