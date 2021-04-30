@@ -10,7 +10,7 @@ class Stack < Array
   end
 
   def pop_frame
-    self.pop
+    self.pop;nil
   end
 
   def look_up(name)

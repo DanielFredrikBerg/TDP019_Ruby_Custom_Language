@@ -1,13 +1,16 @@
 motifs
 {
-C = rpt 2 [ c a ]
-A = a b c
+TWO = 2
+C = rpt TWO [ B = 2 ]
+
+THREE = 3
+D = rpt B  [ a a ]
+
 }
 
 segments
 {
-VERSE = A, C
-CHORUS = C
+CHORUS = D
 }
 
 structure

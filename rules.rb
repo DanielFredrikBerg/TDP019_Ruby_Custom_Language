@@ -10,7 +10,7 @@ class Rules
 
     # puts "INTILIZING..."
 
-    @@stack = Stack.new
+    $stack = Stack.new
     @@root_node = RootNode.new
     @@statements = []
     @@global_scope = Array.new
@@ -41,8 +41,8 @@ class Rules
       end
 
       rule :segments do
-        match(:segments, ',', :var) {|segments, _, segment| @@root_node << @@stack.look_up(segment) } 
-        match(:var) {|segment| @@root_node << @@stack.look_up(segment) }
+        match(:segments, ',', :var) {|segments, _, segment| @@root_node << $stack.look_up(segment) } 
+        match(:var) {|segment| @@root_node << $stack.look_up(segment) }
       end
       
       rule :segment_block do
@@ -55,8 +55,8 @@ class Rules
       end
 
       rule :segment_variable_assignment do
-        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| segment.add(@@stack.look_up(motif)); segment}
-        match(:var, '=', :var) {|name, _, motif| @@stack.add(name, Segment.new(@@stack.look_up(motif) )) } 
+        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| segment.add($stack.look_up(motif)); segment}
+        match(:var, '=', :var) {|name, _, motif| $stack.add(name, Segment.new($stack.look_up(motif) )) } 
       end
       
       
@@ -70,15 +70,20 @@ class Rules
       end
       
       rule :motif_variable_assignment do
-        match(:var, '=', :motif) {|name, _, motif| @@stack.add(name, motif) }
-        match(:var, '=', :loop) {|name, _, loop|  @@stack.add(name, loop) } 
+        match(:var, '=', :motif) {|name, _, motif| $stack.add(name, motif) }
+        match(:var, '=', :loop) {|name, _, loop|  $stack.add(name, loop) } 
+        match(:var, '=', :expression) { |name, _, expression| $stack.add(name, expression) }
       end
       
-#TODO fix motif matches. Variable_assignment
-      ## TODO ######################################################################################## ALSO put it in :song somehow
-      rule :loop do
-        match('rpt', :expression, '[', :statements, ']' ) {|_,expr,_,statements,_| Repeat.new(expr, statements, @@stack) }
-        match('rpt', :var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new(var, statements, @@stack) }
+## TODO ######################################################################################## ALSO put it in :song somehow
+      #for loop
+      # $stack.push_frame;  $stack.add(name, loop); $stack.pop_frame } 
+      
+## TODO ########################################################################################
+
+      rule :loop do 
+        match('rpt', :expression, '[', :statements, ']' ) {|_,expr,_,statements,_| Repeat.new(expr, statements) }
+        match('rpt', :var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new($stack.look_up(var), statements) }
       end
 
       rule :statements do
@@ -87,12 +92,10 @@ class Rules
       end
 
       rule :statement do
-        match(:var, '=', :expression) { |name, _, expression| @@stack.add(name, expression) }
+        match(:var, '=', :expression) { |name, _, expression| $stack.add(name, expression) }
         match(:motif) {|n| n} 
-      end
+      end      
 
-## TODO ########################################################################################
-      
       rule :var do
         match(/[A-Z]/) 
       end
@@ -142,7 +145,7 @@ class Rules
       rule :factor do
         match(Integer) { |i| IntegerNode.new(i) }
         match('(',:expression,')') {|_,expression,_| expression }
-        match( :var ) {|var| @@stack.look_up(var) }
+        match( :var ) {|var| $stack.look_up(var) }
       end
       
       rule :silence do
