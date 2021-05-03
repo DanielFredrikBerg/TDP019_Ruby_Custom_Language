@@ -1,0 +1,14 @@
+motifs
+{
+G = if 5 equals 5 [ a b c ]
+}
+
+segments
+{
+CHORUS = G
+}
+
+structure
+{
+CHORUS
+}

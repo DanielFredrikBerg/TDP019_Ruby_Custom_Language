@@ -334,4 +334,26 @@ def test_loop_iterations_with_variable
 end
 
 
+def test_several_loops
+  output = %x'ruby songic.rb ztests/several_loops.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "b b ", output.to_s + " " )
+end
+
+
+def test_simple_if_equals
+  output = %x'ruby songic.rb ztests/simple_if_equals.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "a b c ", output.to_s + " " )
+end
+
+
 end

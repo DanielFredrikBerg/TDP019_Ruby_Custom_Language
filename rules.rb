@@ -12,8 +12,6 @@ class Rules
 
     $stack = Stack.new
     @@root_node = RootNode.new
-    @@statements = []
-    @@global_scope = Array.new
 
     @rule_parser = Parser.new("rules") do
 
@@ -21,6 +19,7 @@ class Rules
       token(/\s+/) #{|m| m.to_s }
       token(/dividedby/) {|m| m.to_s }
       token(/for/) {|m| m.to_s }
+      token(/equals/) {|m| m.to_s }
       token(/if/) {|m| m.to_s }
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
@@ -74,16 +73,32 @@ class Rules
       
       
       rule :motif_variable_assignment do
+        match(:var, '=', :if) {|name,_,if_stmt| $stack.add(name, if_stmt) } 
         match(:var, '=', :motif) {|name, _, motif| $stack.add(name, motif) }
         # FLytta allmänna funktioner till statements!
+        
         match(:var, '=', :loop) {|name, _, loop|  $stack.add(name, loop) } 
         match(:var, '=', :expression) { |name, _, expression|  $stack.add(name, expression) }
+        
         match(:for_loop)
         match(:loop)
         match(:if_var)
       end
       
 ## TODO ########################################################################################
+      rule :if do
+        match( 'if', :expression, :comparator, :expression, '[', :statements, ']') do
+          |_,lhs,comparator,rhs,_,statements,_|
+          IfNode.new(lhs, comparator, rhs, statements)
+        end
+      end
+
+      rule :comparator do
+        match('equals') { |s| StringNode.new(s)  }
+        # match('equals') { |s| StringNode.new(s)  }
+        # match('equals') { |s| StringNode.new(s)  }
+      end
+
       # PROOF OF CONCEPT
       rule :if_var do
         match( 'if', :var ) do |_,name|
@@ -139,7 +154,7 @@ class Rules
       end
 
       rule :note do
-        match( :note, '.', :method, '(', :expression, ')' ) {|note, _, method, _, expression, _| note.transposed(expression) } #TODO: find a way to call any method
+        match( :note, '.', :method, '(', :expression, ')' ) {|note, _, method, _, expression, _| eval "note.#{method}(expression)" } 
         match( :length, :tone, :octave ) do
           |length, tone, octave| Note.new( length, tone, octave ) 
         end
@@ -151,6 +166,7 @@ class Rules
       
       rule :method do
         match('transposed') {|m| m}
+        # MORE FLESH
       end
 
       rule :expression do
@@ -168,9 +184,9 @@ class Rules
       end
 
       rule :factor do
-        match(Integer) { |i| IntegerNode.new(i) }
         match('(',:expression,')') {|_,expression,_| expression }
         match( :var ) {|var| $stack.look_up(var) }
+        match(Integer) { |i| IntegerNode.new(i) }
       end
       
       rule :silence do
