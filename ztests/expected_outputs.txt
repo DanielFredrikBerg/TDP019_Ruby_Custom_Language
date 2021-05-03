@@ -30,4 +30,4 @@ loop_test_scope
 loop_iterations_with_variable             c c c   
 several_loops                             b b
 simple_if_equals                          a b c
-#simple_if_equals_false      
+simple_if_equals_false                    c b a

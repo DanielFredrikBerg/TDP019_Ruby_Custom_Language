@@ -73,7 +73,13 @@ class Rules
       
       
       rule :motif_variable_assignment do
-        match(:var, '=', :if) {|name,_,if_stmt| $stack.add(name, if_stmt) } 
+        match(:var, '=', :if) do |name,_,if_stmt| 
+          if if_stmt.evaluate == true
+            $stack.add(name, if_stmt)
+          else
+            $stack.look_up(name)
+          end
+        end 
         match(:var, '=', :motif) {|name, _, motif| $stack.add(name, motif) }
         # FLytta allmänna funktioner till statements!
         
@@ -95,8 +101,8 @@ class Rules
 
       rule :comparator do
         match('equals') { |s| StringNode.new(s)  }
-        # match('equals') { |s| StringNode.new(s)  }
-        # match('equals') { |s| StringNode.new(s)  }
+        # match('or') { |s| StringNode.new(s)  }
+        # match('lesser than') { |s| StringNode.new(s)  }
       end
 
       # PROOF OF CONCEPT

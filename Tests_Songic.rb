@@ -356,4 +356,15 @@ def test_simple_if_equals
 end
 
 
+def test_simple_if_equals_false
+  output = %x'ruby songic.rb ztests/simple_if_equals_false.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "c b a ", output.to_s + " " )
+end
+
+
 end

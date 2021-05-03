@@ -2,19 +2,24 @@ require './ComparatorNode.rb'
 
 
 class IfNode
-  def initialize(left_expression, comparator, right_expression, statements)
-    @lhs = left_expression
-    @comp = comparator
-    @rhs = right_expression
+  def initialize(lhs, comp, rhs, statements)
+    @comp = ComparatorNode.new(lhs, comp, rhs)
     @statements = statements
+    #$stack.push_frame
   end
   
+  def evaluate
+    @comp.seval
+  end
+
   def seval
-    if ComparatorNode.new(@lhs, @comp, @rhs).seval
+    if @comp.seval
       @statements.each do |statements|
         statements.seval
-      end
+      end      
     end
+    
+    #$stack.pop_frame
   end
   
 

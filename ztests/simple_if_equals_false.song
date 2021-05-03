@@ -1,0 +1,15 @@
+motifs
+{
+G = c b a
+G = if 6 plus 1 equals 8 minus 5 [ a b c ]
+}
+
+segments
+{
+CHORUS = G
+}
+
+structure
+{
+CHORUS
+}
