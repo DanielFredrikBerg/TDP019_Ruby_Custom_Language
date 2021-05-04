@@ -63,16 +63,16 @@ class Rules
       
       
       rule :motif_block do
-        match('motifs', '{', :motif_variable_assignments, '}') 
+        match('motifs', '{', :motif_statements, '}') 
       end
       
-      rule :motif_variable_assignments do
-        match(:motif_variable_assignments, :motif_variable_assignment)
-        match(:motif_variable_assignment)
+      rule :motif_statements do
+        match(:motif_statements, :motif_statement)
+        match(:motif_statement)
       end
       
       
-      rule :motif_variable_assignment do
+      rule :motif_statement do
         match(:var, '=', :if) do |name,_,if_stmt| 
           if if_stmt.evaluate == true
             $stack.add(name, if_stmt)
