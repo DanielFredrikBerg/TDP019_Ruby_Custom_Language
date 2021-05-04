@@ -301,8 +301,8 @@ def test_single_note
 end
 
 
-def test_loop_test
-  output = %x'ruby songic.rb ztests/loop_test.song'
+def test_repeat_test
+  output = %x'ruby songic.rb ztests/repeat_test.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
   output = output.join(" ")
@@ -312,8 +312,8 @@ def test_loop_test
 end
 
 
-def test_loop_test_scope
-  output = %x'ruby songic.rb ztests/loop_test_scope.song'
+def test_repeat_test_scope
+  output = %x'ruby songic.rb ztests/repeat_test_scope.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
   output = output.join(" ")
@@ -323,14 +323,25 @@ def test_loop_test_scope
 end
 
 
-def test_loop_iterations_with_variable
-  output = %x'ruby songic.rb ztests/loop_iterations_with_variable.song'
+def test_repeat_iterations_with_variable
+  output = %x'ruby songic.rb ztests/repeat_iterations_with_variable.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
   output = output.join(" ")
   #puts "After join: #{output}" #DEBUG
   
   assert_equal( "c c c ", output.to_s + " " )
+end
+
+
+def test_repeat_iterations_by_variable
+  output = %x'ruby songic.rb ztests/repeat_iterations_by_variable.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "a a ", output.to_s + " " )
 end
 
 
@@ -364,6 +375,17 @@ def test_simple_if_equals_false
   #puts "After join: #{output}" #DEBUG
   
   assert_equal( "c b a ", output.to_s + " " )
+end
+
+
+def test_for_loop_multiple_statements
+  output = %x'ruby songic.rb ztests/for_loop_multiple_statements.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "a b ", output.to_s + " " )
 end
 
 

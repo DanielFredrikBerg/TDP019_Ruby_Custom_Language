@@ -81,7 +81,6 @@ class Rules
           end
         end 
         match(:var, '=', :motif) {|name, _, motif| $stack.add(name, motif) }
-        # FLytta allmänna funktioner till statements!
         
         match(:var, '=', :loop) {|name, _, loop|  $stack.add(name, loop) } 
         match(:var, '=', :expression) { |name, _, expression|  $stack.add(name, expression) }

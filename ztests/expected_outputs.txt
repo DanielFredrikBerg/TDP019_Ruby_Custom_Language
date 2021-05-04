@@ -25,9 +25,11 @@ arithmetic_combined_mult_add              a b g+1 d e
 arithmetic_combined_mult_sub              a b b d e
 arithmetic_combined_sub_mult              a b c#-1 d e
 single_note                               a
-loop_test                                 a a a
-loop_test_scope                           
-loop_iterations_with_variable             c c c   
+repeat_test                               a a a
+repeat_test_scope                           
+repeat_iterations_with_variable           c c c
+repeat_iterations_by_variable             a a   
 several_loops                             b b
 simple_if_equals                          a b c
 simple_if_equals_false                    c b a
+for_loop_multiple_statements              a b         

@@ -1,0 +1,15 @@
+motifs
+{
+for 2 [ TWO = 3 plus 1 ]
+V = rpt if TWO [ d ]
+}
+
+segments
+{
+CHORUS = V
+}
+
+structure
+{
+CHORUS
+}
