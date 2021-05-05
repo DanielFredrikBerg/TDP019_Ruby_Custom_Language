@@ -9,11 +9,12 @@ class ForNode
   end
   
   def seval
-    (1..@iterations).each do
+    (1..@iterations).each do |i|
+      break if i == @iterations
       @loop_list.each do |statement|
         statement.seval
-      end
-    end
+      end;nil
+    end;nil
     $stack.pop_frame
 
   end

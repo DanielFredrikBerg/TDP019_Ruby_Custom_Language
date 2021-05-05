@@ -3,15 +3,14 @@ motifs
 A = a b c
 C = d e f
 
-for 2 [
-A = a
-C = b
-]
+klok 2 [ C = b A = a ]
+
+
 }
 
 segments
 {
-CHORUS = A, C
+CHORUS = A
 }
 
 structure

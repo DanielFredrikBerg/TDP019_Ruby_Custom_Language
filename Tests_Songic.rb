@@ -15,6 +15,17 @@ def test_basic_test
 end
 
 
+def test_variable_change
+  output = %x'ruby songic.rb ztests/variable_change.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "d d ", output.to_s + " " )
+end
+
+
 def test_note_modification_length
   output = %x'ruby songic.rb ztests/note_modification_length.song'
   output = output.split()
@@ -375,6 +386,17 @@ def test_simple_if_equals_false
   #puts "After join: #{output}" #DEBUG
   
   assert_equal( "c b a ", output.to_s + " " )
+end
+
+
+def test_if_multiple_variable_change
+  output = %x'ruby songic.rb ztests/if_multiple_variable_change.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+  
+  assert_equal( "a b c d e f ", output.to_s + " " )
 end
 
 

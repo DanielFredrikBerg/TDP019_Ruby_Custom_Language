@@ -9,7 +9,8 @@ class Note
 
     @length = Rational(1, length)
     
-    @halfstep = octave_to_halfstep(octave) + tone_to_halfstep(tone)
+    @halfstep = octave_to_halfstep(octave) \
+                + tone_to_halfstep(tone)
     
   end
 

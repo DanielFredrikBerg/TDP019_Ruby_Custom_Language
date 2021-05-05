@@ -1,0 +1,20 @@
+motifs
+{
+D = g d e
+G = if 5 equals 5 [ a b c ]
+G = d
+G = if 3 equals 2 plus 1 [ e f g ]
+G = a
+G = if 2 dividedby 2 equals 1 [ a b c ]
+D = if 1 equals 1 [ d e f ]
+}
+
+segments
+{
+CHORUS = G, D
+}
+
+structure
+{
+CHORUS
+}

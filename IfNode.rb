@@ -16,7 +16,7 @@ class IfNode
     if @comp.seval
       @statements.each do |statements|
         statements.seval
-      end      
+      end;nil      
     end
     
     #$stack.pop_frame

@@ -85,7 +85,7 @@ class Rules
         match(:var, '=', :loop) {|name, _, loop|  $stack.add(name, loop) } 
         match(:var, '=', :expression) { |name, _, expression|  $stack.add(name, expression) }
         
-        match(:for_loop)
+        match(:for_loop) { |for_loop| @@root_node << for_loop }
         match(:loop)
         match(:if_var)
       end
@@ -116,7 +116,7 @@ class Rules
       end
 
       rule :for_loop do
-        match('for', :expression, '[', :statements, ']') do |_,expression,_,statements,_|
+        match('klok', :expression, '[', :statements, ']') do |_,expression,_,statements,_|
           ForNode.new(expression, statements) 
         end
       end
@@ -137,6 +137,7 @@ class Rules
       end
 
       rule :statement do
+        match(:var, '=', :motif) {|name, _, motif| $stack.add(name, motif) }
         match(:var, '=', :expression) { |name, _, expression| $stack.add(name, expression) }
         match(:motif) {|n| n} 
       end      

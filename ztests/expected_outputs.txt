@@ -1,4 +1,5 @@
 basic_test                                a b
+variable_change                           d d
 note_modification_length                  2a b
 note_modification_octave_higher           a+1 b
 note_modification_octave_lower            a-1 b
@@ -32,4 +33,5 @@ repeat_iterations_by_variable             a a
 several_loops                             b b
 simple_if_equals                          a b c
 simple_if_equals_false                    c b a
+if_multiple_variable_change               a b c d e f
 for_loop_multiple_statements              a b         
