@@ -14,10 +14,12 @@ class IfNode
 
   def seval
     if @comp.seval
+      s = ""
       @statements.each do |statements|
-        statements.seval
-      end;nil      
+        s += statements.seval
+      end      
     end
+    s
     
     #$stack.pop_frame
   end
