@@ -3,7 +3,7 @@ motifs
 A = a b c
 C = d e f
 
-klok 2 [ C = b A = a ]
+for 2 [ C = b A = a ]
 
 
 }

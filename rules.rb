@@ -1,6 +1,8 @@
-# coding: iso-8859-1
+# coding: utf-8
 require_relative './Classes'
 
+class ForToken
+end
 
 class Rules
   attr_accessor :file
@@ -18,7 +20,7 @@ class Rules
       ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
       token(/dividedby/) {|m| m.to_s }
-      token(/for/) {|m| m.to_s }
+      token(/for/) {|m| ForToken.new }
       token(/equals/) {|m| m.to_s }
       token(/if/) {|m| m.to_s }
       token(/[+|-]\d/) {|m| m.to_s }
@@ -116,7 +118,7 @@ class Rules
       end
 
       rule :for_loop do
-        match('klok', :expression, '[', :statements, ']') do |_,expression,_,statements,_|
+        match(ForToken, :expression, '[', :statements, ']') do |_,expression,_,statements,_|
           ForNode.new(expression, statements) 
         end
       end
