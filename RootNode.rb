@@ -7,7 +7,11 @@ class RootNode < Array
   def seval
     s = ""
     self.each do |node|
-      s += node.seval
+      if node.class == String
+        s += $stack.look_up( $stack.look_up(node) ).seval
+      else
+        node.seval
+      end
     end
     s
   end

@@ -34,4 +34,4 @@ several_loops                             b b
 simple_if_equals                          a b c
 simple_if_equals_false                    c b a
 if_multiple_variable_change               a b c d e f
-for_loop_multiple_statements              a b         
+for_loop_multiple_statements              b         

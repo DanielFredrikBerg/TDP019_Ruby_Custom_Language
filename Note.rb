@@ -120,7 +120,7 @@ class Note
     if @length.denominator != 4
       s += @length.denominator.to_s
     end
-    s += self.tone.to_s
+    s += self.tone
     if self.octave > 0
       s +=  '+'
     end

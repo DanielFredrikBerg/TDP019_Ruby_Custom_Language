@@ -1,4 +1,4 @@
-# coding: utf-8
+# coding: iso-8859-1
 require_relative './Classes'
 
 class ForToken
@@ -40,12 +40,12 @@ class Rules
       end
 
       rule :structure_block do
-        match('structure', '{', :segments, '}')  #{|_,_,segment,_| @@vars[segment].write }
+        match('structure', '{', :segments, '}')  #{  |_,_,segments,_| @@root_node << segments }#{|_,_,segment,_| @@vars[segment].write }
       end
 
       rule :segments do
-        match(:segments, ',', :var) {|segments, _, segment| @@root_node << $stack.look_up(segment) } 
-        match(:var) {|segment| @@root_node << $stack.look_up(segment) }
+        match(:segments, ',', :var) {|segments, _, segment| @@root_node << segments } 
+        match(:var) {|segment| @@root_node << segment }
       end
       
       rule :segment_block do
@@ -58,9 +58,9 @@ class Rules
       end
 
       rule :segment_variable_assignment do
-        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| segment.add($stack.look_up(motif)); segment}
-        match(:var, '=', :var) {|name, _, motif| $stack.add(name, Segment.new($stack.look_up(motif) )) } 
-        match(:var, '=', :loop) {|name, _, loop|  $stack.add(name, loop) } 
+        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| @@root_node << AddNode.new(segment, motif)} #TODO
+        match(:var, '=', :var) {|name, _, motif| @@root_node << VarAssNode.new(name, motif) } #$stack.add(name, Segment.new($stack.look_up(motif) )) } 
+        match(:var, '=', :loop) {|name, _, loop| @@root_node << VarAssNode.new(name, loop) } #$stack.add(name, loop) } 
       end
       
       
@@ -77,15 +77,15 @@ class Rules
       rule :motif_statement do
         match(:var, '=', :if) do |name,_,if_stmt| 
           if if_stmt.evaluate == true
-            $stack.add(name, if_stmt)
+            @@root_node << VarAssNode.new(name, if_stmt) #$stack.add(name, if_stmt)
           else
-            $stack.look_up(name)
+            @@root_node << LookUpNode.new(name)
           end
         end 
-        match(:var, '=', :motif) {|name, _, motif| $stack.add(name, motif) }
+        match(:var, '=', :motif) {|name, _, motif| @@root_node << VarAssNode.new(name, motif) } #$stack.add(name, motif) }
         
-        match(:var, '=', :loop) {|name, _, loop|  $stack.add(name, loop) } 
-        match(:var, '=', :expression) { |name, _, expression|  $stack.add(name, expression) }
+        match(:var, '=', :loop) {|name, _, loop|  @@root_node << VarAssNode.new(name, loop) } #$stack.add(name, loop) } 
+        match(:var, '=', :expression) { |name, _, expression|  @@root_node << VarAssNode.new(name, expression) } #$stack.add(name, expression) }
         
         match(:for_loop) { |for_loop| @@root_node << for_loop }
         match(:loop)
@@ -129,7 +129,7 @@ class Rules
 
       rule :loop do 
         match('rpt', :expression, '[', :statements, ']' ) {|_,expr,_,statements,_| Repeat.new(expr, statements) }
-        match('rpt', :var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new($stack.look_up(var), statements) }
+        match('rpt', :var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new(var, statements) }
         match('rpt', :if_var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new(var, statements) }
       end
 
@@ -139,8 +139,8 @@ class Rules
       end
 
       rule :statement do
-        match(:var, '=', :motif) {|name, _, motif| $stack.add(name, motif) }
-        match(:var, '=', :expression) { |name, _, expression| $stack.add(name, expression) }
+        match(:var, '=', :motif) {|name, _, motif| @@root_node << VarAssNode.new(name, motif) } #$stack.add(name, motif) }
+        match(:var, '=', :expression) { |name, _, expression| @@root_node << VarAssNode.new(name, expression) }#$stack.add(name, expression) }
         match(:motif) {|n| n} 
       end      
 
@@ -193,7 +193,7 @@ class Rules
 
       rule :factor do
         match('(',:expression,')') {|_,expression,_| expression }
-        match( :var ) {|var| $stack.look_up(var) }
+        match( :var ) {|var| @@root_node << LookUpNode.new(var) } #$stack.look_up(var) }
         match(Integer) { |i| IntegerNode.new(i) }
       end
       

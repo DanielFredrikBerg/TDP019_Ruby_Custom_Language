@@ -482,7 +482,7 @@ def test_for_loop_multiple_statements
   output = output.join(" ")
   #puts "After join: #{output}" #DEBUG
 
-  assert_equal( "a b ", output.to_s + " " )
+  assert_equal( "b ", output.to_s + " " )
 end
 
 
