@@ -1,10 +1,14 @@
 # coding: utf-8
 require 'test/unit'
+require 'stringio'
 require './rules'
 
 class SongicTest < Test::Unit::TestCase
 
+
 def test_basic_test
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/basic_test.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -15,7 +19,10 @@ def test_basic_test
 end
 
 
+
 def test_variable_change
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/variable_change.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -26,7 +33,10 @@ def test_variable_change
 end
 
 
+
 def test_note_modification_length
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/note_modification_length.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -37,7 +47,10 @@ def test_note_modification_length
 end
 
 
+
 def test_note_modification_octave_higher
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/note_modification_octave_higher.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -48,7 +61,10 @@ def test_note_modification_octave_higher
 end
 
 
+
 def test_note_modification_octave_lower
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/note_modification_octave_lower.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -59,7 +75,10 @@ def test_note_modification_octave_lower
 end
 
 
+
 def test_note_modification_length_and_octave
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/note_modification_length_and_octave.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -70,7 +89,10 @@ def test_note_modification_length_and_octave
 end
 
 
+
 def test_note_modification_sharp
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/note_modification_sharp.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -81,7 +103,10 @@ def test_note_modification_sharp
 end
 
 
+
 def test_note_modification_flat
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/note_modification_flat.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -92,7 +117,10 @@ def test_note_modification_flat
 end
 
 
+
 def test_note_modification_all
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/note_modification_all.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -103,7 +131,10 @@ def test_note_modification_all
 end
 
 
+
 def test_dumb_notes
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/dumb_notes.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -114,7 +145,10 @@ def test_dumb_notes
 end
 
 
+
 def test_several_motifs_in_a_segment
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/several_motifs_in_a_segment.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -125,7 +159,10 @@ def test_several_motifs_in_a_segment
 end
 
 
+
 def test_several_segments_in_structure
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/several_segments_in_structure.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -136,7 +173,10 @@ def test_several_segments_in_structure
 end
 
 
+
 def test_arithmetic_basic_integer
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_basic_integer.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -147,7 +187,10 @@ def test_arithmetic_basic_integer
 end
 
 
+
 def test_arithmetic_simple_addition
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_simple_addition.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -158,7 +201,10 @@ def test_arithmetic_simple_addition
 end
 
 
+
 def test_arithmetic_simple_subtraction
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_simple_subtraction.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -169,7 +215,10 @@ def test_arithmetic_simple_subtraction
 end
 
 
+
 def test_arithmetic_simple_multiplication
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_simple_multiplication.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -180,7 +229,10 @@ def test_arithmetic_simple_multiplication
 end
 
 
+
 def test_arithmetic_simple_division
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_simple_division.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -191,7 +243,10 @@ def test_arithmetic_simple_division
 end
 
 
+
 def test_arithmetic_combined_add_sub
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_combined_add_sub.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -202,7 +257,10 @@ def test_arithmetic_combined_add_sub
 end
 
 
+
 def test_arithmetic_combined_add_mult
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_combined_add_mult.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -213,7 +271,10 @@ def test_arithmetic_combined_add_mult
 end
 
 
+
 def test_arithmetic_combined_add_div
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_combined_add_div.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -224,7 +285,10 @@ def test_arithmetic_combined_add_div
 end
 
 
+
 def test_arithmetic_combined_div_add
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_combined_div_add.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -235,7 +299,10 @@ def test_arithmetic_combined_div_add
 end
 
 
+
 def test_arithmetic_combined_div_sub
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_combined_div_sub.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -246,7 +313,10 @@ def test_arithmetic_combined_div_sub
 end
 
 
+
 def test_arithmetic_combined_sub_div
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_combined_sub_div.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -257,7 +327,10 @@ def test_arithmetic_combined_sub_div
 end
 
 
+
 def test_arithmetic_combined_div_mult_parenthesis
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_combined_div_mult_parenthesis.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -268,7 +341,10 @@ def test_arithmetic_combined_div_mult_parenthesis
 end
 
 
+
 def test_arithmetic_combined_mult_add
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_combined_mult_add.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -279,7 +355,10 @@ def test_arithmetic_combined_mult_add
 end
 
 
+
 def test_arithmetic_combined_mult_sub
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_combined_mult_sub.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -290,7 +369,10 @@ def test_arithmetic_combined_mult_sub
 end
 
 
+
 def test_arithmetic_combined_sub_mult
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/arithmetic_combined_sub_mult.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -301,7 +383,10 @@ def test_arithmetic_combined_sub_mult
 end
 
 
+
 def test_single_note
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/single_note.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -312,7 +397,10 @@ def test_single_note
 end
 
 
+
 def test_repeat_test
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/repeat_test.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -323,7 +411,10 @@ def test_repeat_test
 end
 
 
+
 def test_repeat_test_scope
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/repeat_test_scope.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -334,7 +425,10 @@ def test_repeat_test_scope
 end
 
 
+
 def test_repeat_iterations_with_variable
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/repeat_iterations_with_variable.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -345,7 +439,10 @@ def test_repeat_iterations_with_variable
 end
 
 
+
 def test_repeat_iterations_by_variable
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/repeat_iterations_by_variable.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -356,7 +453,10 @@ def test_repeat_iterations_by_variable
 end
 
 
+
 def test_several_loops
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/several_loops.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -367,7 +467,10 @@ def test_several_loops
 end
 
 
+
 def test_simple_if_equals
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/simple_if_equals.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -378,7 +481,10 @@ def test_simple_if_equals
 end
 
 
+
 def test_simple_if_equals_false
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/simple_if_equals_false.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -389,7 +495,10 @@ def test_simple_if_equals_false
 end
 
 
+
 def test_if_multiple_variable_change
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/if_multiple_variable_change.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
@@ -400,7 +509,10 @@ def test_if_multiple_variable_change
 end
 
 
+
 def test_for_loop_multiple_statements
+  output = StringIO.new
+  $stdout = output
   output = %x'ruby songic.rb ztests/for_loop_multiple_statements.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG

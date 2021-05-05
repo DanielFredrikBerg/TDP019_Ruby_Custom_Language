@@ -5,9 +5,11 @@ class RootNode < Array
   end
 
   def seval
+    s = ""
     self.each do |node|
-      node.seval
+      s << node.seval
     end
+    s
   end
 
   

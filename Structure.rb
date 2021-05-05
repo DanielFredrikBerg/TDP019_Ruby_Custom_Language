@@ -21,7 +21,7 @@ class Structure
 
   def seval
     @segments.each { |segment| segment.seval }
-  end; nil
+  end
   
   def write
     @segments.each { |segment| segment.write }

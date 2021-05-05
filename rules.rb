@@ -1,6 +1,9 @@
 # coding: iso-8859-1
 require_relative './Classes'
 
+class ForToken
+  
+end
 
 class Rules
   attr_accessor :file
@@ -18,7 +21,7 @@ class Rules
       ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
       token(/dividedby/) {|m| m.to_s }
-      token(/for/) {|m| m.to_s }
+      token(/for/) {|m| ForToken.new }
       token(/equals/) {|m| m.to_s }
       token(/if/) {|m| m.to_s }
       token(/[+|-]\d/) {|m| m.to_s }
@@ -43,7 +46,7 @@ class Rules
 
       rule :segments do
         match(:segments, ',', :var) {|segments, _, segment| @@root_node << $stack.look_up(segment) } 
-        match(:var) {|segment| @@root_node << $stack.look_up(segment) }
+        match(:var) {|segment| x = $stack.look_up(segment); @@root_node << x }
       end
       
       rule :segment_block do
@@ -56,9 +59,12 @@ class Rules
       end
 
       rule :segment_variable_assignment do
-        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| segment.add($stack.look_up(motif)); segment}
-        match(:var, '=', :var) {|name, _, motif| $stack.add(name, Segment.new($stack.look_up(motif) )) } 
-        match(:var, '=', :loop) {|name, _, loop|  $stack.add(name, loop) } 
+        match(:segment_variable_assignment, ',', :var) {|segment,_, motif| segment.add($stack.look_up(motif)); segment}
+        # testad match(:segment_variable_assignment, ',', :var) {|segment, _, motif| x=$stack.add(segment, $stack.look_up(motif) ); x }
+        match(:var, '=', :var) {|name,_, motif| $stack.add(name, Segment.new($stack.look_up(motif) )) } 
+        #match(:var, '=', :var) {|name, _, motif|  segment = Segment.new( $stack.look_up(motif) ); VarAssNode.new(name, segment); segment} 
+        #match(:var, '=', :var) {|name, _, motif| x=$stack.add(name, $stack.look_up(motif) ); x} 
+        match(:var, '=', :loop) {|name, _, loop|  VarAssNode.new(name, loop) } 
       end
       
       
@@ -80,7 +86,7 @@ class Rules
             $stack.look_up(name)
           end
         end 
-        match(:var, '=', :motif) {|name, _, motif| $stack.add(name, motif) }
+        match(:var, '=', :motif) {|name, _, motif| VarAssNode.new(name, motif)}
         
         match(:var, '=', :loop) {|name, _, loop|  $stack.add(name, loop) } 
         match(:var, '=', :expression) { |name, _, expression|  $stack.add(name, expression) }
@@ -116,7 +122,7 @@ class Rules
       end
 
       rule :for_loop do
-        match('klok', :expression, '[', :statements, ']') do |_,expression,_,statements,_|
+        match(ForToken, :expression, '[', :statements, ']') do |_,expression,_,statements,_|
           ForNode.new(expression, statements) 
         end
       end
@@ -137,8 +143,8 @@ class Rules
       end
 
       rule :statement do
-        match(:var, '=', :motif) {|name, _, motif| $stack.add(name, motif) }
-        match(:var, '=', :expression) { |name, _, expression| $stack.add(name, expression) }
+        match(:var, '=', :motif) {|name, _, motif| VarAssNode.new(name, motif) }
+        match(:var, '=', :expression) { |name, _, expression| VarAssNode.new(name, expression) }
         match(:motif) {|n| n} 
       end      
 
@@ -242,8 +248,11 @@ class Rules
       root_node = @rule_parser.parse str
       #puts root_node.seval
       #puts "=> #{root_node.eval}"
-
-      root_node.seval
+      #puts root_node
+      
+      x = root_node.seval
+      puts x
+      
     end
   end
 

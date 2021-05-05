@@ -15,7 +15,7 @@ class Motif
   def add(*notes)
     notes.each do |note|
       if note.class != Note and note.class != Silence
-        raise TypeError.new "Trying to add a non-Note to Motif"
+        raise TypeError.new "Trying to add a non-Note: #{note.class} to Motif"
       else
         @notes << note
       end
@@ -23,15 +23,19 @@ class Motif
   end
 
   def seval
+    s = ""
     @notes.each do |note|
-      note.seval
-    end; nil
+      s << note.seval
+    end
+    s
   end
   
-  def write
+  def to_s
+    s = ""
     @notes.each do |note|
-      note.write
-    end; nil #This line supresses the each-method from returning 'self', causing it to be written in the terminal. 
+      s += note.seval
+    end #This line supresses the each-method from returning 'self', causing it to be written in the terminal. 
+    s
   end
 
 end

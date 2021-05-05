@@ -8,13 +8,13 @@ class Repeat
   end
   
   def seval
+    s = ""
     (1..@iterations).each do
       @loop_list.each do |statement|
-        statement.seval
+        s += statement.seval
       end
     end
- 
-
+    s
   end
   
 end
