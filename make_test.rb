@@ -16,6 +16,7 @@ class MakeTest
 
     # Test file structure
     @header = "# coding: utf-8
+require 'stringio'
 require 'test/unit'
 require './rules'
 

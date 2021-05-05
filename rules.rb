@@ -243,9 +243,9 @@ class Rules
     else
       root_node = @rule_parser.parse str
       #puts root_node.seval
-      #puts "=> #{root_node.eval}"
-
-      root_node.seval
+      #puts "=> #{root_node.eval}"      
+      x = root_node.seval
+      puts x
     end
   end
 
