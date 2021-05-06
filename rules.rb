@@ -44,8 +44,8 @@ class Rules
       end
 
       rule :segments do
-        match(:segments, ',', :var) {|segments, _, segment| @@root_node << segment } 
-        match(:var) {|segment| @@root_node << segment }
+        match(:segments, ',', :var) {|segments, _, segment| @@root_node << segment ; segments} 
+        match(:var) {|segment| @@root_node << segment; segment }
       end
       
       rule :segment_block do
@@ -60,7 +60,7 @@ class Rules
       rule :segment_variable_assignment do
         match(:segment_variable_assignment, ',', :var) {|segment, _, motif| @@root_node << AddNode.new(segment, motif); segment} #TODO
         match(:var, '=', :var) {|name, _, motif| @@root_node << VarAssNode.new(name, motif); name } #$stack.add(name, Segment.new($stack.look_up(motif) )) } 
-        match(:var, '=', :loop) {|name, _, loop| @@root_node << VarAssNode.new(name, loop) } #$stack.add(name, loop) } 
+        match(:var, '=', :loop) {|name, _, loop| @@root_node << VarAssNode.new(name, loop); name } #$stack.add(name, loop) } 
       end
       
       
@@ -82,10 +82,10 @@ class Rules
             @@root_node << LookUpNode.new(name)
           end
         end 
-        match(:var, '=', :motif) {|name, _, motif| @@root_node << VarAssNode.new(name, motif) } #$stack.add(name, motif) }
+        match(:var, '=', :motif) {|name, _, motif| @@root_node << VarAssNode.new(name, motif); name } #$stack.add(name, motif) }
         
-        match(:var, '=', :loop) {|name, _, loop|  @@root_node << VarAssNode.new(name, loop) } #$stack.add(name, loop) } 
-        match(:var, '=', :expression) { |name, _, expression|  @@root_node << VarAssNode.new(name, expression) } #$stack.add(name, expression) }
+        match(:var, '=', :loop) {|name, _, loop| @@root_node << VarAssNode.new(name, loop); name } #$stack.add(name, loop) } 
+        match(:var, '=', :expression) { |name, _, expression|  @@root_node << VarAssNode.new(name, expression); name } #$stack.add(name, expression) }
         
         match(:for_loop) { |for_loop| @@root_node << for_loop }
         match(:loop)
@@ -139,13 +139,13 @@ class Rules
       end
 
       rule :statement do
-        match(:var, '=', :motif) {|name, _, motif| @@root_node << VarAssNode.new(name, motif) } #$stack.add(name, motif) }
-        match(:var, '=', :expression) { |name, _, expression| @@root_node << VarAssNode.new(name, expression) }#$stack.add(name, expression) }
+        match(:var, '=', :motif) {|name, _, motif| @@root_node << VarAssNode.new(name, motif); name } #$stack.add(name, motif) }
+        match(:var, '=', :expression) { |name, _, expression| @@root_node << VarAssNode.new(name, expression); name  }#$stack.add(name, expression) }
         match(:motif) {|n| n} 
       end      
 
       rule :var do
-        match(/[A-Z]/) 
+        match(/[A-Z]/) {|m| m}
       end
 
       rule :motif do
@@ -193,7 +193,7 @@ class Rules
 
       rule :factor do
         match('(',:expression,')') {|_,expression,_| expression }
-        match( :var ) {|var| @@root_node << LookUpNode.new(var) } #$stack.look_up(var) }
+        match( :var ) {|var| @@root_node << LookUpNode.new(var); var } #$stack.look_up(var) }
         match(Integer) { |i| IntegerNode.new(i) }
       end
       

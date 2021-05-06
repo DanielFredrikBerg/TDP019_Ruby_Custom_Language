@@ -421,4 +421,17 @@ def test_repeat_test
 end
 
 
+def test_repeat_iterations_with_variable
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/repeat_iterations_with_variable.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "c c c ", output.to_s + " " )
+end
+
+
 end
