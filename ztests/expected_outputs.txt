@@ -31,10 +31,10 @@ arithmetic_combined_mult_sub              a b b d e
 arithmetic_combined_sub_mult              a b c#-1 d e
 repeat_test                               a a a
 repeat_iterations_with_variable           c c c
-#repeat_iterations_by_variable             a a   
-#several_loops                             b b
-#simple_if_equals                          a b c
-#simple_if_equals_false                    c b a
-#if_multiple_variable_change               a b c d e f
+repeat_iterations_by_variable             a a   
+several_loops                             b b
+simple_if_equals                          a b c
+simple_if_equals_false                    c b a
+if_multiple_variable_change               a b c d e f
 #for_loop_multiple_statements              b
 #repeat_test_scope                           
