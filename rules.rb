@@ -44,7 +44,7 @@ class Rules
       end
 
       rule :segments do
-        match(:segments, ',', :var) {|segments, _, segment| @@root_node << segments } 
+        match(:segments, ',', :var) {|segments, _, segment| @@root_node << segment } 
         match(:var) {|segment| @@root_node << segment }
       end
       

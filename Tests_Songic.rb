@@ -109,6 +109,19 @@ def test_note_modification_all
 end
 
 
+def test_dumb_notes
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/dumb_notes.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "c+1 e ", output.to_s + " " )
+end
+
+
 def test_several_motifs_in_a_segment
   output = StringIO.new
   $stdout = output
@@ -119,6 +132,19 @@ def test_several_motifs_in_a_segment
   #puts "After join: #{output}" #DEBUG
 
   assert_equal( "a b c d e f g ", output.to_s + " " )
+end
+
+
+def test_several_segments_in_structure
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/several_segments_in_structure.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "a b c d d e f g ", output.to_s + " " )
 end
 
 
