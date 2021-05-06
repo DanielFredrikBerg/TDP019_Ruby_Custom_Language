@@ -187,4 +187,17 @@ def test_three_segments_in_structure
 end
 
 
+def test_single_note
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/single_note.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "a ", output.to_s + " " )
+end
+
+
 end
