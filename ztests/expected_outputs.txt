@@ -10,7 +10,8 @@ dumb_notes                                c+1 e
 several_motifs_in_a_segment               a b c d e f g
 three_motifs_in_a_segment                 a b c d e f g a b c
 four_motifs_in_a_segment                  a b c d e f g a b c d e f g
-#several_segments_in_structure             a b c d d e f g
+several_segments_in_structure             a b c d d e f g
+three_segments_in_structure               a b c d d e f g d e f g
 #variable_change                           d d
 #arithmetic_basic_integer                  a b e d e
 #arithmetic_simple_addition                a b d# d e
