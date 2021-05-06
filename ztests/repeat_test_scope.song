@@ -1,12 +1,13 @@
 motifs
 {
-for 2 [ TWO = 3 plus 1 ]
-V = rpt if TWO [ d ]
+TWO = a
+for 2 [ TWO = c ]
+
 }
 
 segments
 {
-CHORUS = V
+CHORUS = TWO
 }
 
 structure

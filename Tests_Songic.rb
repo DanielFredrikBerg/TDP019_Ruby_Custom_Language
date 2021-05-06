@@ -408,4 +408,121 @@ def test_arithmetic_combined_sub_mult
 end
 
 
+def test_repeat_test
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/repeat_test.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "a a a ", output.to_s + " " )
+end
+
+
+def test_repeat_test_scope
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/repeat_test_scope.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( " ", output.to_s + " " )
+end
+
+
+def test_repeat_iterations_with_variable
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/repeat_iterations_with_variable.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "c c c ", output.to_s + " " )
+end
+
+
+def test_repeat_iterations_by_variable
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/repeat_iterations_by_variable.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "a a ", output.to_s + " " )
+end
+
+
+def test_several_loops
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/several_loops.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "b b ", output.to_s + " " )
+end
+
+
+def test_simple_if_equals
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/simple_if_equals.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "a b c ", output.to_s + " " )
+end
+
+
+def test_simple_if_equals_false
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/simple_if_equals_false.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "c b a ", output.to_s + " " )
+end
+
+
+def test_if_multiple_variable_change
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/if_multiple_variable_change.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "a b c d e f ", output.to_s + " " )
+end
+
+
+def test_for_loop_multiple_statements
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/for_loop_multiple_statements.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "a b ", output.to_s + " " )
+end
+
+
 end

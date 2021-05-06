@@ -1,11 +1,11 @@
 motifs
 {
-
+A = a b c
 C = d e f
 
 for 3 [ 
 C = b 
- 
+A = a
 ]
 
 
@@ -13,7 +13,7 @@ C = b
 
 segments
 {
-CHORUS = C
+CHORUS = A, C
 }
 
 structure

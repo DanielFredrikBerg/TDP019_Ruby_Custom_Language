@@ -1,3 +1,4 @@
+# coding: iso-8859-1
 #require './rules'
 
 class Repeat
@@ -9,10 +10,21 @@ class Repeat
   
   def seval
     s = ""
-    miterations = $stack.look_up(@iterations)
+    if @iterations.class == IntegerNode
+      miterations = @iterations.seval
+    elsif @iterations.class == String
+      #Om @iterations visar sig vara en sträng - kolla upp den.
+      miterations = $stack.look_up(@iterations).seval
+    else 
+      puts @iterations
+    end
     (1..miterations).each do
       @loop_list.each do |statement|
-        s += statement.seval
+        if statement.class == Motif
+          s += statement.seval
+        else
+          statement.seval
+        end
       end
     end
     s

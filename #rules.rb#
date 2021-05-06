@@ -17,7 +17,7 @@ class Rules
 
     @rule_parser = Parser.new("rules") do
 
-      ## Tokens utgör Lexern
+      ## Tokens utgÃ¶r Lexern
       token(/\s+/) #{|m| m.to_s }
       token(/dividedby/) {|m| m.to_s }
       token(/for/) {|m| ForToken.new }
@@ -29,7 +29,7 @@ class Rules
       token( /^[a-zA-Z]+/ ) { |m| m.to_s }
       token(/./) { |m| m.to_s }
       
-      # Parsern ansvarar för att skapa objekten => AST
+      # Parsern ansvarar fÃ¶r att skapa objekten => AST
 
       start :song do
         match(:motif_block, :segment_block, :structure_block) do 
@@ -140,7 +140,7 @@ class Rules
       end
 
       rule :statement do
-        match(:var, '=', :motif)  {|name, _, motif| x = VarAssNode.new(name, motif); @@root_node << x ; x } # @@root_node << VarAssNode.new(name, motif); name }
+        match(:var, '=', :motif)  {|name, _, motif| x = VarAssNode.new(name, motif); @@root_node << x ; x } 
         match(:var, '=', :expression) { |name, _, expression| x = VarAssNode.new(name, expression); @@root_node << x ; x }
         match(:motif) {|n| n} 
       end      
@@ -194,7 +194,7 @@ class Rules
 
       rule :factor do
         match('(',:expression,')') {|_,expression,_| expression }
-        match( :var ) {|var| @@root_node << LookUpNode.new(var); var } #$stack.look_up(var) }
+        match( :var ) {|var| @@root_node << LookUpNode.new(var); var }
         match(Integer) { |i| IntegerNode.new(i) }
       end
       
