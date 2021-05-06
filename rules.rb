@@ -1,4 +1,4 @@
-# coding: iso-8859-1
+# coding: utf-8
 require_relative './Classes'
 
 class ForToken
@@ -59,7 +59,7 @@ class Rules
 
       rule :segment_variable_assignment do
         match(:segment_variable_assignment, ',', :var) {|segment, _, motif| @@root_node << AddNode.new(segment, motif)} #TODO
-        match(:var, '=', :var) {|name, _, motif| @@root_node << VarAssNode.new(name, motif) } #$stack.add(name, Segment.new($stack.look_up(motif) )) } 
+        match(:var, '=', :var) {|name, _, motif| @@root_node << VarAssNode.new(name, motif); name } #$stack.add(name, Segment.new($stack.look_up(motif) )) } 
         match(:var, '=', :loop) {|name, _, loop| @@root_node << VarAssNode.new(name, loop) } #$stack.add(name, loop) } 
       end
       
@@ -245,6 +245,8 @@ class Rules
       #puts root_node.seval
       #puts "=> #{root_node.eval}"      
       x = root_node.seval
+      #puts "STACK: \n #{$stack} \n -------------------------------"
+      #puts "ROOT NODE: \n #{root_node} \n -------------------------"
       puts x
     end
   end

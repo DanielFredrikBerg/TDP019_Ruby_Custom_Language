@@ -5,8 +5,10 @@ class AddNode
   end
 
   def seval
-    $stack.add(@key, @value)
+
+    ($stack.look_up(@key)).add($stack.look_up(@value))
     
+    # puts $stack
   end
 
 end
