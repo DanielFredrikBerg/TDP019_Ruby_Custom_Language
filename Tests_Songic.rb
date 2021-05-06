@@ -408,4 +408,17 @@ def test_arithmetic_combined_sub_mult
 end
 
 
+def test_repeat_test
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/repeat_test.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "a a a ", output.to_s + " " )
+end
+
+
 end
