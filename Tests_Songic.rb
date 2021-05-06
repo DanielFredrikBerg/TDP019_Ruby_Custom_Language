@@ -135,16 +135,29 @@ def test_several_motifs_in_a_segment
 end
 
 
-def test_several_segments_in_structure
+def test_three_motifs_in_a_segment
   output = StringIO.new
   $stdout = output
-  output = %x'ruby songic.rb ztests/several_segments_in_structure.song'
+  output = %x'ruby songic.rb ztests/three_motifs_in_a_segment.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
   output = output.join(" ")
   #puts "After join: #{output}" #DEBUG
 
-  assert_equal( "a b c d d e f g ", output.to_s + " " )
+  assert_equal( "a b c d e f g a b c ", output.to_s + " " )
+end
+
+
+def test_four_motifs_in_a_segment
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/four_motifs_in_a_segment.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "a b c d e f g a b c d e f g ", output.to_s + " " )
 end
 
 

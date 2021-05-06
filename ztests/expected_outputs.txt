@@ -1,5 +1,4 @@
 basic_test                                a b
-#variable_change                           d d
 note_modification_length                  2a b
 note_modification_octave_higher           a+1 b
 note_modification_octave_lower            a-1 b
@@ -9,7 +8,10 @@ note_modification_flat                    g# b
 note_modification_all                     a# 2a# a#+1 2a#+1 a#-1 2a#-1 g# 2g# g#+1 2g#+1 g#-1 2g#-1
 dumb_notes                                c+1 e
 several_motifs_in_a_segment               a b c d e f g
-several_segments_in_structure             a b c d d e f g
+three_motifs_in_a_segment                 a b c d e f g a b c
+four_motifs_in_a_segment                  a b c d e f g a b c d e f g
+#several_segments_in_structure             a b c d d e f g
+#variable_change                           d d
 #arithmetic_basic_integer                  a b e d e
 #arithmetic_simple_addition                a b d# d e
 #arithmetic_simple_subtraction             a b b-1 d e

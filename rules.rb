@@ -58,7 +58,7 @@ class Rules
       end
 
       rule :segment_variable_assignment do
-        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| @@root_node << AddNode.new(segment, motif)} #TODO
+        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| @@root_node << AddNode.new(segment, motif); segment} #TODO
         match(:var, '=', :var) {|name, _, motif| @@root_node << VarAssNode.new(name, motif); name } #$stack.add(name, Segment.new($stack.look_up(motif) )) } 
         match(:var, '=', :loop) {|name, _, loop| @@root_node << VarAssNode.new(name, loop) } #$stack.add(name, loop) } 
       end
