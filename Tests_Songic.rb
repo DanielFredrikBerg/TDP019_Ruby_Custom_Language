@@ -499,4 +499,17 @@ def test_if_multiple_variable_change
 end
 
 
+def test_for_loop
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/for_loop.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "b ", output.to_s + " " )
+end
+
+
 end

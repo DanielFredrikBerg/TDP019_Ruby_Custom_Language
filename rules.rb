@@ -134,12 +134,12 @@ class Rules
       end
 
       rule :statements do
-        match( :statements, :statement ) {|statements, statement| statements << statement }
+        match( :statements, :statement ) {|statements, statement| statements << statement; puts "STATEMENTS: #{statements}" }
         match( :statement ) {|s|  [s] }
       end
 
       rule :statement do
-        match(:var, '=', :motif) {|name, _, motif| @@root_node << VarAssNode.new(name, motif); name } #$stack.add(name, motif) }
+        match(:var, '=', :motif) {|name, _, motif| x = VarAssNode.new(name, motif); @@root_node << x ; x } #$stack.add(name, motif) }
         match(:var, '=', :expression) { |name, _, expression| @@root_node << VarAssNode.new(name, expression); name  }#$stack.add(name, expression) }
         match(:motif) {|n| n} 
       end      

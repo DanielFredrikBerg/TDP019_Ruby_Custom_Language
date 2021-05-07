@@ -12,6 +12,7 @@ class VarAssNode
       @value = Segment.new($stack.look_up(@value))
     end   
     $stack.add(@key, @value)
+    ""
   end
 
 end
