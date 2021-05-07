@@ -1,6 +1,6 @@
 motifs
 {
-A = rpt 3 [ a ]
+A = repeat 3 [ a ]
 }
 
 segments

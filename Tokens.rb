@@ -1,7 +1,6 @@
 # Tokens used in parser: rules.rb
 
 # ARITHMETIC TOKENS
-
 class AdditionToken
 end
 
@@ -15,7 +14,6 @@ class SubtractionToken
 end
 
 # BOOLEAN TOKENS ##################################################
-
 class AndToken
   attr_reader :s
   def initialize
@@ -44,4 +42,6 @@ end
 class IfToken
 end
 
+class RepeatToken
+end
 

@@ -1,7 +1,7 @@
 motifs
 {
 TWO = 2 plus 1
-V = rpt TWO [ c ]
+V = repeat TWO [ c ]
 }
 
 segments

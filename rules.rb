@@ -20,9 +20,12 @@ class Rules
       token(/dividedby/) {|_| DivisionToken.new }
       token(/times/) {|_| MultiplicationToken.new }
       token(/minus/) { |_| SubtractionToken.new }
-      token(/for/) {|_| ForToken.new }
-      token(/equals/) {|_| EqualsToken.new }
       token(/if/) {|_| IfToken.new }
+      token(/for/) {|_| ForToken.new }
+      token(/repeat/) {|_| RepeatToken.new }
+      token(/and/) {|_| AndToken.new }
+      token(/equals/) {|_| EqualsToken.new }
+      token(/or/) {|_| OrToken.new }
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) { |m| m.to_s }
@@ -101,9 +104,9 @@ class Rules
       end
 
       rule :comparator do
-        match(EqualsToken) { |e| StringNode.new(e.s)  }
-        # match('or') { |s| StringNode.new(s)  }
-        # match('lesser than') { |s| StringNode.new(s)  }
+        match(EqualsToken) { |equals| StringNode.new(equals.s)  }
+        match(OrToken) { |o| StringNode.new(o.s)  }
+        match(AndToken) { |a| StringNode.new(a.s)  }
       end
 
       # PROOF OF CONCEPT
@@ -128,9 +131,9 @@ class Rules
 ## TODO ########################################################################################
 
       rule :loop do 
-        match('rpt', :expression, '[', :statements, ']' ) {|_,expr,_,statements,_| Repeat.new(expr, statements) }
-        match('rpt', :var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new(var, statements) }
-        match('rpt', :if_var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new(var, statements) }
+        match(RepeatToken, :expression, '[', :statements, ']' ) {|_,expr,_,statements,_| Repeat.new(expr, statements) }
+        match(RepeatToken, :var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new(var, statements) }
+        match(RepeatToken, :if_var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new(var, statements) }
       end
 
       rule :statements do
