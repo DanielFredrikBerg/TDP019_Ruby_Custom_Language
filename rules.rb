@@ -1,8 +1,5 @@
-# coding: utf-8
+# coding: iso-8859-1
 require_relative './Classes'
-
-class ForToken
-end
 
 class Rules
   attr_accessor :file
@@ -19,10 +16,11 @@ class Rules
 
       ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
-      token(/dividedby/) {|m| m.to_s }
-      token(/for/) {|m| ForToken.new }
-      token(/equals/) {|m| m.to_s }
-      token(/if/) {|m| m.to_s }
+      token(/dividedby/) {|_| DivisionToken.new }
+      token(/times/) {|_| MultiplicationToken.new }
+      token(/for/) {|_| ForToken.new }
+      token(/equals/) {|_| EqualsToken.new }
+      token(/if/) {|_| IfToken.new }
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) { |m| m.to_s }
@@ -94,23 +92,23 @@ class Rules
       
 ## TODO ########################################################################################
       rule :if do
-        match( 'if', :expression, :comparator, :expression, '[', :statements, ']') do
+        match( IfToken, :expression, :comparator, :expression, '[', :statements, ']') do
           |_,lhs,comparator,rhs,_,statements,_|
           IfNode.new(lhs, comparator, rhs, statements)
         end
       end
 
       rule :comparator do
-        match('equals') { |s| StringNode.new(s)  }
+        match(EqualsToken) { |e| StringNode.new(e.s)  }
         # match('or') { |s| StringNode.new(s)  }
         # match('lesser than') { |s| StringNode.new(s)  }
       end
 
       # PROOF OF CONCEPT
       rule :if_var do
-        match( 'if', :var ) do |_,name|
+        match( IfToken, :var ) do |_,name|
           if $stack.check(name)
-            $stack.look_up(name)
+            $stack.look_up(name) # <--- Probably TODO
           else
             IntegerNode.new(0)
           end
@@ -186,8 +184,8 @@ class Rules
       end
 
       rule :term do
-        match(:factor, 'times', :factor) {|a,_,b| Multiplication.new(a,b) }
-        match(:factor, 'dividedby', :factor) {|a,_,b| Division.new(a,b) }
+        match(:factor, MultiplicationToken, :factor) {|a,_,b| Multiplication.new(a,b) }
+        match(:factor, DivisionToken, :factor) {|a,_,b| Division.new(a,b) }
         match(:factor)
       end
 

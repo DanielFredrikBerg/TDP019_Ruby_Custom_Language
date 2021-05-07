@@ -20,5 +20,6 @@ require './Stack'
 require './StringNode'
 require './Structure'
 require './Subtraction.rb'
+require './Tokens'
 require './VariableAssignmentNode'
 
