@@ -20,6 +20,8 @@ class Rules
       token(/divided by/) {|_| DivisionToken.new }
       token(/times/) {|_| MultiplicationToken.new }
       token(/minus/) { |_| SubtractionToken.new }
+      token(/true/) { |_| TrueToken.new }
+      token(/false/) { |_| FalseToken.new }
       token(/if/) {|_| IfToken.new }
       token(/for/) {|_| ForToken.new }
       token(/repeat/) {|_| RepeatToken.new }
@@ -84,12 +86,13 @@ class Rules
           else
             @@root_node << LookUpNode.new(name)
           end
-        end 
+        end
         match(:var, '=', :motif) {|name, _, motif| @@root_node << VarAssNode.new(name, motif); name } 
         
         match(:var, '=', :loop) {|name, _, loop| @@root_node << VarAssNode.new(name, loop); name } 
         match(:var, '=', :expression) { |name, _, expression|  @@root_node << VarAssNode.new(name, expression); name } 
         
+        match(:if) { |if_statement| @@root_node << if_statement }
         match(:for_loop) { |for_loop| @@root_node << for_loop }
         match(:loop)
         match(:if_var)
@@ -101,12 +104,21 @@ class Rules
           |_,lhs,comparator,rhs,_,statements,_|
           IfNode.new(lhs, comparator, rhs, statements)
         end
+        match( IfToken, :boolean, :comparator, :boolean, '[', :statements, ']') do
+          |_,lhs,comparator,rhs,_,statements,_|
+          IfNode.new(lhs, comparator, rhs, statements)
+        end
       end
 
       rule :comparator do
-        match(EqualsToken) { |equals| StringNode.new(equals.s)  }
+        match(EqualsToken) { |e| StringNode.new(e.s)  }
         match(OrToken) { |o| StringNode.new(o.s)  }
         match(AndToken) { |a| StringNode.new(a.s)  }
+      end
+
+      rule :boolean do
+        match(TrueToken) { |t| BooleanNode.new(t)  }
+        match(FalseToken) { |t| BooleanNode.new(f)  }
       end
 
       # PROOF OF CONCEPT

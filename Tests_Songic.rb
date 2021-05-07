@@ -525,4 +525,17 @@ def test_for_loop_initialized_variable
 end
 
 
+def test_for_loop_multiple_initialized_variables
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/for_loop_multiple_initialized_variables.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "a b c ", output.to_s + " " )
+end
+
+
 end

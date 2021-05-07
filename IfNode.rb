@@ -13,15 +13,18 @@ class IfNode
   end
 
   def seval
+    $stack.push_frame
+
     if @comp.seval
       s = ""
-      @statements.each do |statements|
-        s += statements.seval
-      end      
+      @statements.each do |statement|
+        s += statement.seval
+      end
     end
+    #puts "BEFORE: \n #{$stack} \n -------------------"
+    $stack.pop_frame
+    #puts "AFTER: #{$stack} \n --------------------"
     s
-    
-    #$stack.pop_frame
   end
   
 

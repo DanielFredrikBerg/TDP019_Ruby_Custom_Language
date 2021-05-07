@@ -1,0 +1,24 @@
+motifs
+{
+A = a b c
+B = b c d
+C = e f g
+
+for 3 [ 
+C = c
+A = a
+B = b
+]
+
+
+}
+
+segments
+{
+CHORUS = A, B, C
+}
+
+structure
+{
+CHORUS
+}

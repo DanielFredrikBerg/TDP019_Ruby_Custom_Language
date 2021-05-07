@@ -35,6 +35,20 @@ class OrToken
   end
 end
 
+class TrueToken
+  attr_reader :b
+  def initialize
+    @b = true
+  end
+end
+
+class FalseToken
+  attr_reader :b
+  def initialize
+    @b = false
+  end
+end
+
 # FUNCTION TOKENS ##################################################
 class ForToken
 end

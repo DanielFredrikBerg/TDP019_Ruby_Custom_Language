@@ -1,15 +1,11 @@
 motifs
 {
-for 3 [ 
-C = b  
-]
-
-
+if 3 plus 2 and 2 [ G = d e f ]
 }
 
 segments
 {
-CHORUS = C
+CHORUS = G
 }
 
 structure

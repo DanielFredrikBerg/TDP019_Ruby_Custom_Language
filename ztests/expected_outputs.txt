@@ -35,6 +35,11 @@ repeat_iterations_by_variable             a a
 several_loops                             b b
 if_simple_equals_true                     a b c
 if_simple_equals_false                    c b a
+#if_simple_and_true                        d e f
+#if_simple_and_false
+#if_simple_or_true
+#if_simple_or_false
 if_multiple_variable_change               a b c d e f
 for_loop_uninitialized_variable                                  
 for_loop_initialized_variable             b f a
+for_loop_multiple_initialized_variables   a b c
