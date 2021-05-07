@@ -29,6 +29,7 @@ class Rules
       token(/equals/) {|_| EqualsToken.new }
       token(/or/) {|_| OrToken.new }
       token(/is less than/) {|_| LesserToken.new}
+      token(/is more than/) {|_| GreaterToken.new}
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) { |m| m.to_s }
@@ -116,6 +117,7 @@ class Rules
         match(OrToken) { |o| StringNode.new(o.s)  }
         match(AndToken) { |a| StringNode.new(a.s)  }
         match(LesserToken) { |l| StringNode.new(l.s) }
+        match(GreaterToken) { |g| StringNode.new(g.s) }
       end
 
       rule :boolean do

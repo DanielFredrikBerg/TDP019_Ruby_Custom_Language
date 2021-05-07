@@ -1,0 +1,15 @@
+motifs
+{
+B = a
+if 6 is more than 5 [ B = f f f ]
+}
+
+segments
+{
+CHORUS = B, B
+}
+
+structure
+{
+CHORUS
+}

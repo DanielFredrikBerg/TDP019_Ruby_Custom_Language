@@ -56,6 +56,13 @@ class LesserToken
   end
 end
 
+class GreaterToken
+  attr_reader :s
+  def initialize
+    @s = 'is more than'
+  end
+end
+
 # FUNCTION TOKENS ##################################################
 class ForToken
 end
