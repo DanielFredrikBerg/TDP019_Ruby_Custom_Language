@@ -10,6 +10,10 @@ class ComparatorNode
     case @comparator.seval
     when 'equals'
       return @lhs.seval == @rhs.seval
+    when 'and'
+      return @lhs.seval && @rhs.seval
+    when 'or'
+      return @lhs.seval || @rhs.seval  
     when '<'
       return @lhs.seval  < @rhs.seval 
     when '>'

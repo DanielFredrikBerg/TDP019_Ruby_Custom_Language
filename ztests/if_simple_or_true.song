@@ -1,11 +1,12 @@
 motifs
 {
-G = if 5 equals 5 [ a b c ]
+B = a
+if false or true [ B = f f f ]
 }
 
 segments
 {
-CHORUS = G
+CHORUS = B, B
 }
 
 structure

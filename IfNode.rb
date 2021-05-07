@@ -14,7 +14,6 @@ class IfNode
 
   def seval
     $stack.push_frame
-
     if @comp.seval
       s = ""
       @statements.each do |statement|

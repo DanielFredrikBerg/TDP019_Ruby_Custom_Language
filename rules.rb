@@ -117,8 +117,8 @@ class Rules
       end
 
       rule :boolean do
-        match(TrueToken) { |t| BooleanNode.new(t)  }
-        match(FalseToken) { |t| BooleanNode.new(f)  }
+        match(TrueToken) { |t| BooleanNode.new(t.b)  }
+        match(FalseToken) { |t| BooleanNode.new(t.b)  }
       end
 
       # PROOF OF CONCEPT

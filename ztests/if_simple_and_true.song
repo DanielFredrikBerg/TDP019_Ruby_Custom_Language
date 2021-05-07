@@ -1,6 +1,7 @@
 motifs
 {
-if 3 plus 2 and 2 [ G = d e f ]
+G = a
+if true and true [ G = d e f ]
 }
 
 segments
