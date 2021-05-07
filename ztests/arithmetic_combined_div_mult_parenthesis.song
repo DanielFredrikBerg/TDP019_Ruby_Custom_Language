@@ -1,6 +1,6 @@
 motifs
 {
-A = a b c.transposed( (14 dividedby 7) times 3)
+A = a b c.transposed( (14 divided by 7) times 3)
 B = d e 
 }
 

@@ -17,7 +17,7 @@ class Rules
       ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
       token(/plus/) {|_| AdditionToken.new }
-      token(/dividedby/) {|_| DivisionToken.new }
+      token(/divided by/) {|_| DivisionToken.new }
       token(/times/) {|_| MultiplicationToken.new }
       token(/minus/) { |_| SubtractionToken.new }
       token(/if/) {|_| IfToken.new }

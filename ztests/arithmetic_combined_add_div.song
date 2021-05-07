@@ -1,6 +1,6 @@
 motifs
 {
-A = a b c.transposed(4 plus 6 dividedby 3)
+A = a b c.transposed(4 plus 6 divided by 3)
 B = d e 
 }
 

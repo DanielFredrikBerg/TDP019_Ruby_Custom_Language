@@ -1,6 +1,6 @@
 motifs
 {
-A = a b c.transposed(12 minus 2 dividedby 2)
+A = a b c.transposed(12 minus 2 divided by 2)
 B = d e 
 }
 
