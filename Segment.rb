@@ -21,8 +21,12 @@ class Segment
 
   def seval
     s = ""
-    @motifs.each do |motif| 
-      s += motif.seval
+    @motifs.each do |motif|
+      if motif != false
+        s += motif.seval
+      else
+        raise TypeError.new "Trying to access a non-existent variable"
+      end
     end
     s
   end
