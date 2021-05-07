@@ -1,7 +1,7 @@
 motifs
 {
 TWO = a
-for 2 [ TWO = c ]
+for 3 [ TWO = c ]
 
 }
 

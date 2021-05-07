@@ -430,7 +430,7 @@ def test_repeat_test_scope
   output = output.join(" ")
   #puts "After join: #{output}" #DEBUG
 
-  assert_equal( " ", output.to_s + " " )
+  assert_equal( "c ", output.to_s + " " )
 end
 
 
