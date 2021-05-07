@@ -121,17 +121,7 @@ class Rules
         match(FalseToken) { |t| BooleanNode.new(t.b)  }
       end
 
-      # PROOF OF CONCEPT
-      rule :if_var do
-        match( IfToken, :var ) do |_,name|
-          if $stack.check(name)
-            $stack.look_up(name) # <--- Probably TODO
-          else
-            IntegerNode.new(0)
-          end
-        end
-      end
-
+      
       rule :for_loop do
         match(ForToken, :expression, '[', :statements, ']') do |_,expression,_,statements,_|
           ForNode.new(expression, statements) 
@@ -145,7 +135,6 @@ class Rules
       rule :loop do 
         match(RepeatToken, :expression, '[', :statements, ']' ) {|_,expr,_,statements,_| Repeat.new(expr, statements) }
         match(RepeatToken, :var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new(var, statements) }
-        match(RepeatToken, :if_var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new(var, statements) }
       end
 
       rule :statements do
