@@ -508,7 +508,7 @@ def test_for_loop
   output = output.join(" ")
   #puts "After join: #{output}" #DEBUG
 
-  assert_equal( "b ", output.to_s + " " )
+  assert_equal( " ", output.to_s + " " )
 end
 
 
