@@ -1,4 +1,4 @@
-# coding: iso-8859-1
+# coding: utf-8
 require_relative './Classes'
 
 class Rules
@@ -28,6 +28,7 @@ class Rules
       token(/and/) {|_| AndToken.new }
       token(/equals/) {|_| EqualsToken.new }
       token(/or/) {|_| OrToken.new }
+      token(/is less than/) {|_| LesserToken.new}
       token(/[+|-]\d/) {|m| m.to_s }
       token(/\d+/) {|m| m.to_i }
       token(/[a-g][#|b]?/) { |m| m.to_s }
@@ -114,6 +115,7 @@ class Rules
         match(EqualsToken) { |e| StringNode.new(e.s)  }
         match(OrToken) { |o| StringNode.new(o.s)  }
         match(AndToken) { |a| StringNode.new(a.s)  }
+        match(LesserToken) { |l| StringNode.new(l.s) }
       end
 
       rule :boolean do

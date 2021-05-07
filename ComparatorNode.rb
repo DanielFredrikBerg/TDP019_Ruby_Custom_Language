@@ -14,7 +14,7 @@ class ComparatorNode
       return @lhs.seval && @rhs.seval
     when 'or'
       return @lhs.seval || @rhs.seval  
-    when '<'
+    when 'is less than'
       return @lhs.seval  < @rhs.seval 
     when '>'
       return @lhs.seval  > @rhs.seval 

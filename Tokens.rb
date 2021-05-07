@@ -49,6 +49,13 @@ class FalseToken
   end
 end
 
+class LesserToken
+  attr_reader :s
+  def initialize
+    @s = 'is less than'
+  end
+end
+
 # FUNCTION TOKENS ##################################################
 class ForToken
 end

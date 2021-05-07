@@ -39,6 +39,7 @@ if_simple_and_true                        d e f
 if_simple_and_false                       e d g
 if_simple_or_true                         f f f f f f
 if_simple_or_false                        c d a b
+if_simple_less_than_true                  f f f f f f
 if_multiple_variable_change               a b c d e f
 for_loop_uninitialized_variable                                  
 for_loop_initialized_variable             b f a
