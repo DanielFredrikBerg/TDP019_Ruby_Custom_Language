@@ -99,12 +99,12 @@ class Rules
       end
       
 ## TODO ########################################################################################
-      rule :if do
-        match( IfToken, :expression, :comparator, :expression, '[', :statements, ']') do
+      rule :if do 
+        match(IfToken, :expression, :comparator, :expression, '[', :statements, ']') do
           |_,lhs,comparator,rhs,_,statements,_|
           IfNode.new(lhs, comparator, rhs, statements)
         end
-        match( IfToken, :boolean, :comparator, :boolean, '[', :statements, ']') do
+        match(IfToken, :boolean, :comparator, :boolean, '[', :statements, ']') do
           |_,lhs,comparator,rhs,_,statements,_|
           IfNode.new(lhs, comparator, rhs, statements)
         end

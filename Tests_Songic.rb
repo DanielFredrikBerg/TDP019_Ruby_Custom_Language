@@ -525,6 +525,19 @@ def test_if_simple_or_true
 end
 
 
+def test_if_simple_or_false
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/if_simple_or_false.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "c d a b ", output.to_s + " " )
+end
+
+
 def test_if_multiple_variable_change
   output = StringIO.new
   $stdout = output
