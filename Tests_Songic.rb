@@ -460,10 +460,10 @@ def test_several_loops
 end
 
 
-def test_simple_if_equals
+def test_if_simple_equals_true
   output = StringIO.new
   $stdout = output
-  output = %x'ruby songic.rb ztests/simple_if_equals.song'
+  output = %x'ruby songic.rb ztests/if_simple_equals_true.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
   output = output.join(" ")
@@ -473,10 +473,10 @@ def test_simple_if_equals
 end
 
 
-def test_simple_if_equals_false
+def test_if_simple_equals_false
   output = StringIO.new
   $stdout = output
-  output = %x'ruby songic.rb ztests/simple_if_equals_false.song'
+  output = %x'ruby songic.rb ztests/if_simple_equals_false.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
   output = output.join(" ")
