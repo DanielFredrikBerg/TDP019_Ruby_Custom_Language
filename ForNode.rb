@@ -18,9 +18,9 @@ class ForNode
         s += statement.seval
       end
     end
-   # puts "BEFORE: \n #{$stack} \n -------------------"
+    #puts "BEFORE: \n #{$stack} \n -------------------"
     $stack.pop_frame
-   # puts "AFTER: #{$stack} \n --------------------"
+    #puts "AFTER: #{$stack} \n --------------------"
     s
   end
   

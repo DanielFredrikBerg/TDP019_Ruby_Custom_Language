@@ -10,6 +10,14 @@ class Stack < Array
   end
 
   def pop_frame
+    lower_frame = self[-2].keys
+    upper_frame = self[-1].keys
+    common_keys = lower_frame.intersection(upper_frame)
+
+    for key in common_keys
+      self[-2][key] = self[-1][key]
+    end
+    
     self.pop;nil
   end
 

@@ -499,10 +499,10 @@ def test_if_multiple_variable_change
 end
 
 
-def test_for_loop
+def test_for_loop_uninitialized_variable
   output = StringIO.new
   $stdout = output
-  output = %x'ruby songic.rb ztests/for_loop.song'
+  output = %x'ruby songic.rb ztests/for_loop_uninitialized_variable.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
   output = output.join(" ")
@@ -512,16 +512,16 @@ def test_for_loop
 end
 
 
-def test_repeat_test_scope
+def test_for_loop_initialized_variable
   output = StringIO.new
   $stdout = output
-  output = %x'ruby songic.rb ztests/repeat_test_scope.song'
+  output = %x'ruby songic.rb ztests/for_loop_initialized_variable.song'
   output = output.split()
   #puts "After split: #{output}" #DEBUG
   output = output.join(" ")
   #puts "After join: #{output}" #DEBUG
 
-  assert_equal( " ", output.to_s + " " )
+  assert_equal( "b f a ", output.to_s + " " )
 end
 
 
