@@ -16,8 +16,10 @@ class Rules
 
       ## Tokens utgör Lexern
       token(/\s+/) #{|m| m.to_s }
+      token(/plus/) {|_| AdditionToken.new }
       token(/dividedby/) {|_| DivisionToken.new }
       token(/times/) {|_| MultiplicationToken.new }
+      token(/minus/) { |_| SubtractionToken.new }
       token(/for/) {|_| ForToken.new }
       token(/equals/) {|_| EqualsToken.new }
       token(/if/) {|_| IfToken.new }
@@ -176,10 +178,10 @@ class Rules
       end
 
       rule :expression do
-        match(:expression, 'plus', :term) {|a,_,b| Addition.new(a,b) }
-        match(:expression, 'minus', :term) {|a,_,b| Subtraction.new(a,b) }
-        match(:term, 'plus', :term) {|a,_,b| Addition.new(a,b) }
-        match(:term, 'minus', :term) {|a,_,b| Subtraction.new(a,b) }
+        match(:expression, AdditionToken, :term) {|a,_,b| Addition.new(a,b) }
+        match(:expression, SubtractionToken, :term) {|a,_,b| Subtraction.new(a,b) }
+        match(:term, AdditionToken, :term) {|a,_,b| Addition.new(a,b) }
+        match(:term, SubtractionToken, :term) {|a,_,b| Subtraction.new(a,b) }
         match(:term)
       end
 
