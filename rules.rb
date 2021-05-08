@@ -65,7 +65,7 @@ class Rules
       end
 
       rule :segment_variable_assignment do
-        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| @@root_node << AddNode.new(segment, motif); segment} #TODO
+        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| @@root_node << AddNode.new(segment, motif); segment}
         match(:var, '=', :var) {|name, _, motif| @@root_node << VarAssNode.new(name, motif); name }
         match(:var, '=', :loop) {|name, _, loop| @@root_node << VarAssNode.new(name, loop); name } 
       end
@@ -100,7 +100,6 @@ class Rules
         match(:if_var)
       end
       
-## TODO ########################################################################################
       rule :if do 
         match(IfToken, :expression, :comparator, :expression, '[', :statements, ']') do
           |_,lhs,comparator,rhs,_,statements,_|
@@ -131,10 +130,6 @@ class Rules
           ForNode.new(expression, statements) 
         end
       end
-      
-      # $stack.push_frame;  $stack.add(name, loop); $stack.pop_frame } 
-      
-## TODO ########################################################################################
 
       rule :loop do 
         match(RepeatToken, :expression, '[', :statements, ']' ) {|_,expr,_,statements,_| Repeat.new(expr, statements) }
@@ -182,7 +177,6 @@ class Rules
       
       rule :method do
         match('transposed') {|m| m}
-        # MORE FLESH
       end
 
       rule :expression do
@@ -249,12 +243,8 @@ class Rules
     if done(str) then
       puts "Bye"
     else
-      root_node = @rule_parser.parse str
-      #puts root_node.seval
-      #puts "=> #{root_node.eval}"      
+      root_node = @rule_parser.parse str  
       x = root_node.seval
-      #puts "STACK: \n #{$stack} \n -------------------------------"
-      #puts "ROOT NODE: \n #{root_node} \n -------------------------"
       puts x
     end
   end
