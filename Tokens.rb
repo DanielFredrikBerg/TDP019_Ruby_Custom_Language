@@ -1,6 +1,6 @@
 # Tokens used in parser: rules.rb
 
-# ARITHMETIC TOKENS
+# ARITHMETIC TOKENS ##############################################
 class AdditionToken
 end
 

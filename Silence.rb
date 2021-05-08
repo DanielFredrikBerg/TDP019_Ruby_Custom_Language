@@ -4,11 +4,13 @@ class Silence
     @length = Rational(1, length)
   end
 
-  def write
+  def seval
+    s = ""
     if @length.denominator != 4
-      print @length.denominator.to_s
+      s += @length.denominator.to_s
     end
-    print "z "
+    s += "z "
+    s
   end
   
 end

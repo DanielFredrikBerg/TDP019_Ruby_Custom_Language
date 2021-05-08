@@ -1,4 +1,5 @@
 class LookUpNode
+  
   def initialize(var_name)
     @var_name = var_name
   end
@@ -8,3 +9,4 @@ class LookUpNode
   end
 
 end
+

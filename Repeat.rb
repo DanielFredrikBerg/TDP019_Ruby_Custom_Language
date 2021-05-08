@@ -14,9 +14,8 @@ class Repeat
     elsif @iterations.class == String     
       @iterations = $stack.look_up(@iterations).seval
     else
-      puts "SoMe KiNd Of FuCkErY In Repeat.rb pertaining to the iterations variable @iterations = #{@iterations}"
-    end
-    
+      raise TypeError.new "Iterations in Repeat could not be evaluated to an integer"
+    end    
     
     s = ""
     (1..@iterations).each do

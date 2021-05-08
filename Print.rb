@@ -1,4 +1,5 @@
 class Print
+  
   def initialize(obj)
     @obj = obj
   end
@@ -6,4 +7,5 @@ class Print
   def p
     puts @obj
   end
+  
 end

@@ -7,4 +7,5 @@ class Subtraction
   def seval()
     @value
   end
+  
 end

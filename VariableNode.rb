@@ -1,4 +1,3 @@
-
 class VariableList
 
   def initialize
