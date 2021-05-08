@@ -10,7 +10,6 @@ class Rules
     @@root_node = RootNode.new
 
     @rule_parser = Parser.new("rules") do
-
       token(/\s+/)
       token(/plus/) {|_| AdditionToken.new }
       token(/divided by/) {|_| DivisionToken.new }
