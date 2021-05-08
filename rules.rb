@@ -4,18 +4,14 @@ require_relative './Classes'
 class Rules
   attr_accessor :file
 
-
   def initialize
-
-    # puts "INTILIZING..."
 
     $stack = Stack.new
     @@root_node = RootNode.new
 
     @rule_parser = Parser.new("rules") do
 
-      ## Tokens utgör Lexern
-      token(/\s+/) #{|m| m.to_s }
+      token(/\s+/)
       token(/plus/) {|_| AdditionToken.new }
       token(/divided by/) {|_| DivisionToken.new }
       token(/times/) {|_| MultiplicationToken.new }
@@ -35,15 +31,9 @@ class Rules
       token(/[a-g][#|b]?/) { |m| m.to_s }
       token( /^[a-zA-Z]+/ ) { |m| m.to_s }
       token(/./) { |m| m.to_s }
-      
-      # Parsern ansvarar för att skapa objekten => AST
 
       start :song do
-        match(:motif_block, :segment_block, :structure_block) do 
-          # For some reason, removing this empty block will cause 
-          # the parser to spit out the word motifs.
-          @@root_node
-        end
+        match(:motif_block, :segment_block, :structure_block) { @@root_node }
       end
 
       rule :structure_block do
@@ -51,7 +41,9 @@ class Rules
       end
 
       rule :segments do
-        match(:segments, ',', :var) {|segments, _, segment| @@root_node << segment ; segments} 
+        match(:segments, ',', :var) do |segments, _, segment|
+          @@root_node << segment ; segments
+        end
         match(:var) {|segment| @@root_node << segment; segment }
       end
       
@@ -65,12 +57,20 @@ class Rules
       end
 
       rule :segment_variable_assignment do
-        match(:segment_variable_assignment, ',', :var) {|segment, _, motif| @@root_node << AddNode.new(segment, motif); segment}
-        match(:var, '=', :var) {|name, _, motif| @@root_node << VarAssNode.new(name, motif); name }
-        match(:var, '=', :loop) {|name, _, loop| @@root_node << VarAssNode.new(name, loop); name } 
+        match(:segment_variable_assignment, ',', :var) do |segment, _, motif|
+          @@root_node << AddNode.new(segment, motif)
+          segment
+        end
+        match(:var, '=', :var) do |name, _, motif|
+          @@root_node << VarAssNode.new(name, motif)
+          name
+        end
+        match(:var, '=', :loop) do |name, _, loop|
+          @@root_node << VarAssNode.new(name, loop)
+          name
+        end
       end
-      
-      
+            
       rule :motif_block do
         match('motifs', '{', :motif_statements, '}') 
       end
@@ -79,8 +79,7 @@ class Rules
         match(:motif_statements, :motif_statement)
         match(:motif_statement)
       end
-      
-      
+            
       rule :motif_statement do
         match(:var, '=', :if) do |name,_,if_stmt| 
           if if_stmt.evaluate == true
@@ -89,11 +88,18 @@ class Rules
             @@root_node << LookUpNode.new(name)
           end
         end
-        match(:var, '=', :motif) {|name, _, motif| @@root_node << VarAssNode.new(name, motif); name } 
-        
-        match(:var, '=', :loop) {|name, _, loop| @@root_node << VarAssNode.new(name, loop); name } 
-        match(:var, '=', :expression) { |name, _, expression|  @@root_node << VarAssNode.new(name, expression); name } 
-        
+        match(:var, '=', :motif) do |name, _, motif|
+          @@root_node << VarAssNode.new(name, motif)
+          name
+        end 
+        match(:var, '=', :loop) do |name, _, loop|
+          @@root_node << VarAssNode.new(name, loop)
+          name
+        end
+        match(:var, '=', :expression) do |name, _, expression|
+          @@root_node << VarAssNode.new(name, expression)
+          name
+        end        
         match(:if) { |if_statement| @@root_node << if_statement }
         match(:for_loop) { |for_loop| @@root_node << for_loop }
         match(:loop)
@@ -123,27 +129,33 @@ class Rules
         match(TrueToken) { |t| BooleanNode.new(t.b)  }
         match(FalseToken) { |t| BooleanNode.new(t.b)  }
       end
-
       
       rule :for_loop do
-        match(ForToken, :expression, '[', :statements, ']') do |_,expression,_,statements,_|
+        match(ForToken, :expression, '[', :statements, ']') do
+          |_,expression,_,statements,_|
           ForNode.new(expression, statements) 
         end
       end
 
       rule :loop do 
-        match(RepeatToken, :expression, '[', :statements, ']' ) {|_,expr,_,statements,_| Repeat.new(expr, statements) }
-        match(RepeatToken, :var, '[', :statements, ']' ) {|_,var,_,statements,_| Repeat.new(var, statements) }
+        match(RepeatToken, :expression, '[', :statements, ']' ) do
+          |_,expr,_,statements,_| Repeat.new(expr, statements)
+        end
+        match(RepeatToken, :var, '[', :statements, ']' ) do
+          |_,var,_,statements,_| Repeat.new(var, statements)
+        end
       end
 
       rule :statements do
         match( :statements, :statement ) {|statements, statement| statements << statement }
-        match( :statement ) {|s|  [s] }
+        match( :statement ) {|s| [s] }
       end
 
       rule :statement do
-        match(:var, '=', :motif) {|name, _, motif| x = VarAssNode.new(name, motif); x } 
-        match(:var, '=', :expression) { |name, _, expression| VarAssNode.new(name, expression)  }
+        match(:var, '=', :motif) {|name, _, motif| VarAssNode.new(name, motif) } 
+        match(:var, '=', :expression) do |name, _, expression|
+          VarAssNode.new(name, expression)
+        end
         match(:motif) {|n| n} 
       end      
 
@@ -165,9 +177,12 @@ class Rules
       end
 
       rule :note do
-        match( :note, '.', :method, '(', :expression, ')' ) {|note, _, method, _, expression, _| eval "note.#{method}(expression)" } 
-        match( :length, :tone, :octave ) do
-          |length, tone, octave| Note.new( length, tone, octave ) 
+        match( :note, '.', :method, '(', :expression, ')' ) do
+          |note, _, method, _, expression, _|
+          eval "note.#{method}(expression)"
+        end
+        match( :length, :tone, :octave ) do |length, tone, octave|
+          Note.new( length, tone, octave ) 
         end
         match( :length, :tone) {|length, tone| Note.new(length, tone, 0)}
         match( :tone, :octave) {|tone, octave| Note.new(4, tone, octave)}
@@ -228,7 +243,7 @@ class Rules
   
   def interactive_mode
     print "[i-mode] "
-    @rule_parser.logger.level = Logger::DEBUG #DEBUG
+    @rule_parser.logger.level = Logger::DEBUG
     str = gets
     if done(str) then
       puts "Bye."
@@ -239,7 +254,7 @@ class Rules
   end
 
   def test(str)
-    @rule_parser.logger.level = Logger::WARN #DEBUG
+    @rule_parser.logger.level = Logger::WARN
     if done(str) then
       puts "Bye"
     else
@@ -251,7 +266,7 @@ class Rules
 
   def compile_and_run(file)
     run = File.read(file)
-    @rule_parser.logger.level = Logger::WARN #DEBUG
+    @rule_parser.logger.level = Logger::WARN
     puts "#{ @rule_parser.parse run } "
   end
 
@@ -262,7 +277,7 @@ class Rules
 
   def log(state = true)
     if state
-      @rule_parser.logger.level = Logger::WARN #DEBUG
+      @rule_parser.logger.level = Logger::WARN 
     else
       @rule_parser.logger.level = Logger::WARN
     end
