@@ -1,15 +1,12 @@
 class BooleanNode
 
   def initialize(bool)
-    if bool == true
-      @bool = true
-    elsif bool == false
-      @bool = false
+    if bool == true or bool == false
+      @bool = bool
     else
       raise Exception.new "Not Valid Boolean Exception"
     end
   end
-
 
   def seval
     @bool
