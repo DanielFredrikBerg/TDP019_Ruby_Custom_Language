@@ -1,10 +1,8 @@
 require './IntegerNode'
 
 class Note
-  #TODO: map semitones for different scales somehow.
   
-  def initialize(length, tone, octave)
-    #puts "#{length}, #{tone}, #{octave}"
+  def initialize(length, tone, octave)  
     @scale =
       ['c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#', 'a', 'a#', 'b' ]
 
