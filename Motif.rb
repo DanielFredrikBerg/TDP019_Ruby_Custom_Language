@@ -27,11 +27,5 @@ class Motif
     end
     s
   end
-  
-  def write
-    @notes.each do |note|
-      note.write
-    end 
-  end
 
 end
