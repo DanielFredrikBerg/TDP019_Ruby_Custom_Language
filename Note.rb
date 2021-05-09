@@ -57,17 +57,6 @@ class Note
     t2h[tone]    
   end
   
-  def semitone_to_halfstep(semitone='')
-    case semitone
-    when '#'
-      +1
-    when 'b'
-      -1
-    when ''
-      0
-    end
-  end
-
   #Will print the Note in a human readable form
   def seval
     s = ""
