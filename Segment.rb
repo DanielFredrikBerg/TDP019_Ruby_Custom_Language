@@ -30,9 +30,5 @@ class Segment
     end
     s
   end
-  
-  def write
-    @motifs.each { |motif| motif.write }
-  end
 
 end
