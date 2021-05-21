@@ -1,0 +1,12 @@
+motifs{
+A = repeat 3 [ a b ]
+B = c d
+}
+segments{
+VERSE = A
+CHORUS = B
+}
+
+structure{
+VERSE, CHORUS, VERSE
+}
