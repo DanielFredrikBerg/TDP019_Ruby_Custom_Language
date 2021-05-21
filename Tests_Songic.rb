@@ -642,4 +642,17 @@ def test_for_loop_multiple_initialized_variables
 end
 
 
+def test_repetition_of_segment_with_repeat
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/repetition_of_segment_with_repeat.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "a b a b a b c d a b a b a b ", output.to_s + " " )
+end
+
+
 end

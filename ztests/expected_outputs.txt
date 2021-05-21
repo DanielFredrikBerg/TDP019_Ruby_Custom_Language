@@ -47,3 +47,4 @@ if_multiple_variable_change               a b c d e f
 for_loop_uninitialized_variable                                  
 for_loop_initialized_variable             b f a
 for_loop_multiple_initialized_variables   a b c
+repetition_of_segment_with_repeat         a b a b a b c d a b a b a b

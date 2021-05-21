@@ -1,16 +1,20 @@
 motifs
 {
-TWO = 2 plus 1
-for 2 [ TWO = 3 plus 1 ]
-V = rpt if TWO [ c ]
+A = b b b b b a b
+B = a a g g d# b
+C = d# d# b a g
+D = g# b d# g# d# b b d# b# g#
+E = g# b# bb b# g# g# b# a# a# g#
 }
-
 segments
 {
-CHORUS = V
+VERSE = A, A, A, B, A, A, A, A, B, A
+PRECHORUS = C, C, C, A.transposed(8)
+CHORUS = rpt 4 [D, E]
+
 }
 
 structure
 {
-CHORUS
+VERSE, PRECHORUS, CHORUS, VERSE, PRECHORUS, CHORUS,
 }

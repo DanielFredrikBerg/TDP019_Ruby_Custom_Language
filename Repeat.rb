@@ -5,14 +5,17 @@ class Repeat
   def initialize(iterations, loop_list) 
     @iterations = iterations
     @loop_list = loop_list
+  
   end
   
   def seval
-
+  
     if @iterations.class == IntegerNode
       @iterations = @iterations.seval
     elsif @iterations.class == String     
       @iterations = $stack.look_up(@iterations).seval
+    elsif @iterations.class == Integer
+      @iterations = @iterations
     else
       raise TypeError.new "Iterations in Repeat could not be evaluated to an integer"
     end    
