@@ -1,5 +1,5 @@
-require './classes'
-
+require './rdparse'
+require './Tokens'
 
 # Class for handling variable values during runtime.
 class Stack < Array
@@ -282,6 +282,9 @@ class AddNode
   def seval
     ($stack.look_up(@key)).add($stack.look_up(@value))
   end
+end
+
+class MathNode
 end
 
 class Addition < MathNode
