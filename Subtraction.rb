@@ -1,10 +1,11 @@
-class Subtraction
+require './MathNode'
+class Subtraction < MathNode
 
   def initialize(a,b)
     @value = a.seval - b.seval
   end
 
-  def seval()
+  def seval
     @value
   end
   

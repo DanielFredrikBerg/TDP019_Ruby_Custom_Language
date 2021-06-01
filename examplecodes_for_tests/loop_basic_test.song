@@ -1,6 +1,6 @@
 motifs
 {
-A = rpt 2 plus 1 [ a b c ]
+A = repeat 2 plus 1 [ a b c ]
 B = d e 
 }
 

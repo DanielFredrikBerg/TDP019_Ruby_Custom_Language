@@ -1,10 +1,11 @@
-class Division
+require './MathNode'
+class Division < MathNode
 
   def initialize(a,b)
     @value = a.seval / b.seval
   end
 
-  def seval()
+  def seval
     @value
   end
   

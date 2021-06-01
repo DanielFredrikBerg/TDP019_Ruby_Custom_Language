@@ -1,5 +1,6 @@
 # coding: utf-8
-require_relative './Classes'
+require './classes'
+
 
 class Rules
   attr_accessor :file
@@ -252,7 +253,7 @@ class Rules
     end
   end
 
-  def test(str)
+  def evaluate(str)
     @rule_parser.logger.level = Logger::WARN
     if done(str) then
       puts "Bye"

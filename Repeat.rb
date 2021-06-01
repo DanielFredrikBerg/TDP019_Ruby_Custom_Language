@@ -1,4 +1,3 @@
-#require './rules'
 
 class Repeat
 
@@ -9,8 +8,7 @@ class Repeat
   end
   
   def seval
-  
-    if @iterations.class == IntegerNode
+    if @iterations.class == IntegerNode || @iterations.class.superclass == MathNode
       @iterations = @iterations.seval
     elsif @iterations.class == String     
       @iterations = $stack.look_up(@iterations).seval
@@ -19,7 +17,7 @@ class Repeat
     else
       raise TypeError.new "Iterations in Repeat could not be evaluated to an integer"
     end    
-    
+
     s = ""
     (1..@iterations).each do
       @loop_list.each do |statement|

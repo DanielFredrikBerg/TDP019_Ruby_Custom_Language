@@ -16,13 +16,13 @@ elsif file == "test"
 
 
 elsif File.file?(file)
-  main = Rules.new
+  program = Rules.new
   
-  open_file = File.open( file )
-  text = open_file.readlines.map(&:chomp)
-  text = text.join(" ")
+  open_file = File.open(file)
+  code_text = open_file.readlines.map(&:chomp)
+  code_text = code_text.join(" ")
   
-  main.test(text)
+  program.evaluate(code_text)
 else
   puts "Error when trying to run file: #{file}\n***USAGE***: ruby songic.rb <file_name>\nIf <file name> is omitted, interactive mode (i-mode) will run."
 end
