@@ -1,5 +1,5 @@
 # coding: utf-8
-require './Classes'
+require './classes'
 
 
 class Rules
