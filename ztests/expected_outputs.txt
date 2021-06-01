@@ -29,9 +29,11 @@ arithmetic_combined_div_mult_parenthesis  a b f# d e
 arithmetic_combined_mult_add              a b g+1 d e
 arithmetic_combined_mult_sub              a b b d e
 arithmetic_combined_sub_mult              a b c#-1 d e
+arithmetic_priority		  	  a b a# d e
 repeat_test                               a a a
 repeat_iterations_with_variable           c c c
-repeat_iterations_by_variable             a a   
+repeat_iterations_by_variable             a a
+repeat_iterations_with_expression	  a b c a b c a b c d e
 several_loops                             b b
 if_simple_equals_true                     a b c
 if_simple_equals_false                    c b a

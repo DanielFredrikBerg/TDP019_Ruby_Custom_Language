@@ -1,7 +1,7 @@
 # coding: utf-8
 require 'stringio'
 require 'test/unit'
-require './rules'
+require './Rules'
 
 class SongicTest < Test::Unit::TestCase
 
@@ -408,6 +408,19 @@ def test_arithmetic_combined_sub_mult
 end
 
 
+def test_arithmetic_priority
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/arithmetic_priority.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "a b a# d e ", output.to_s + " " )
+end
+
+
 def test_repeat_test
   output = StringIO.new
   $stdout = output
@@ -444,6 +457,19 @@ def test_repeat_iterations_by_variable
   #puts "After join: #{output}" #DEBUG
 
   assert_equal( "a a ", output.to_s + " " )
+end
+
+
+def test_repeat_iterations_with_expression
+  output = StringIO.new
+  $stdout = output
+  output = %x'ruby songic.rb ztests/repeat_iterations_with_expression.song'
+  output = output.split()
+  #puts "After split: #{output}" #DEBUG
+  output = output.join(" ")
+  #puts "After join: #{output}" #DEBUG
+
+  assert_equal( "a b c a b c a b c d e ", output.to_s + " " )
 end
 
 

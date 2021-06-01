@@ -1,4 +1,4 @@
-require './rules'
+require './Rules'
 
 file = ARGV[0]
 

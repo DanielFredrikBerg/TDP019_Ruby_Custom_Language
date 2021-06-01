@@ -1,8 +1,8 @@
 %!PS-Adobe-3.0
-%%Title: VariableNode.rb
+%%Title: Template.rb
 %%Creator: ps-print v7.3.5
-%%For: Theodore
-%%CreationDate: 18:48:24 maj 08 2021
+%%For: Live session user
+%%CreationDate: 18:00:34 Jun 01 2021
 %%Orientation: Portrait
 %%DocumentNeededResources: font Times-Roman Times-Italic
 %%+ font Courier
@@ -11,14 +11,14 @@
 %%+ font Courier-BoldOblique
 %%+ font Helvetica
 %%+ font Helvetica-Bold
-%%DocumentSuppliedResources: procset PSPrintUserDefinedPrologue-theodore 0 0
-%%DocumentMedia: A4 595 842 0 () ()
+%%DocumentSuppliedResources: procset PSPrintUserDefinedPrologue-ubuntu 0 0
+%%DocumentMedia: Letter 612 792 0 () ()
 %%PageOrder: Ascend
 %%Pages: (atend)
 %%Requirements:
 %%EndComments
 %%BeginDefaults
-%%PageMedia: A4
+%%PageMedia: Letter
 %%EndDefaults
 
 %%BeginProlog
@@ -29,7 +29,7 @@
 % === BEGIN ps-print prologue 0
 % version: 6.0
 
-% Copyright (C) 2000-2019 Free Software Foundation, Inc.
+% Copyright (C) 2000-2021 Free Software Foundation, Inc.
 
 % This file is part of GNU Emacs.
 
@@ -185,7 +185,7 @@
 
 % === END ps-print prologue 0
 
-%%BeginResource: procset PSPrintUserDefinedPrologue-theodore 0 0
+%%BeginResource: procset PSPrintUserDefinedPrologue-ubuntu 0 0
 
 
 %%EndResource
@@ -193,10 +193,10 @@
 /LandscapeMode       false def
 /UpsideDown          false def
 /NumberOfColumns     1 def
-/LandscapePageHeight 841.8897637795276 def
-/PrintPageWidth      481.8897637795275 def
-/PrintWidth   481.8897637795275 def
-/PrintHeight  693.5927370078741 def
+/LandscapePageHeight 792.0 def
+/PrintPageWidth      498.6141732283465 def
+/PrintWidth   498.6141732283465 def
+/PrintHeight  643.7029732283465 def
 /LeftMargin   56.69291338582677 def
 /RightMargin  56.69291338582677 def
 /InterColumn  56.69291338582677 def
@@ -219,7 +219,7 @@
 /LineSpacing      0 def
 /ParagraphSpacing 0 def
 /LineHeight       8.967500000000001 def
-/LinesPerColumn   78 def
+/LinesPerColumn   72 def
 /WarnPaperSize    true def
 /Zebra            false def
 /PrintLineNumber  false def
@@ -254,7 +254,7 @@
 % === BEGIN ps-print prologue 1
 % version: 6.1
 
-% Copyright (C) 2000-2019 Free Software Foundation, Inc.
+% Copyright (C) 2000-2021 Free Software Foundation, Inc.
 
 % This file is part of GNU Emacs.
 
@@ -1254,19 +1254,19 @@ BeginDoc
 %%EndSetup
 
 %%Page: 1 1
-/Lines 25 def
+/Lines 14 def
 /PageCount 1 def
 1 BeginSheet
 BeginDSCPage
 /LineNumber 1 def
 /PageNumber 1 def
 /HeaderLinesLeft[
- [/h0 (VariableNode.rb)]
- [/h1 (~/vt2021/tdp019/)]
+ [/h0 (Template.rb)]
+ [/h1 (~/tdp019/ztests/)]
 ]def
 /HeaderLinesRight[
  [/h0 /pagenumberstring load]
- [/h1 (2021-05-08)]
+ [/h1 (06/01/2021)]
 ]def
 2 SetHeaderLines
 0 BeginPage
@@ -1274,124 +1274,79 @@ BeginDSCPage
 false BG
 0.000 0.000 0.000 FG
 /f1 F
-(class) S
-/f0 F
-( ) S
-/f1 F
-0.000 0.000 1.000 FG
-(VariableList) S
-/f0 F
-0.000 0.000 0.000 FG
-PHL
-LHL
-(  ) S
-/f1 F
+0.337 0.706 0.914 FG
 (def) S
 /f0 F
+0.000 0.000 0.000 FG
 ( ) S
-/f1 F
-0.000 0.000 1.000 FG
-(initialize) S
-/f0 F
+0.835 0.369 0.000 FG
+(test_OOnameOO) S
 0.000 0.000 0.000 FG
 LHL
-(    ) S
+(  output = ) S
 /f1 F
-(@@variables) S
+0.000 0.447 0.698 FG
+(StringIO) S
 /f0 F
-( = {}) S
-LHL
-(    ) S
-/f1 F
-(@@functions) S
-/f0 F
-( = {}) S
+0.000 0.000 0.000 FG
+(.new) S
 LHL
 (  ) S
-/f1 F
-(end) S
-/f0 F
-PHL
+0.000 0.447 0.698 FG
+($stdout) S
+0.000 0.000 0.000 FG
+( = output) S
+LHL
+(  output = ) S
+0.518 0.557 0.663 FG
+(%) S
+(x'ruby songic.rb ztests/OOfileOO) S
+(') S
+0.000 0.000 0.000 FG
+LHL
+(  output = output.split\(\)) S
 LHL
 (  ) S
-0.698 0.133 0.133 FG
-(# ) S
+0.000 0.620 0.451 FG
+(#) S
 /f2 F
-(Helper function) S
+(puts "After split: #{output}" #DEBUG) S
 LHL
 /f0 F
 0.000 0.000 0.000 FG
+(  output = output.join\() S
+0.518 0.557 0.663 FG
+(" ") S
+0.000 0.000 0.000 FG
+(\)) S
+LHL
 (  ) S
-/f1 F
-(def) S
-/f0 F
-( ) S
-/f1 F
-0.000 0.000 1.000 FG
-(find) S
+0.000 0.620 0.451 FG
+(#) S
+/f2 F
+(puts "After join: #{output}" #DEBUG) S
+PHL
 /f0 F
 0.000 0.000 0.000 FG
-(\(name, hash\)) S
 LHL
-(    hash[var]) S
-LHL
-(  ) S
+(  assert_equal\( ) S
 /f1 F
+0.000 0.447 0.698 FG
+(OOexpectationOO) S
+/f0 F
+0.000 0.000 0.000 FG
+(, output.to_s + ) S
+0.518 0.557 0.663 FG
+(" ") S
+0.000 0.000 0.000 FG
+( \)) S
+LHL
+/f1 F
+0.337 0.706 0.914 FG
 (end) S
-/f0 F
-PHL
-LHL
-/f1 F
-(end) S
-/f0 F
-PHL
-PHL
-LHL
-/f1 F
-(class) S
-/f0 F
-( ) S
-/f1 F
-0.000 0.000 1.000 FG
-(VariableNode) S
 /f0 F
 0.000 0.000 0.000 FG
 PHL
-LHL
-(  ) S
-/f1 F
-(def) S
-/f0 F
-( ) S
-/f1 F
-0.000 0.000 1.000 FG
-(initialize) S
-/f0 F
-0.000 0.000 0.000 FG
-(\(variable_name, type\)) S
-LHL
-(    ) S
-/f1 F
-(@var_name) S
-/f0 F
-( = variable_name) S
-LHL
-(    ) S
-/f1 F
-(@type) S
-/f0 F
-( = type) S
-LHL
-(  ) S
-/f1 F
-(end) S
-/f0 F
-PHL
-(  ) S
-LHL
-/f1 F
-(end) S
-/f0 F
 PHL
 PHL
 EndPage

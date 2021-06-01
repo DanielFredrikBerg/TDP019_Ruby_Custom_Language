@@ -1,5 +1,5 @@
 # coding: utf-8
-require './classes'
+require './require_list'
 
 
 class Rules

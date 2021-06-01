@@ -1,9 +1,6 @@
-
 class MakeTest
-
   def initialize template = "ztests/Template.rb", expectation = "ztests/expected_outputs.txt"
     @template = template
-
     @pairs = Array.new
     txt = File.open( expectation ).readlines.map(&:chomp)
     for line in txt
@@ -18,12 +15,11 @@ class MakeTest
     @header = "# coding: utf-8
 require 'stringio'
 require 'test/unit'
-require './rules'
+require './Rules'
 
 class SongicTest < Test::Unit::TestCase\n\n"
     @end = "end"
   end
-
 
   def make_test_file
     File.open("Tests_Songic.rb", "w") do |f|
@@ -41,16 +37,12 @@ class SongicTest < Test::Unit::TestCase\n\n"
       f << @end
     end
   end
-
 end
 
 
 def main
-  #template = ARGV[0]
-  #expectation = ARGV[1]
   MakeTest.new().make_test_file
   system("ruby Tests_Songic.rb")
-
 end
 
 main
