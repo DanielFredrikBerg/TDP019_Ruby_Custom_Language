@@ -22,19 +22,19 @@ class SongicTest < Test::Unit::TestCase\n\n"
   end
 
   def make_test_file
-    File.open("Tests_Songic.rb", "w") do |f|
-      f << @header
+    File.open("Tests_Songic.rb", "w") do |test_file|
+      test_file << @header
       for pair in @pairs
         template_text = File.open(@template).read
         test_name = pair[0].to_s
         file_name = test_name.gsub(/^test_/,"") + ".song"
 
         template_text = template_text.gsub(/OOnameOO/, "#{test_name}")
-        template_text = template_text.gsub(/OOexpectationOO/, "\"#{pair[1]} \"")
+        template_text = template_text.gsub(/OOexpectationOO/, "\"#{pair[1]}\"")
         template_text = template_text.gsub(/OOfileOO/, "#{file_name}")
-        f << template_text
+        test_file << template_text
       end
-      f << @end
+      test_file << @end
     end
   end
 end
